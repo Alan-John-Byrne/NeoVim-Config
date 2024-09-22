@@ -1,7 +1,6 @@
 return {
   {
     "mfussenegger/nvim-dap",
-    ft = "java",
     keys = function() -- IMPORTANT: USING A FUNCTION TO RETURN A TABLE TO COMPLETELY OVERWRITE THE OTHER IRRELEVANT KEYMAPS FROM NVIM-DAP.
       return {
         { "<leader>d", "", desc = "+debug", mode = { "n", "v" } },
@@ -63,6 +62,6 @@ return {
         },
       }
     end,
-    config = false,
+    opts = {}, -- Equivalent to calling .setup()
   },
 }
