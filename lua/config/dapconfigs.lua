@@ -1,6 +1,6 @@
 local dap = require("dap")
 
--- WARN: C++ DEBUG ADAPTER CONFIGURATION:
+-- TODO: C++ DEBUG ADAPTER CONFIGURATION:
 dap.adapters.cppdbg = { -- NOTE: HERE WE ARE CREATING A DEBUG ADAPTER 'TYPE' WE WILL USE BELOW WITHIN A CONFIGURATION.
   id = "cppdbg",
   type = "executable", -- Because we are using the debugger's executable program.
@@ -10,6 +10,8 @@ dap.adapters.cppdbg = { -- NOTE: HERE WE ARE CREATING A DEBUG ADAPTER 'TYPE' WE 
     detached = false,
   },
 }
+-- IMPORTANT: MUST DO "g++ -g -o main *yourcppfile*.cpp" when building project.
+-- WARN: The '-g' flag is super important, it provides the symbols for the debugger. '-o' will output an executable called 'main.exe'.
 
 dap.configurations.cpp = {
   {
@@ -36,8 +38,9 @@ dap.configurations.cpp = {
       -- IMPORTANT: Fall back to user input if we couldn't determine the executable
     end,
     cwd = "${workspaceFolder}", -- Setting the working directory of the application being ran by the C++ debugger. IMPORTANT: REQUIRED.
+    stopOnEntry = true,
   },
 }
 
--- WARN: Java DEBUG ADAPTER CONFIGURATION:
+-- TODO: Java DEBUG ADAPTER CONFIGURATION:
 -- NOTE: WORK IN PROGRESS. COMING SOON.
