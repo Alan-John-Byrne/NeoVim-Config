@@ -1,5 +1,19 @@
 -- IMPORTANT: Java's LSP (nvim-jdtls) works independently from nvim-lspconfig. NOT INCLUDED HERE.
 
+--  XXX: LANGUAGE REQUIREMENTS:
+--
+--  XXX: Java: SEE NVIM-JDTLS.LUA IN PLUGINS.
+--
+-- C++:
+-- 1. The 'clangd' LSP via mason.
+-- 2. The 'lang.clangd' extra plugin(s) via :LazyExtras
+-- 3. (optional) The 'OpenDebugAD7' debug adapter installed via vs code extensions. (WE USE THE PATH TO THE OPENDEBUGAD7.EXE)
+--
+-- Python:
+-- 1. The 'pyright' LSP via mason.
+-- 2. The 'lang.python' extra plugin(s) via :LazyExtras
+-- 3. (optional) The 'debugpy' debug adapter (python package) installed via mason.
+
 -- NOTE: EXAMPLE
 -- local lspconfig = require("lspconfig")
 -- lspconfig.gopls.setup({
