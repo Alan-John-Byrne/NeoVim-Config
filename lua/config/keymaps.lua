@@ -2,7 +2,7 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
--- XXX: Keybinds for inserting a line above or below the current line.
+-- XXX: Keymaps for inserting a line above or below the current line.
 vim.keymap.set(
   "n",
   "<leader>o",
@@ -15,3 +15,6 @@ vim.keymap.set(
   "O<Esc>xxxxxxxxxxxxxxxxxxxxxxj",
   { desc = "Insert line above.", noremap = true, silent = true }
 )
+
+-- XXX: Keymap for opening up a terminal session.
+vim.keymap.set("n", "<leader>t", ":split | term<CR>")
