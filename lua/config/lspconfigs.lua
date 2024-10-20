@@ -13,6 +13,10 @@
 -- 1. The 'pyright' LSP via mason.
 -- 2. The 'lang.python' extra plugin(s) via :LazyExtras
 -- 3. (optional) The 'debugpy' debug adapter (python package) installed via mason.
+--
+-- PowerShell:
+-- 1. The 'powershell-editor-services' LSP via mason.
+-- 2. (optional) The 'powershell.nvim' plugin for debug support.
 
 -- NOTE: EXAMPLE
 -- local lspconfig = require("lspconfig")
