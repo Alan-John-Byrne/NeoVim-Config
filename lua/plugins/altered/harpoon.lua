@@ -18,7 +18,7 @@ return {
     harpoon:setup(opts)
 
     -- NOTE: Basic Keymaps: (Overwriting some with clearer descriptions)
-    vim.keymap.set("n", "<leader>H", function()
+    vim.keymap.set("n", "<leader>a", function()
       harpoon:list():add()
     end, { desc = "[A]dd file to harpoon." })
 

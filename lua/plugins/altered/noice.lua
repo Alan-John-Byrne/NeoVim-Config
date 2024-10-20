@@ -1,3 +1,4 @@
+--  PLUGIN: Overwriting the 'noice.nvim' plugin to fix annoying notification.
 return {
   "folke/noice.nvim",
   opts = function(_, opts) -- IMPORTANT: Extending original options table in base config for 'noice' plugin.
