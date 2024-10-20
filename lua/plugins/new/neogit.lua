@@ -1,6 +1,7 @@
 -- PLUGIN: Installing the 'neogit' plugin. It provides an interactive Git interface within Neovim, enabling users to perform Git operations directly from the editor.
-return {
+return { -- XXX: PLUGIN BROKEN. DON'T USE. USE LAZYGIT.
   "NeogitOrg/neogit",
+  enabled = true, -- TESTING
   event = { "VimEnter" }, --IMPORTANT: THIS 'event' argument is used to actual LOAD the plugin, into the current session.
   dependencies = {
     "nvim-lua/plenary.nvim", -- required
@@ -9,7 +10,7 @@ return {
   },
   config = true,
   keys = {
-    { "<leader>gs", "<cmd>Neogit kind=split<CR>", desc = "Open Neogit status popup" },
+    { "<leader>gC", "<cmd>Neogit kind=split<CR>", desc = "Open Neogit status popup" },
     { "<leader>gc", "<cmd>Neogit commit<CR>", desc = "Open Neogit commit popup" },
     { "<leader>gp", "<cmd>Neogit push<CR>", desc = "Open Neogit push popup" },
     { "<leader>gb", "<cmd>Neogit bisect<CR>", desc = "Open Neogit bisect popup" },

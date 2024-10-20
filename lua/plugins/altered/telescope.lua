@@ -2,8 +2,7 @@
 return {
   "nvim-telescope/telescope.nvim",
   keys = {
-    --  IMPORTANT: Removing the conflicting keymaps.
+    --  IMPORTANT: Removing the conflicting keymap(s).
     { "<leader>gc", false },
-    { "<leader>gs", false },
   },
 }
