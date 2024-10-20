@@ -1,7 +1,7 @@
 -- Setting up custom functions module. NOTE: Required for adding the modules to the packages path so they can be used from anywhere.
 require("custom.my_functions")
 
--- Bootstraping lazy.nvim, LazyVim and plugins
+-- Bootstraping lazy.nvim, LazyVim (Distro) and plugins.
 require("config.lazy")
 require("config.autocmds")
 require("config.options")
@@ -9,7 +9,10 @@ require("config.keymaps")
 require("config.dapconfigs")
 require("config.lspconfigs")
 
--- IMPORTANT: "require" already works here because 'lua' directories are searched for in the runtime path.
+-- WARN: When Neovim starts up, 'init.lua' isn't the only configuration file that Neovim looks for.
+-- Neovim actually looks for a bunch of additional configuration files in something called the "runtimepath".
+
+-- IMPORTANT: "require" works out of the box here because 'lua' directories are searched for in the runtime path.
 
 -- TODO:
 -- This section initializes essential configurations for my Neovim setup,
