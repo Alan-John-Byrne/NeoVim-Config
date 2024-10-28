@@ -3,7 +3,10 @@
 -- Add any additional options here
 --
 -- Adding the PowerShell Profile Terminal Configuration:
-vim.o.shell = "pwsh.exe"
+--vim.o.shell = "pwsh.exe"
+vim.opt.shell = "pwsh"
+vim.opt.shellcmdflag = "-nologo -noprofile -ExecutionPolicy RemoteSigned -command"
+vim.opt.shellxquote = ""
 -- NOTE: This is just pointing to the PowerShell 7 executable, made available through environment variables. It also include your own personal powershell 7 profile.
 
 -- IMPORTANT: The options.lua file is used for setting Vim options, not for direct VIM API calls. Accessing the global vim lua table, and setting options. See full list of options using the ':options' command.

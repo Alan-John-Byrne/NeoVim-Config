@@ -3,8 +3,8 @@ require("custom.my_functions")
 
 -- Bootstraping lazy.nvim, LazyVim (Distro) and plugins.
 require("config.lazy")
-require("config.autocmds")
 require("config.options")
+require("config.autocmds")
 require("config.keymaps")
 require("config.dapconfigs")
 require("config.lspconfigs")
