@@ -1,6 +1,7 @@
--- PLUGIN: Installing the 'harpoon' plugin: Allows for easy switching between common files you are working on.
+-- PLUGIN: Altering the 'harpoon' plugin, allows for easy switching between common files you are working on.
 return {
   "ThePrimeagen/harpoon",
+  enabled = true, --TESTING
   branch = "harpoon2",
   dependencies = { "nvim-lua/plenary.nvim" },
   opts = function(_, opts) -- XXX: 'opts' being passed into the function, is the opts table of the base LazyVim configuration for the plugin.
