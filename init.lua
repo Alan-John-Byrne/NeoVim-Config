@@ -1,13 +1,10 @@
--- Setting up custom functions module. NOTE: Required for adding the modules to the packages path so they can be used from anywhere.
-require("custom.my_functions")
-
 -- Bootstraping lazy.nvim, LazyVim (Distro) and plugins.
 require("config.lazy")
-require("config.options")
 require("config.autocmds")
 require("config.keymaps")
 require("config.dapconfigs")
 require("config.lspconfigs")
+require("config.options")
 
 -- WARN: When Neovim starts up, 'init.lua' isn't the only configuration file that Neovim looks for.
 -- Neovim actually looks for a bunch of additional configuration files in something called the "runtimepath".
@@ -25,6 +22,3 @@ require("config.lspconfigs")
 -- 'config.dapconfigs' configures debugging settings to streamline development.
 -- 'config.lspconfigs' sets up Language Server Protocol settings for code completion
 -- and linting support.
---
--- 'custom.my_functions' contains my custom functions for added functionality
--- tailored to my workflow.
