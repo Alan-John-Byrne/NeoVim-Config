@@ -19,5 +19,16 @@ function M.insert(str1, str2, pos)
   return str1:sub(1, pos) .. str2 .. str1:sub(pos + 1)
 end
 
+--- Gets / returns the Mason package path as a string.
+--- Returns a string, which is the name of the package installed via mason.
+---@param package_name  string  The name of the package.
+---@return string
+---@nodiscard
+function M.get_mason_package_path(package_name)
+  local mason_registry = require("mason-registry") -- IMPORTANT: The mason registry only lists the LOADED plugins.
+  local package = mason_registry.get_package(package_name)
+  return package:get_install_path() -- We need to retrieve the path of where the package is installed, because it will contain everything we need.
+end
+
 -- Exporting the module.
 return M
