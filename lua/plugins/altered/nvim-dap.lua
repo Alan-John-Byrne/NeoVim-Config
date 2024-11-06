@@ -1,6 +1,8 @@
+--  PLUGIN: Overwriting the 'nvim-dap.nvim' plugin to remove broken keybinds.
 return {
   {
     "mfussenegger/nvim-dap",
+    enabled = true, --TESTING
     keys = function() -- IMPORTANT: USING A FUNCTION TO RETURN A TABLE TO COMPLETELY OVERWRITE THE OTHER IRRELEVANT KEYMAPS FROM NVIM-DAP.
       return {
         { "<leader>d", "", desc = "+debug", mode = { "n", "v" } },
@@ -62,6 +64,5 @@ return {
         },
       }
     end,
-    opts = {}, -- Equivalent to calling .setup()
   },
 }

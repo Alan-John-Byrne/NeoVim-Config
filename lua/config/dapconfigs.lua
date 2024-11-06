@@ -1,49 +1,54 @@
 local dap = require("dap") -- WARN: REQUIRED FOR ALL LANGUAGE SETUPS.
 
 -- TODO: C++ DEBUG ADAPTER CONFIGURATION:
-dap.adapters.cppdbg = { -- NOTE: HERE WE ARE CREATING A DEBUG ADAPTER 'TYPE' WE WILL USE BELOW WITHIN A CONFIGURATION.
-  id = "cppdbg",
-  type = "executable", -- Because we are using the debugger's executable program.
-  -- IMPORTANT: The actual path to the cpp OpenDebugAD7 debugger.
-  command = "C:\\Users\\alanj\\.vscode\\extensions\\ms-vscode.cpptools-1.22.9-win32-x64\\debugAdapters\\bin\\OpenDebugAD7.exe",
+dap.adapters.codelldb = { -- NOTE: HERE WE ARE CREATING A DEBUG ADAPTER 'TYPE' WE WILL USE BELOW WITHIN A CONFIGURATION.
+  type = "server",
+  port = "${port}",
+  executable = {
+    -- CHANGE THIS to your path!
+    -- IMPORTANT: The actual path to the Cpp Debugger.
+    command = "C:\\Users\\alanj\\AppData\\Local\\nvim-data\\mason\\packages\\codelldb\\extension\\adapter\\codelldb.exe",
+    args = { "--port", "${port}" },
+  },
   options = {
     detached = false,
   },
 }
--- IMPORTANT: MUST DO "g++ -g -o main *yourcppfile*.cpp" when building project.
+
+-- IMPORTANT: MUST DO "g++ -g -o main *yourcppfile*.cpp" when building project. (If only compiling and debugging a single file.)
 -- WARN: The '-g' flag is super important, it provides the symbols for the debugger. '-o' will output an executable called 'main.exe'.
 
 dap.configurations.cpp = {
   {
     -- NOTE: Debug Adapter Common Options:
     name = "Launch file",
-    type = "cppdbg", -- This is the kind of adapter we will be using for this configuration.
+    type = "codelldb", -- This is the kind of adapter we will be using for this configuration.
     request = "launch", -- Meaning we wish to 'launch' the debugger.
     -- NOTE: Debug Adapter Specific Options: (ie: Named options would be different for Java compared to C++)
-    -- The file / thing we want to debug. NOTE: THIS COULD BE A FUNCTION.
     program = function()
-      -- 'expand' returns the path of the current file in the buffer, given a wildcard.
-      local current_file = vim.fn.expand("%:p")
-      -- 'fnamemodify' returns just the section of a file specified, given a wildcard. NOTE: We're selecting the extension portion.
-      local file_extension = vim.fn.fnamemodify(current_file, ":e")
-      -- If we're currently looking at a cpp file, then proceed.
-      if file_extension == "cpp" then
-        -- 'fnamemodify' returns the root (filename without extension) of file, then we concatenate '.exe'.
-        local executable = vim.fn.fnamemodify(current_file, ":r") .. ".exe"
-        -- Check if the executable file exists, if it does, this is file we execute the debugger on.
-        if vim.fn.filereadable(executable) == 1 then
-          return executable
-        end
-      end
-      -- IMPORTANT: Fall back to user input if we couldn't determine the executable
+      -- Get the current file's directory
+      local current_dir = vim.fn.expand("%:p:h")
+      -- Build the expected path to the bin directory
+      local bin_dir = vim.fs.dirname(current_dir) .. "/bin"
+      -- Find all .exe files in the bin directory
+      local executable = vim.fn.glob(bin_dir .. "/*.exe")
+      -- Check if we found any executables
+      return executable
     end,
-    cwd = "${workspaceFolder}", -- Setting the working directory of the application being ran by the C++ debugger. IMPORTANT: REQUIRED.
-    stopOnEntry = true,
+    cwd = vim.fs.dirname(vim.fn.expand("%:p:h")), -- Setting the working directory of the application being ran by the C++ debugger. IMPORTANT: REQUIRED.
+    stopOnEntry = false,
+    setupCommands = {
+      {
+        text = "-enable-pretty-printing",
+        description = "enable pretty printing",
+        ignoreFailures = false,
+      },
+    },
   },
 }
 
 -- TODO: Java DEBUG ADAPTER CONFIGURATION:
--- WARN: HANDLED BY THE NVIM-JDTLS PLUGINHANDLED BY THE NVIM-JDTLS PLUGIN.
+-- WARN: HANDLED BY THE NVIM-JDTLS PLUGIN.
 
 -- TODO: Python DEBUG ADAPTER CONFIGURATION:
 -- Helper function to get the Mason package path
