@@ -8,7 +8,7 @@
 -- 1. The 'clangd' LSP via mason.
 -- 2. The 'lang.clangd' extra plugin(s) via :LazyExtras
 -- 3. The 'Ninja' build tools installed on your system (set as default) and entered into your system environment variables. NOTE: Required for clangd lsp.
--- 4. (optional) The 'OpenDebugAD7' debug adapter installed via vs code extensions. (WE USE THE PATH TO THE OPENDEBUGAD7.EXE)
+-- 4. (optional) The 'codelldb' debug adapter installed via mason. (WE USE THE PATH TO THE CODELLDB.EXE)
 --
 -- Python:
 -- 1. The 'pyright' LSP via mason.
