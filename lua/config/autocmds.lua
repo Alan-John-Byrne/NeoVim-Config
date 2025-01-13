@@ -18,14 +18,3 @@ vim.api.nvim_create_autocmd("ColorScheme", { -- Changing the line number colorsc
     end, 100)
   end,
 })
-
--- If the current buffer is a terminal buffer, enter insert mode automatically.
-vim.api.nvim_create_autocmd({ "TermOpen", "WinEnter" }, {
-  callback = function()
-    local buffer_name = vim.api.nvim_buf_get_name(0)
-    if buffer_name:match("term") or buffer_name:match("Powershell") then
-      vim.api.nvim_buf_set_name(0, "Powershell.exe")
-      vim.cmd("startinsert")
-    end
-  end,
-})
