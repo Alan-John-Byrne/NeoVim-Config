@@ -16,9 +16,6 @@ vim.keymap.set(
   { desc = "Insert line above.", noremap = true, silent = true }
 )
 
--- XXX: Keymap for opening up a terminal session.
-vim.keymap.set("n", "<leader>t", ":split | term<CR>")
-
 -- XXX: Set the current working directory to the buffer's directory, and Print the current working directory.
 vim.keymap.set("n", "<leader>S", ":cd %:p:h<CR>", { desc = "Set to cwd.", noremap = true, silent = true })
 vim.keymap.set("n", "<leader>P", ":pwd<CR>", { desc = "Print cwd.", noremap = true, silent = true })
