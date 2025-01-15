@@ -80,6 +80,11 @@ return {
                   },
                 },
               },
+              format = { -- IMPORTANT: Eclipse LSP format settings file. Allows for the altering of the default formatter provided by the eclipse formatter.
+                settings = {
+                  url = "C:\\Users\\alanj\\Documents\\Powershell\\coding\\javadev\\.setup_config\\eclipse-java-google-style.xml",
+                },
+              },
             },
           },
           -- Language server `initializationOptions`
