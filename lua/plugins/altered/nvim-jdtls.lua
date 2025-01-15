@@ -99,28 +99,9 @@ return {
             },
           },
         }
-        -- NOTE: 3rd: We need to check if jdtls is running already in another project.
-        -- If so, shut it down, so we can attach a new instance to another project.
-        -- Require jdtls to prevent possible nil errors.
+        -- NOTE: 3rd: Require jdtls and attach to the java related buffer, within the project, using the configuration above.
         local jdtls = require("jdtls")
-        if vim.g.project_name ~= project_name and vim.g.project_name ~= nil then
-          -- Stop the current jdtls client if switching projects.
-          for _, client in ipairs(vim.lsp.get_clients()) do
-            if client.name == "jdtls" then
-              client.stop()
-            end
-          end
-          -- Delay to prevent race conditions before starting a new instance.
-          vim.defer_fn(function()
-            print("Switching to new project, starting new jdtls client...")
-            vim.g.project_name = project_name -- Update project name for next check.
-            jdtls.start_or_attach(config) -- Start a new instance with updated config.
-          end, 3000)
-        elseif vim.tbl_isempty(vim.lsp.get_clients({ name = "jdtls" })) then
-          -- For initial entry or re-entry into the same project.
-          vim.g.project_name = project_name
-          jdtls.start_or_attach(config)
-        end
+        jdtls.start_or_attach(config)
       end,
     })
   end,
