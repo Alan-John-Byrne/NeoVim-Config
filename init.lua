@@ -5,6 +5,7 @@ require("config.keymaps")
 require("config.dapconfigs")
 require("config.lspconfigs")
 require("config.options")
+require("config.diagnostics")
 
 -- WARN: When Neovim starts up, 'init.lua' isn't the only configuration file that Neovim looks for.
 -- Neovim actually looks for a bunch of additional configuration files in something called the "runtimepath".

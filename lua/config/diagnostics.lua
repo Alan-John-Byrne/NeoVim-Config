@@ -1,0 +1,5 @@
+--vim.diagnostic.config({
+--  virtual_text = {
+--    wrap = false, -- Ensure virtual text doesn't wrap globally
+--  },
+--})

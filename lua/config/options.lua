@@ -24,3 +24,7 @@ vim.opt.splitbelow = true
 --  and `:help 'listchars'`
 vim.opt.list = true
 vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+
+-- WARN: Buffer Related Options.
+
+-- vim.bo. .....
