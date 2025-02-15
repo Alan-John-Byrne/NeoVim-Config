@@ -1,4 +1,4 @@
--- PLUGIN: Installing the 'mini.files' plugin. It serves as an alternative directory navigation tool to NeoTree and others.
+-- PLUGIN: The 'mini.files' plugin provides an alternative directory navigation tool to NeoTree and others.
 return {
   "echasnovski/mini.files",
   enabled = true, -- TESTING
@@ -6,7 +6,7 @@ return {
     {
       "<leader>e",
       "<cmd>lua MiniFiles.open()<CR>",
-      desc = "Open Neogit status popup",
+      desc = "Open File Explorer",
       { noremap = true, silent = true },
     },
   },
@@ -27,15 +27,15 @@ return {
 
       -- NOTE: Customization of explorer windows
       mappings = {
-        close = "q", -- Closes the explorer
-        go_in = "l", -- Goes into the next directory / file
-        go_in_plus = "L", -- Goes into the file currently under the cursor
-        go_out = "h", -- Goes back out of the directory, into the previous directory.
+        close = "q",       -- Closes the explorer
+        go_in = "l",       -- Goes into the next directory / file
+        go_in_plus = "L",  -- Goes into the file currently under the cursor
+        go_out = "h",      -- Goes back out of the directory, into the previous directory.
         go_out_plus = "H", -- Goes back out of the directory, into the previous directory, closing any previews open at the time.
         synchronize = "=", -- Confirm changes, as in added files or directories.
-        trim_left = "<", -- Remove previews from the right of the current directory.
-        trim_right = ">", -- Remove previews from the left of the current directory.
-        show_help = "g?", -- Get help.
+        trim_left = "<",   -- Remove previews from the right of the current directory.
+        trim_right = ">",  -- Remove previews from the left of the current directory.
+        show_help = "g?",  -- Get help.
       },
     },
   },

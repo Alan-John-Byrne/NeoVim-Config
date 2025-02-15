@@ -1,11 +1,9 @@
 -- Bootstraping lazy.nvim, LazyVim (Distro) and plugins.
-require("config.lazy")
+require("config.options")
 require("config.autocmds")
 require("config.keymaps")
-require("config.dapconfigs")
-require("config.lspconfigs")
-require("config.options")
-require("config.diagnostics")
+-- NOTE: Load lazy last after you have everything already setup.
+require("config.lazy")
 
 -- WARN: When Neovim starts up, 'init.lua' isn't the only configuration file that Neovim looks for.
 -- Neovim actually looks for a bunch of additional configuration files in something called the "runtimepath".
@@ -15,11 +13,9 @@ require("config.diagnostics")
 -- TODO:
 -- This section initializes essential configurations for my Neovim setup,
 -- enhancing productivity and workflow with LazyVim and various plugins.
---
--- 'config.lazy' handles plugin management for efficient loading.
--- 'config.autocmds' sets up automatic commands for improved functionality.
+--  XXX:
 -- 'config.options' customizes Neovim settings for a better user experience.
+-- 'config.autocmds' sets up automatic commands for improved functionality.
 -- 'config.keymaps' defines custom keybindings for quick access to commands.
--- 'config.dapconfigs' configures debugging settings to streamline development.
--- 'config.lspconfigs' sets up Language Server Protocol settings for code completion
+-- 'config.lazy' handles plugin management for efficient loading.
 -- and linting support.

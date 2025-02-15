@@ -1,4 +1,5 @@
---  PLUGIN: Overwriting the 'todo-comments.nvim' plugin, used for text highlights (eg: TODO, NOTE, etc...), to alter keywords.
+--  PLUGIN: The 'todo-comments.nvim' plugin provides text highlights (eg: TODO, NOTE, etc...),
+--  to alter keywords.
 return {
   "folke/todo-comments.nvim",
   enabled = true, --TESTING

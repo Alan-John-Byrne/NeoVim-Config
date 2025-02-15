@@ -1,5 +1,4 @@
 -- Setting up (Bootstrapping) Lazyvim Plugin Manager.
-
 -- IMPORTANT: Accessing the 'stdpath' vimscript function, via the vim table (API), to use it in lua. THIS IS THE ONLY WAY TO USE VIMSCRIPT FUNCTIONS IN LUA PROGRAMS.
 -- NOTE: The 'stdpath' is used for find stardard path used for our nvim config. See ':help stdpath' for details.
 -- Lazy Plugin Manager is only interested in our nvim data directory / path. That being 'C:\Users\{yourusername}\Appdata\Local\nvim-data"
@@ -15,18 +14,19 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     lazyrepo,
     lazypath,
   })
-  if vim.v.shell_error ~= 0 then -- Catching any errors on clone, then printing error.
+  -- WARN: Catching any errors on clone, then printing error.
+  if vim.v.shell_error ~= 0 then
     vim.api.nvim_echo({
       { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-      { out, "WarningMsg" },
+      { out,                            "WarningMsg" },
       { "\nPress any key to exit..." },
     }, true, {})
     vim.fn.getchar()
     os.exit(1)
   end
 end
--- Adding LazyVim path to the beginning of the runtime path table / array / list. Neovim comes here to get answers to questions it can't answer itself.
--- EG: For syntax highlight for particular types of files, if found, it will execute that file to get highlights.
+-- NOTE: Adding LazyVim path to the beginning of the runtime path table / array / list. Neovim comes here to get answers to questions it can't answer itself.
+-- E.G.: For syntax highlight for particular types of files, if found, it will execute that file to get highlights.
 -- This is how plugin loading works, we add our plugin and it's directory to the runtime path, and neovim will look for that plugin lua code,
 -- when that plugin is loaded.
 vim.opt.rtp:prepend(lazypath)
@@ -41,12 +41,16 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   spec = {
-    -- Add LazyVim and Import its plugins.
-    { "LazyVim/LazyVim", import = "lazyvim.plugins" },
-    -- NOTE: Import/override with your base plugins.
-    { import = "plugins.new" },
-    { import = "plugins.altered" },
-    { import = "plugins.disabled" }, -- NOTE: This is a table of plugins that I've disabled that are installed by default by the LazyVim distro.
+    -- WARN: This was for when using the LazyVim Distro and it's set of plugins.
+    --{ "LazyVim/LazyVim", import = "lazyvim.plugins" },
+    -- TODO: Importing all plugins from the 'plugins' directory within the 'lua' directory.
+    { import = "plugins" },
+    -- NOTE: You can import plugins from child directories within the main parent 'plugin' directory.
+    --    { import = "plugins.basics" },
+    --    { import = "plugins.disabled" },
+    --    { import = "plugins.new" },
+    --    { import = "plugins.altered" },
+    -- IMPORTANT: You would override the LazyVim Distro's plugins via your own config.
   },
   defaults = {
     -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
@@ -61,7 +65,7 @@ require("lazy").setup({
   checker = {
     enabled = true, -- check for plugin updates periodically
     notify = false, -- notify on update
-  }, -- automatically check for plugin updates
+  },                -- automatically check for plugin updates
   performance = {
     rtp = {
       -- disable some rtp plugins

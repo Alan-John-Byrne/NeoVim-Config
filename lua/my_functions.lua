@@ -1,9 +1,4 @@
--- WARN: Adding to Neovim's package path for requiring modules easily:
--- NOTE: Adding path to package path so require can see modules I create. '?' is a wildcard for any set of characters.
-package.path = package.path .. ";C:\\Users\\alanj\\AppData\\Local\\nvim\\lua\\custom\\my_functions.lua"
-
 --- IMPORTANT: Modules (classes / tables) and their functions use an annotation called 'LuaCats', look it up.
-
 --- Module full of random convenience functions.
 ---@class M
 local M = {}
