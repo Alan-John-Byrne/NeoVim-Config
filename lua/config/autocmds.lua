@@ -20,8 +20,22 @@ vim.api.nvim_create_autocmd("ColorScheme", { -- Changing the line number colorsc
 })
 
 vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = "*", -- This applies to all files, you can change the pattern to a specific file type (e.g. "*.lua")
+  pattern = "*",                          -- This applies to all files, you can change the pattern to a specific file type (e.g. "*.lua")
   callback = function()
     vim.lsp.buf.format({ async = false }) -- This triggers the formatting
+  end,
+})
+
+-- NOTE: Opening the 'bufferline' plugin only if NOT displaying
+-- 'minifile' explorer and 'snacks_dashboard', determined by filetype.
+-- WARN: We can do this with this plugin because it has no settings that
+-- this autocommand will clash with. So, the plugin doesn't already provides
+-- a nice way to hide tabs until off the dashboard.
+vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
+  callback = function()
+    if vim.bo.filetype ~= "snacks_dashboard" and vim.bo.filetype ~= "minifiles" then
+      local ok_bufferline, bufferline = pcall(require, "bufferline")
+      if ok_bufferline then vim.opt.showtabline = 2 end
+    end
   end,
 })
