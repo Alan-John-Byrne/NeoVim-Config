@@ -26,8 +26,8 @@ return {
 
     -- TODO: 2. Setup LSPs (Auto-Install + Auto-Config)
     require("mason-lspconfig").setup({
-      ensure_installed = { "lua_ls", "pyright", "vtsls", "clangd" }, -- Auto-install these LSPs
-      automatic_installation = true,                                 -- Makes installed LSPs work instantly
+      ensure_installed = { "lua_ls", "pyright", "vtsls", "clangd", "marksman" }, -- Auto-install these LSPs
+      automatic_installation = true,
     })
 
     -- Auto-configure installed LSPs
@@ -40,27 +40,34 @@ return {
 
     -- TODO: 3. Setup Linters & Formatters (null-ls)
     require("mason-null-ls").setup({
-      ensure_installed = { "stylua", "selene" }, -- Auto-install these Linters / Formatters.
-      automatic_installation = true,             -- NOTE: Enables them automatically
+      ensure_installed = { "stylua", "selene", "markdownlint" }, -- Auto-install these Linters / Formatters.
+      automatic_installation = true,
     })
 
-    --    IMPORTANT: 'mason-null-ls' ALLOWS FOR AVOIDING MANUAL CONFIGURATIONS LIKE BELOW.
-    --    local null_ls = require("null-ls")
-    --    null_ls.setup({
-    --      sources = {
-    --        -- 🔹 Formatters
-    --        null_ls.builtins.formatting.stylua, -- Lua Formatter
-    --        -- 🔹 Linters
-    --        null_ls.builtins.diagnostics.selene, -- Lua Linter
-    --      },
-    --    })
+    --  NOTE: 'mason-null-ls' allows us to then manually configure linters and formatters,
+    --  if they're not already included within their LSPs.
+    local null_ls = require("null-ls")
+    null_ls.setup({
+      sources = {
+        -- Linters
+        null_ls.builtins.diagnostics.selene,       -- Lua Linter
+        null_ls.builtins.diagnostics.markdownlint, -- Markdown Linter
+
+        -- Formatters
+        null_ls.builtins.formatting.stylua,       -- Lua Formatter
+        null_ls.builtins.formatting.markdownlint, -- Markdown Formatter
+
+        -- WARN: Some function as both linters and formatters. (eg: markdownlint)
+      },
+    })
 
     -- TODO: 4 Setup Debug Adapters (DAP)
     require("mason-nvim-dap").setup({
       ensure_installed = { "python", "codelldb", "js-debug-adapter" }, -- Auto-install these DAPs.
+      automatic_installation = true,
     })
 
-    -- IMPORTANT: MANUAL DAP CONFIGURATIONS ARE STILL REQUIRED FOR ALL LANGUAGES. (Except for Java)
+    --  NOTE: 'mason-nvim-dap' allows us to then manually configure debug adapters & configurations for different languages.
     local dap = require("dap")
     local my_functions = require("my_functions")
 
@@ -190,10 +197,10 @@ return {
     -- TODO: 8. Setup Tree-sitter (Language Parsing)
     local treesitter = require("nvim-treesitter.configs")
     treesitter.setup({
-      ensure_installed = { "lua", "python", "javascript", "cpp", "java", "c_sharp" }, -- Specify languages you want Tree-sitter for
+      ensure_installed = { "lua", "python", "javascript", "typescript", "tsx", "cpp", "java", "c_sharp", "markdown" }, -- Specify languages you want Tree-sitter for
       highlight = {
-        enable = true,                                                                -- Enable highlighting based on Tree-sitter
-        additional_vim_regex_highlighting = false,                                    -- Disable regex highlighting (Tree-sitter will handle this)
+        enable = true,                                                                                                 -- Enable highlighting based on Tree-sitter
+        additional_vim_regex_highlighting = false,                                                                     -- Disable regex highlighting (Tree-sitter will handle this)
       },
       indent = {
         enable = true, -- Enable Tree-sitter-based indentation
