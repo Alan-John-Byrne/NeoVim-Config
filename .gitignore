@@ -8,3 +8,4 @@ foo.*
 data
 test-vim-api.lua
 lazy-lock.json
+.vscode

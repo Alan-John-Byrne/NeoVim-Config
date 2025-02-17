@@ -4,7 +4,7 @@ return {
   dependencies = {
     "nvim-treesitter/nvim-treesitter-textobjects", -- NOTE: Provides better text object highlighting.
   },
-  version = false,                                 -- last release is way too old and doesn't work on Windows
+  version = false, -- last release is way too old and doesn't work on Windows
   build = ":TSUpdate",
   event = { "VeryLazy" },
   lazy = vim.fn.argc(-1) == 0, -- load treesitter early when opening a file from the cmdline
@@ -20,7 +20,7 @@ return {
   cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
   keys = {
     { "<c-space>", desc = "Increment Selection" },
-    { "<bs>",      desc = "Decrement Selection", mode = "x" },
+    { "<bs>", desc = "Decrement Selection", mode = "x" },
   },
   opts_extend = { "ensure_installed" },
   ---@type TSConfig

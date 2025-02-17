@@ -2,7 +2,7 @@
 -- IMPORTANT: THIS CONFIG WILL APPEAR AS IS WITHIN LSPINFO AS LSPCONFIG ACTUALLY HANDLES THIS FOR YOU.
 -- WARN: FOR JDTLS TO WORK, THE WORKSPACE DIRECTORY MUST BE ABOVE ALL PROJECT FILES, AND GRADLE OR MAVEN MUST BE USED TO CREATE PROJECTS.
 -- NOTE: REQUIREMENTS:
--- TODO: - JAVASE 17.0.0 (set as both the default binary and as 'JAVA_HOME')
+-- TODO: - JAVASE 21.*.* (set as both the default binary and as 'JAVA_HOME')
 -- TODO: - java-debug 0.53.1 from "https://github.com/microsoft/java-debug"
 -- TODO: - gradle-7.3.3 from "https://gradle.org/releases/"
 -- IMPORTANT: REQUIRMENTS FOR THIS PLUGIN ARE LISTED, AND MUST BE INSTALLED MANUALLY, NOT VIA THE MASON PACKAGE MANAGER!!!!
@@ -82,8 +82,7 @@ return {
               },
               format = { -- IMPORTANT: Eclipse LSP format settings file. Allows for the altering of the default formatter provided by the eclipse formatter.
                 settings = {
-                  url =
-                  "C:\\Users\\alanj\\Documents\\Powershell\\coding\\javadev\\.setup_config\\eclipse-java-google-style.xml",
+                  url = "C:\\Users\\alanj\\Documents\\Powershell\\coding\\javadev\\.setup_config\\eclipse-java-google-style.xml",
                 },
               },
             },
@@ -97,7 +96,7 @@ return {
           --
           -- If you don't plan on using the debugger or other eclipse.jdt.ls plugins you can remove this
           init_options = {
-            bundles = {    -- IMPORTANT: If using nvim-jdtls, you MUST CLONE THE REPO of the java-debug plugin manually via git, and paste it's path here.
+            bundles = { -- IMPORTANT: If using nvim-jdtls, you MUST CLONE THE REPO of the java-debug plugin manually via git, and paste it's path here.
               vim.fn.glob( -- WARN: If you move the java-debug folder (the one containing the plugin you just cloned), YOU CAN'T. Clone into that new folder, and rebuild.
                 "C:\\Users\\alanj\\Documents\\PowerShell\\coding\\javadev\\.setup_config\\java-debug\\com.microsoft.java.debug.plugin\\target\\com.microsoft.java.debug.plugin-0.53.1.jar",
                 true
