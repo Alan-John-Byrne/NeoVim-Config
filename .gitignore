@@ -7,4 +7,4 @@ foo.*
 *.log
 data
 test-vim-api.lua
-*lazy-lock*
+lazy-lock.json
