@@ -4,21 +4,22 @@
 -- WARN: See below for how everything works together.
 return {
   "neovim/nvim-lspconfig", -- Handles LSP configuration.
-  enabled = true,          -- TESTING
+  enabled = true, -- TESTING
   dependencies = {
     -- TODO: Package Management
-    "williamboman/mason.nvim",           -- Mason (LSP, DAP, Linters, Formatters).
+    "williamboman/mason.nvim", -- Mason (LSP, DAP, Linters, Formatters).
     "williamboman/mason-lspconfig.nvim", -- Mason <-> LSP bridge.
-    "jay-babu/mason-null-ls.nvim",       -- Mason <-> null-ls bridge (Linters & Formatters).
-    "jay-babu/mason-nvim-dap.nvim",      -- Mason <-> DAP bridge (Debug Adapters).
-    "nvim-treesitter/nvim-treesitter",   -- Tree-sitter integration. (Syntax Highlighting)
+    "jay-babu/mason-null-ls.nvim", -- Mason <-> null-ls bridge (Linters & Formatters).
+    "jay-babu/mason-nvim-dap.nvim", -- Mason <-> DAP bridge (Debug Adapters).
+    "nvim-treesitter/nvim-treesitter", -- Tree-sitter integration. (Syntax Highlighting)
 
     -- TODO: Core Plugins
-    "nvim-lua/plenary.nvim",  -- Required for various plugins.
-    "nvim-neotest/nvim-nio",  -- Required for nvim-dap-ui.
+    "nvim-lua/plenary.nvim", -- Required for various plugins.
+    "nvim-neotest/nvim-nio", -- Required for nvim-dap-ui.
     "nvimtools/none-ls.nvim", -- null-ls (Linters & Formatters).
-    "mfussenegger/nvim-dap",  -- DAP (Debug Adapter Protocol).
-    "rcarriga/nvim-dap-ui",   -- Debugging UI for nvim-dap.
+    "mfussenegger/nvim-dap", -- DAP (Debug Adapter Protocol).
+    "rcarriga/nvim-dap-ui", -- Debugging UI for nvim-dap.
+    "jbyuki/one-small-step-for-vimkind", -- WARN: Debug adapter for 'lua' not provided by Mason package manager!
   },
   config = function()
     --  TODO: 1. Setup Mason (UI-Based Package Manager)
@@ -40,7 +41,7 @@ return {
 
     -- TODO: 3. Setup Linters & Formatters (null-ls)
     require("mason-null-ls").setup({
-      ensure_installed = { "stylua", "selene", "markdownlint" }, -- Auto-install these Linters / Formatters.
+      ensure_installed = { "stylua", "selene", "markdownlint", "prettierd" }, -- Auto-install these Linters / Formatters.
       automatic_installation = true,
     })
 
@@ -50,11 +51,11 @@ return {
     null_ls.setup({
       sources = {
         -- Linters
-        null_ls.builtins.diagnostics.selene,       -- Lua Linter
+        null_ls.builtins.diagnostics.selene, -- Lua Linter
         null_ls.builtins.diagnostics.markdownlint, -- Markdown Linter
 
         -- Formatters
-        null_ls.builtins.formatting.stylua,       -- Lua Formatter
+        null_ls.builtins.formatting.stylua, -- Lua Formatter
         null_ls.builtins.formatting.markdownlint, -- Markdown Formatter
 
         -- WARN: Some function as both linters and formatters. (eg: markdownlint)
@@ -71,8 +72,37 @@ return {
     local dap = require("dap")
     local my_functions = require("my_functions")
 
-    -- TODO: Java DEBUG ADAPTER CONFIGURATION:
-    -- WARN: HANDLED BY THE NVIM-JDTLS PLUGIN.
+    -- WARN: Java DEBUG ADAPTER CONFIGURATION:
+    -- IMPORTANT: HANDLED BY THE NVIM-JDTLS PLUGIN.
+
+    -- WARN: LUA DEBUG ADAPTER CONFIGURATION:
+    -- IMPORTANT: DOES NOT SUPPORT PRINT TO DEBUG REPL WINDOW. USE 'Locals' WINDOW FOR SEEING EVALUATED VALUES OF VARIABLES.
+    dap.adapters.nlua = function(callback, conf)
+      local adapter = {
+        type = "server",
+        host = "127.0.0.1",
+        port = 8086,
+      }
+      if conf.start_neovim then
+        local dap_run = dap.run
+        dap.run = function(dap_conf)
+          adapter.port = dap_conf.port
+          adapter.host = dap_conf.host
+        end
+        require("osv").run_this()
+        dap.run = dap_run
+      end
+      callback(adapter)
+    end
+
+    dap.configurations.lua = {
+      {
+        type = "nlua",
+        request = "attach",
+        name = "Run this file",
+        start_neovim = {},
+      },
+    }
 
     -- WARN: C++ DEBUG ADAPTER CONFIGURATION:
     -- IMPORTANT: MUST DO "g++ -g -o main *yourcppfile*.cpp" when building project. (If only compiling and debugging a single file.)
@@ -80,7 +110,7 @@ return {
     -- REMEMBER: The 'Ninja' build tools must be installed on your system (set as default build tools for C++ projects) and entered into your system environment variables. It's Required for clangd lsp.
     local codelldb_path = my_functions.get_mason_package_path("codelldb")
     dap.adapters.codelldb = {
-      type = 'executable',
+      type = "executable",
       command = codelldb_path .. "\\extension\\adapter\\codelldb", -- IMPORTANT: Absolute Path to Codelldb.exe: "/absolute/path/to/codelldb".
       -- NOTE: On windows you may have to uncomment this:
       detached = false,
@@ -113,9 +143,9 @@ return {
     dap.adapters.python = {
       type = "executable",
       command = debugpy_path .. "/venv/Scripts/python", -- NOTE: Using the packages version of python installed via it's virtual environment.
-      args = { "-m", "debugpy.adapter" },               -- NOTE: "debugpy" is actually a plugin for python, which is preferrably installed within a virtual environment.
+      args = { "-m", "debugpy.adapter" }, -- NOTE: "debugpy" is actually a plugin for python, which is preferrably installed within a virtual environment.
       options = {
-        detached = false,                               -- IMPORTANT: Specific to windows in the case of python, we don't want other terminals opening up outside of the neovim session / powershell.
+        detached = false, -- IMPORTANT: Specific to windows in the case of python, we don't want other terminals opening up outside of the neovim session / powershell.
       },
     }
     -- Python configuration
@@ -174,14 +204,17 @@ return {
     end
 
     -- TODO: 6. Setting nice icons for debug breakpoints.
-    vim.fn.sign_define('DapBreakpoint',
-      { text = '●', texthl = '', linehl = 'debugBreakpoint', numhl = 'debugBreakpoint' })
+    vim.fn.sign_define(
+      "DapBreakpoint",
+      { text = "●", texthl = "", linehl = "debugBreakpoint", numhl = "debugBreakpoint" }
+    )
 
     -- TODO: 7. Registering keymaps for the Debug Adapter(s), Debug Adapter UI, and Mason Package Manager.
     -- IMPORTANT: Define keymaps to be registered with 'which-key' using ONLY 'vim.keymap.set'. (ITS THE STANDARD)
     vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "Toggle Breakpoint" })
-    vim.keymap.set("n", "<leader>dB", function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end,
-      { desc = "Toggle Conditioned Breakpoint" })
+    vim.keymap.set("n", "<leader>dB", function()
+      dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
+    end, { desc = "Toggle Conditioned Breakpoint" })
     vim.keymap.set("n", "<leader>dc", dap.continue, { desc = "Start/Continue Debugging" })
     vim.keymap.set("n", "<leader>di", dap.step_into, { desc = "Step Into" })
     vim.keymap.set("n", "<leader>dp", dap.pause, { desc = "Pause" })
@@ -199,8 +232,8 @@ return {
     treesitter.setup({
       ensure_installed = { "lua", "python", "javascript", "typescript", "tsx", "cpp", "java", "c_sharp", "markdown" }, -- Specify languages you want Tree-sitter for
       highlight = {
-        enable = true,                                                                                                 -- Enable highlighting based on Tree-sitter
-        additional_vim_regex_highlighting = false,                                                                     -- Disable regex highlighting (Tree-sitter will handle this)
+        enable = true, -- Enable highlighting based on Tree-sitter
+        additional_vim_regex_highlighting = false, -- Disable regex highlighting (Tree-sitter will handle this)
       },
       indent = {
         enable = true, -- Enable Tree-sitter-based indentation
