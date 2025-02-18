@@ -8,8 +8,7 @@ return {
   ft = { "markdown" },
   config = function()
     -- Keymaps for MarkdownPreview commands:
-    --    vim.keymap.set("n", "<leader>m", "<cmd>MarkdownPreviewToggle<CR>", { noremap = true, silent = true })
     vim.keymap.set("n", "<leader>m", "<cmd>MarkdownPreview<CR>", { noremap = true, silent = true })
     vim.keymap.set("n", "<leader>M", "<cmd>MarkdownPreviewStop<CR>", { noremap = true, silent = true })
-  end
+  end,
 }
