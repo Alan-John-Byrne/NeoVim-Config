@@ -12,6 +12,7 @@ return {
     "jay-babu/mason-null-ls.nvim", -- Mason <-> null-ls bridge (Linters & Formatters).
     "jay-babu/mason-nvim-dap.nvim", -- Mason <-> DAP bridge (Debug Adapters).
     "nvim-treesitter/nvim-treesitter", -- Tree-sitter integration. (Syntax Highlighting)
+    "theHamsta/nvim-dap-virtual-text", -- Provides nice variable text when debugging.
 
     -- TODO: Core Plugins
     "nvim-lua/plenary.nvim", -- Required for various plugins.
@@ -22,8 +23,9 @@ return {
     "jbyuki/one-small-step-for-vimkind", -- WARN: Debug adapter for 'lua' not provided by Mason package manager!
   },
   config = function()
-    --  TODO: 1. Setup Mason (UI-Based Package Manager)
+    --  TODO: 1. Setup Mason (UI-Based Package Manager), and Dap Virtual Text (Provides nice debugging variable value text notes.)
     require("mason").setup()
+    require("nvim-dap-virtual-text").setup()
 
     -- TODO: 2. Setup LSPs (Auto-Install + Auto-Config)
     require("mason-lspconfig").setup({
@@ -136,6 +138,48 @@ return {
       },
     }
 
+    -- WARN: C# DEBUG ADAPTER CONFIGURATION:
+    local netcoredbg_path = my_functions.get_mason_package_path("netcoredbg")
+    dap.adapters.coreclr = {
+      type = "executable",
+      command = netcoredbg_path .. "\\netcoredbg\\netcoredbg",
+      args = { "--interpreter=vscode" },
+      options = {
+        detached = false, -- IMPORTANT: Specific to windows in the case of C#, we don't want other terminals opening up outside of the neovim session / the console you're using.
+      },
+    }
+
+    dap.configurations.cs = {
+      {
+        type = "coreclr",
+        name = "launch - netcoredbg",
+        request = "launch",
+        program = function()
+          -- Get the current cs project file's directory.
+          local current_dir = vim.fn.expand("%:p:h")
+          -- Starting from the current directory, move up until we find the .csproj file.
+          while current_dir ~= "/" do
+            local csproj = vim.fn.glob(current_dir .. "/*.csproj")
+            if csproj ~= "" then -- If not in the current directory. MOVE UP ONE DIRECTORY.
+              -- Found the project directory, now extract project name, to find corresponding '.dll' file.
+              local project_name = vim.fn.fnamemodify(csproj, ":t:r")
+              local debug_dir = current_dir .. "/bin/Debug/net8.0" --WARN: .NET8.0 is just the runtime currently being used, by me. Change if you are using a different runtime.
+              local dll_path = debug_dir .. "/" .. project_name .. ".dll"
+
+              -- Checking if the '.dll' file exists, then returning it. (It's the compiled code containing the 'Debug symbols' required by the debugger)
+              if vim.fn.filereadable(dll_path) == 1 then
+                return dll_path
+              end
+            end
+            -- MOVING UP ONE DIRECTORY.
+            current_dir = vim.fn.fnamemodify(current_dir, ":h")
+          end
+          -- If no compiled project could be found (.dll file), just message the user.
+          print("There is no valid c_sharp project present.")
+        end,
+      },
+    }
+
     -- WARN: Python DEBUG ADAPTER CONFIGURATION:
     -- Get debugpy path
     local debugpy_path = my_functions.get_mason_package_path("debugpy")
@@ -145,7 +189,7 @@ return {
       command = debugpy_path .. "/venv/Scripts/python", -- NOTE: Using the packages version of python installed via it's virtual environment.
       args = { "-m", "debugpy.adapter" }, -- NOTE: "debugpy" is actually a plugin for python, which is preferrably installed within a virtual environment.
       options = {
-        detached = false, -- IMPORTANT: Specific to windows in the case of python, we don't want other terminals opening up outside of the neovim session / powershell.
+        detached = false, -- IMPORTANT: Specific to windows in the case of Python, we don't want other terminals opening up outside of the neovim session / the console you're using.
       },
     }
     -- Python configuration
