@@ -19,17 +19,17 @@ vim.keymap.set(
 )
 
 -- XXX: Set the current working directory to the buffer's directory, and Print the current working directory.
-vim.keymap.set("n", "<leader>S", ":cd %:p:h<CR>", { desc = "Set to cwd.", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>\\", ":cd %:p:h<CR>", { desc = "Set to cwd.", noremap = true, silent = true })
 vim.keymap.set("n", "<leader>P", ":pwd<CR>", { desc = "Print cwd.", noremap = true, silent = true })
 
 -- XXX: Highlight on yank (copy).
-local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
-vim.api.nvim_create_autocmd('TextYankPost', {
+local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
+vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()
     vim.highlight.on_yank()
   end,
   group = highlight_group,
-  pattern = '*',
+  pattern = "*",
 })
 -- LAZYVIM KEYMAPS:
 --
