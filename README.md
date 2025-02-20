@@ -8,20 +8,21 @@
 |----------|----------|----------|----------|----------|----------|----------|
 | MarkDown    | &#x274C;   |  &#x2611;    | &#x2611;  |&#x2611;   |&#x2611;   |&#x274C;|
 | Python     | &#x2611;  | &#x2611;   | &#x2611;   |&#x2611;   |&#x2611;   |? |
-| Lua     | &#x274C;  | &#x2611;   | &#x2611;   |&#x2611;   |&#x2611;   |?|
+| Lua     | Kind of &#8709;| &#x2611;   | &#x2611;   |&#x2611;   |&#x2611;   |?|
 | Java   | &#x2611;   | &#x2611;   | &#x2611;   |&#x2611;   |&#x2611;   |?|
 | JavaScript    | &#x2611;   | &#x2611;   | &#x2611;   |&#x2611;   |&#x2611;   |?|
-| TypeScript    | &#x274C;   | &#x2611;   | &#x274C;   |&#x2611;   |&#x2611;   |?|
-| C#     | &#x274C;   | &#x2611;   | &#x2611;   |&#x2611;   |&#x2611;   |?|
+| TypeScript    | &#x2611;   | &#x2611;   | &#x2611;   |&#x2611;   |&#x2611;   |?|
+| C#     | &#x2611;   | &#x2611;   | &#x2611;   |&#x2611;   |&#x2611;   |?|
 | C++    | &#x2611;   |  &#x2611;    | &#x2611;  |&#x2611;   |&#x2611;   |?|
 
 ### **Executable & Environment Variable Requirement Matrix**
 
 #### **Executables to Add to $PATH**
 
-| Executable   | Description |
-|-------------|------------|
-| `python`    | Python interpreter. |
+| Executable   | Description |Why?|
+|-------------|------------|------------|
+| `python`    | Python interpreter. | |
+| `py`    | Python Launcher. | |
 | `pip`       | Python package manager. |
 | `lua`       | Lua interpreter. |
 | `luarocks`  | Lua package manager. |

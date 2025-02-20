@@ -205,7 +205,7 @@ return {
       },
     }
 
-    -- WARN: JavaScript DEBUG ADAPTER CONFIGURATION:
+    -- WARN: JavaScript & TypeScript DEBUG ADAPTER CONFIGURATION:
     -- Get 'js-debug-adapter' path - (vscode-javascript-debug)
     local vscode_javascript_debug_path = my_functions.get_mason_package_path("js-debug-adapter")
     dap.adapters["pwa-node"] = {
@@ -225,6 +225,18 @@ return {
         request = "launch",
         name = "Launch file",
         program = "${file}",
+        cwd = "${workspaceFolder}",
+        console = "integratedTerminal", -- IMPORTANT: Preventing the node debug adapter from startin in an external prompt.
+      },
+    }
+
+    dap.configurations.typescript = {
+      {
+        type = "pwa-node",
+        request = "launch",
+        name = "Launch file",
+        program = "${file}",
+        runtimeExecutable = "ts-node",
         cwd = "${workspaceFolder}",
         console = "integratedTerminal", -- IMPORTANT: Preventing the node debug adapter from startin in an external prompt.
       },
