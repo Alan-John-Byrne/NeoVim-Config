@@ -59,7 +59,10 @@ return {
           -- (e.g.: Get Selene to recognize 'vim' as global variable)
           extra_args = { "--globals", "vim" },
         }),
-        null_ls.builtins.diagnostics.markdownlint, -- Markdown Linter
+        null_ls.builtins.diagnostics.markdownlint.with({ -- Markdown Linter
+          -- Disabling rule MD033 (Inline HTML, e.g.: <u>*something*</u>).
+          extra_args = { "--no-config", "--disable", "MD033" },
+        }),
         -- Formatters
         null_ls.builtins.formatting.stylua, -- Lua Formatter
         null_ls.builtins.formatting.markdownlint, -- Markdown Formatter
