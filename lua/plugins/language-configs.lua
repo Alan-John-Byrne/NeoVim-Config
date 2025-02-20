@@ -52,14 +52,17 @@ return {
     local null_ls = require("null-ls")
     null_ls.setup({
       sources = {
+        -- REMEMBER: Linters from 'null-ls' ONLY kick into action when you save a buffer.
         -- Linters
-        null_ls.builtins.diagnostics.selene, -- Lua Linter
+        null_ls.builtins.diagnostics.selene.with({ -- Lua Linter
+          -- NOTE: Linter specific settings using the 'with' method.
+          -- (e.g.: Get Selene to recognize 'vim' as global variable)
+          extra_args = { "--globals", "vim" },
+        }),
         null_ls.builtins.diagnostics.markdownlint, -- Markdown Linter
-
         -- Formatters
         null_ls.builtins.formatting.stylua, -- Lua Formatter
         null_ls.builtins.formatting.markdownlint, -- Markdown Formatter
-
         -- WARN: Some function as both linters and formatters. (eg: markdownlint)
       },
     })
@@ -229,7 +232,8 @@ return {
         console = "integratedTerminal", -- IMPORTANT: Preventing the node debug adapter from startin in an external prompt.
       },
     }
-
+    -- IMPORTANT: TypeScript REQUIRES the 'ts-node' plugin installed globally
+    -- or locally in a node project, then create a typescript config with 'npx tsc --init'.
     dap.configurations.typescript = {
       {
         type = "pwa-node",
@@ -238,7 +242,7 @@ return {
         program = "${file}",
         runtimeExecutable = "ts-node",
         cwd = "${workspaceFolder}",
-        console = "integratedTerminal", -- IMPORTANT: Preventing the node debug adapter from startin in an external prompt.
+        console = "integratedTerminal",
       },
     }
 
