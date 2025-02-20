@@ -31,6 +31,10 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   group = highlight_group,
   pattern = "*",
 })
+
+-- XXX: Visual-Block Mode select & replace.
+vim.api.nvim_set_keymap("x", "<leader>v", ":s/\\%V", { noremap = true, silent = false })
+
 -- LAZYVIM KEYMAPS:
 --
 -- This file is automatically loaded by lazyvim.config.init
