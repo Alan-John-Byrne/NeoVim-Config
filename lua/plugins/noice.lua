@@ -1,13 +1,13 @@
 -- PLUGIN: The 'noice.nvim' plugin provides better notifications within the editor.
 return {
   "folke/noice.nvim",
-  event = { "BufReadPost", "BufWritePost" },
-  dependencies = { "MunifTanjim/nui.nvim" },
+  event = "VeryLazy",
+  dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify" },
   init = function()
     vim.opt.lazyredraw = false
   end,
   opts = {
-    messages = { view = "mini", view_warn = "mini" },
+    messages = { view = "notify", view_warn = "notify" },
     lsp = {
       override = {
         ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
