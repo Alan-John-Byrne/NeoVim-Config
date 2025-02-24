@@ -19,10 +19,11 @@ vim.api.nvim_create_autocmd("ColorScheme", { -- Changing the line number colorsc
   end,
 })
 
+-- NOTE: Format on buffer content save.
 vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = "*", -- This applies to all files, you can change the pattern to a specific file type (e.g. "*.lua")
+  pattern = "*",                          -- This applies to all files, you can change the pattern to a specific file type (e.g. "*.lua")
   callback = function()
-    vim.lsp.buf.format({ async = false }) -- This triggers the formatting
+    vim.lsp.buf.format({ async = false }) -- This Triggers the formatting.
   end,
 })
 

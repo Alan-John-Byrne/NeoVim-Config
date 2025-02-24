@@ -1,6 +1,15 @@
 ##### <u>Inspired by the 💤  [LazyVim](https://github.com/LazyVim/LazyVim) distro by folke. (Some starter template code was used here)</u>
 
-* **NOTE**: <u>Work in progress.</u>
+* **NOTE**: <u>PowerShell Work in progress.</u> *Linux Version Coming too.*
+
+#### Environment Variables
+
+| Variable | Description |Why?|
+|-------------|------------|------------|
+| `JAVA_HOME`         | Path to Java installation directory. ||
+| `DOTNET_ROOT`       | .NET SDK root directory. ||
+| `CMAKE_EXPORT_COMPILE_COMMANDS`   | Specifies default CMake generator. ||
+| `CMAKE_BUILD_TYPE`  | Specifies build type for CMake (e.g., Debug/Release). ||
 
 ### Programming Language Feature Support Matrix
 
@@ -14,14 +23,13 @@
 | TypeScript    | &#x2611;   | &#x2611;   | &#x2611;   |&#x2611;   |&#x2611;   |?|
 | C#     | &#x2611;   | &#x2611;   | &#x2611;   |&#x2611;   |&#x2611;   |?|
 | C++    | &#x2611;   |  &#x2611;    | &#x2611;  |&#x2611;   |&#x2611;   |?|
+| PowerShell |  &#x274C;   |  &#x2611;    | &#x2611;  |&#x2611;   |&#x2611;   |&#x274C;|
 
-### **Executable & Environment Variable Requirement Matrix**
-
-#### **Executables to Add to $PATH**
+#### **Executables to Add to $PATH**:
 
 | Executable   | Description |Why?|
 |-------------|------------|------------|
-| `python`    | Python interpreter. | |
+| `python`    | Python interpreter. ||
 | `py`    | Python Launcher. | |
 | `pip`       | Python package manager. ||
 | `lua`       | Lua interpreter. ||
@@ -41,17 +49,3 @@
 | `cmake`     | CMake build system. ||
 | `make`      | Make build automation tool. ||
 
-#### Environment Variables
-
-| Variable              | Description |Why?|
-|-------------|------------|------------|
-| `PYTHONPATH`        | Additional Python module search paths. ||
-| `LUA_PATH`          | Additional Lua module search paths. ||
-| `JAVA_HOME`         | Path to Java installation directory. ||
-| `JDK_HOME`          | Alternative Java installation path. ||
-| `NODE_PATH`         | Additional Node.js module paths. ||
-| `TSCONFIG_PATH`     | Custom path to TypeScript configuration. ||
-| `DOTNET_ROOT`       | .NET SDK root directory. ||
-| `MSBUILD_EXE_PATH`  | Path to MSBuild executable. ||
-| `CMAKE_GENERATOR`   | Specifies default CMake generator. ||
-| `CMAKE_BUILD_TYPE`  | Specifies build type for CMake (e.g., Debug/Release). ||
