@@ -14,16 +14,22 @@ return {
     "rshkarin/mason-nvim-lint",          -- Mason <-> nvim-lint bridge (Linters).
     "zapling/mason-conform.nvim",        -- Mason <-> conform bridge (Formatters).
     "nvim-treesitter/nvim-treesitter",   -- Tree-sitter integration. (Syntax Highlighting)
-    "theHamsta/nvim-dap-virtual-text",   -- Provides nice variable text when debugging.
 
     -- TODO: Core Plugins:
-    "nvim-lua/plenary.nvim",             -- Required for various plugins.
-    "nvim-neotest/nvim-nio",             -- Required for nvim-dap-ui.
-    "mfussenegger/nvim-lint",            -- nvim-lint (Linters).
-    "stevearc/conform.nvim",             -- conform (Formatters).
-    "mfussenegger/nvim-dap",             -- nvim-dap (Debug Adapter Protocols / DAPs).
-    "rcarriga/nvim-dap-ui",              -- Debugging UI for nvim-dap.
-    "jbyuki/one-small-step-for-vimkind", -- WARN: Debug adapter for 'lua' not provided by Mason package manager!
+    "nvim-lua/plenary.nvim",  -- Required for various plugins.
+    "nvim-neotest/nvim-nio",  -- Required for nvim-dap-ui.
+    "mfussenegger/nvim-lint", -- nvim-lint (Linters).
+    "stevearc/conform.nvim",  -- conform (Formatters).
+    "mfussenegger/nvim-dap",  -- nvim-dap (Debug Adapter Protocols / DAPs).
+    "rcarriga/nvim-dap-ui",   -- Debugging UI for nvim-dap.
+
+    -- XXX: Other Plugins:
+    "L3MON4D3/LuaSnip",                  -- LuaSnip (Loads snippets from VSCode).
+    "hrsh7th/nvim-cmp",                  -- nvim-cmp (Auto-Completion).
+    "hrsh7th/cmp-nvim-lsp",              -- LSP source for nvim-cmp.
+    "saadparwaiz1/cmp_luasnip",          -- Snippet source for nvim-cmp
+    "theHamsta/nvim-dap-virtual-text",   -- Provides nice variable text when debugging.
+    "jbyuki/one-small-step-for-vimkind", -- Debug adapter for 'lua' not provided by Mason package manager!
   },
   config = function()
     --  TODO: 1. Setup Mason (UI-Based Package Manager), and Dap Virtual Text (Provides nice debugging variable value text notes.)
@@ -309,7 +315,28 @@ return {
       },
     })
 
-    -- TODO: 8. Registering which-key keymaps for the Debug Adapter(s), Debug Adapter UI, and Mason Package Manager.
+    -- TODO: 8. Setting up Auto-Completions.
+    require("luasnip.loaders.from_vscode").lazy_load() -- Lazy-loading in VSCode snippets for faster auto-completion.
+    local cmp = require("cmp")
+    cmp.setup({
+      snippet = {
+        expand = function(args)
+          require("luasnip").lsp_expand(args.body) -- Expanding the snippet using luasnip. So we see a preview.
+        end,
+      },
+      mapping = {
+        ["<Tab>"] = cmp.mapping.select_next_item(),        -- Next completion item (Tab)
+        ["<S-Tab>"] = cmp.mapping.select_prev_item(),      -- Previous completion item (Shift-Tab)
+        ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Confirm selection (Enter / Carriage Return)
+      },
+      sources = {
+        { name = "nvim_lsp" }, -- LSP completions. (DEPENDENCY: cmp-nvim-lsp / LSP source for nvim-cmp)
+        { name = "luasnip" },  -- LuaSnip completions (DEPENDENCY: lazy loaded VSCode snippets / Loads snippets from VSCode).
+        { name = "buffer" },   -- Buffer completions (NOT DEPENDENCY: words from the current buffer - already there by default).
+      },
+    })
+
+    -- TODO: 9. Registering which-key keymaps for the Debug Adapter(s), Debug Adapter UI, and Mason Package Manager.
     -- IMPORTANT: Define keymaps to be registered with 'which-key' using ONLY 'vim.keymap.set'. (ITS THE STANDARD)
     vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "Toggle Breakpoint" })
     vim.keymap.set("n", "<leader>dB", function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end,
