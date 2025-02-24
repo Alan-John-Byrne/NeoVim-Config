@@ -1,7 +1,10 @@
 -- PLUGIN: The 'noice.nvim' plugin provides better notifications within the editor.
 return {
   "folke/noice.nvim",
-  event = "VeryLazy",
+  event = "VeryLazy", -- NOTE: 'VeryLazy' only loads the plugin when needed (On powershell files).
+  -- IMPORTANT: 'VeryLazy' allows package managers (e.g.: lazy.nvim, Mason, etc...) to load the plugin ahead of time,
+  -- so we can request them later within another plugins config functions. Otherwise we get errors saying a plugin 'doesn't
+  -- exist', cause we create a race condition saying we need it to load the plugin before even it's package manager has a chance to load.
   dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify" },
   init = function()
     vim.opt.lazyredraw = false
@@ -25,18 +28,25 @@ return {
     cmdline = {
       view = "cmdline", -- NOTE: Displaying the cmdline at the bottom, like in regular vim.
     },
-    routes = {
+    routes = {          -- WARN: Filters for skipping annoying noice notifications that mean nothing.
       {
         filter = {
           event = "notify",
-          find = "No information available",
+          find = "No information available", -- Shift-k lsp filter.
+        },
+        opts = { skip = true },
+      },
+      {
+        filter = {
+          event = "notify",
+          find = "Format request failed, no matching language servers", -- Linter & Formater Only Filter (If not using full LSP).
         },
         opts = { skip = true },
       },
       {
         filter = {
           event = "msg_show",
-          any = {
+          any = { -- Whatever, I dunno what this is lol, some regex I dunno.
             { find = "%d+L, %d+B" },
             { find = "; after #%d+" },
             { find = "; before #%d+" },
