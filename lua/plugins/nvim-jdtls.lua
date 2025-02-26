@@ -8,7 +8,8 @@
 -- IMPORTANT: REQUIRMENTS FOR THIS PLUGIN ARE LISTED, AND MUST BE INSTALLED MANUALLY, NOT VIA THE MASON PACKAGE MANAGER!!!!
 return {
   "mfussenegger/nvim-jdtls",
-  enabled = true, --TESTING
+  enabled = true,
+  lazy = true, -- NOTE: Lazy load when 'needed', NOT when neovim starts. Plugin is loaded based on OTHER CONDITIONS in the plugin spec. (The config function below in this case / BufEnter in a .java file).
   dependencies = {
     "mfussenegger/nvim-dap",
   },
@@ -18,8 +19,6 @@ return {
     -- NOTE: The default 'opts' table is excluded here as it's not passed
     -- (i.e., this function is not in the form of function(_, opts)).
     -- This helps prevent duplicate LSP clients from attaching to the same buffer.
-    -- IMPORTANT: Global variable necessary for storing the current project. Required for switching.
-    vim.g.current_project = ""
     --TODO: Setting the workspace directory used by JDTLS, for all projects (which is standard).
     local workspace_dir_name = ".workspace" -- The name of the workspace directory.
     local workspace_dir_path = "C:\\Users\\alanj\\Documents\\PowerShell\\coding\\javadev\\" .. workspace_dir_name
