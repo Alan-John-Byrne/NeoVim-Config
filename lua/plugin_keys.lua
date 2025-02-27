@@ -21,7 +21,9 @@ if true then return {} end -- IMPORTANT: ALWAYS RETURNING NOTHING! THESE ARE DOC
 -- (e.g.: _keyName) to view how to properly use them
 -- IMPORTANT: The 'keys', 'event', 'ft' and 'cmd' keys are the only plugin config table
 -- keys that DO NOT HAVE ANY AFFECT on the plugin if the 'lazy' key is set to 'false'.
--- Because the plugin would start anyway on startup. (None-dependent on condition keys.)
+-- So, by default, if you include any of these keys within the config table for a plugin,
+-- 'lazy = true' is automatically inserted by lazy.nvim, so there would be no need to manually
+-- add in 'lazy = true' if one or more of these keys are already present.
 
 return {
 
@@ -255,7 +257,7 @@ return {
   -- IMPORTANT: If a plugin has multiple lazy-loading conditions (ft, event, keys, etc.),
   -- it will load when ANY of them are met.
 
-  -- WARN: The '_event' key:
+  -- WARN: The '_event' key: (~Full list of autocommand events are covered / defined in the 'event_dictionary.lua' file.)
 
   -- Example 1: Lazy-load a plugin when an event occurs.
   {
@@ -422,6 +424,19 @@ return {
   },
   -- NOTE: 'pcall' prevents crashes if the plugin is missing.
 
+  -- Example 5: Default config.
+  {
+    "pluginF",
+    lazy = true,
+    config = true
+  },
+  -- NOTE: 'config = true' is equivalent to 'opts = {}', and also:
+  --  {
+  --   "pluginF",
+  --   lazy = true,
+  --  },
+  --  Where you don't have to pass 'config = true' at all for the default configuration off
+  --  the plugin to be used.
   -- REMEMBER: The 'config' function runs **AFTER** the plugin loads.
   -- It is used to configure the plugin, call `setup()`, or apply settings dynamically.
 
