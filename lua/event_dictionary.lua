@@ -1,4 +1,4 @@
---  XXX: Below is a list of types of events that can be used:
+--  XXX: Below is a list of 'auto-command' events that can be used within neovim:
 --  1. VimEnter: Occurs after Vim finishes initializing; right after the startup process.
 --  2. VimLeave: Occurs before exiting Vim; just before quitting.
 --  3. VimLeavePre: Occurs just before `VimLeave`; allows final cleanup.

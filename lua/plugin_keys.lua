@@ -1,7 +1,7 @@
 -- PLUGIN: Example plugin specs. ( Does NOT actually load anything )
 if true then return {} end -- IMPORTANT: ALWAYS RETURNING NOTHING! THESE ARE DOCS!
 
--- NOTE: every spec file (.lua file) under the "plugins" directory,
+-- NOTE: Every spec file (.lua file) under the "plugins" directory,
 -- that returns a plugin table, will be loaded automatically by lazy.nvim
 
 -- XXX: This 'plugin_keys.lua' file is here to showcase what each
@@ -19,11 +19,10 @@ if true then return {} end -- IMPORTANT: ALWAYS RETURNING NOTHING! THESE ARE DOC
 -- 10. dependencies: Specifies plugins that need to be loaded before the plugin you're configuring.
 -- NOTE: Press '/' to search any of the above plugin config table keys
 -- (e.g.: _keyName) to view how to properly use them
--- IMPORTANT: The 'keys', 'event', 'ft' and 'cmd' keys are the only plugin config table
--- keys that DO NOT HAVE ANY AFFECT on the plugin if the 'lazy' key is set to 'false'.
--- So, by default, if you include any of these keys within the config table for a plugin,
--- 'lazy = true' is automatically inserted by lazy.nvim, so there would be no need to manually
--- add in 'lazy = true' if one or more of these keys are already present.
+-- IMPORTANT: The keys 'keys', 'event', 'ft', 'cmd', 'init', 'opts', and 'dependencies' only influence lazy loading.
+-- If lazy = false, they do not change when the plugin loads, but some (like opts and init) may still affect the
+-- plugin's configuration. If any of these keys are present and lazy is not explicitly set to false, Lazy.nvim
+-- automatically sets lazy = true.
 
 return {
 
@@ -39,7 +38,7 @@ return {
   -- Example 2: Lazy-loaded plugin.
   {
     "pluginB",
-    lazy = true, -- Does NOT load on startup.
+    -- lazy = true, Auto-Inserted by lazy.nvimm because of conditional config keys used.
     event = "BufReadPost",
   },
   -- NOTE: pluginB will only load when a buffer is opened (BufReadPost event).
@@ -48,7 +47,7 @@ return {
   -- Example 3: Lazy-loaded plugin with multiple conditions.
   {
     "pluginC",
-    lazy = true,
+    -- lazy = true, Auto-Inserted by lazy.nvimm because of conditional config keys used.
     cmd = "MyCommand",      -- Loads when running ':MyCommand'
     keys = { "<leader>x" }, -- Loads when pressing <leader>x
   },
@@ -57,7 +56,7 @@ return {
   -- Example 4: Lazy-loading by file type.
   {
     "pluginD",
-    lazy = true,
+    -- lazy = true, Auto-Inserted by lazy.nvimm because of conditional config keys used.
     ft = "python", -- Loads when opening a Python file.
   },
   -- NOTE: pluginD only loads when opening a Python file.
@@ -65,12 +64,21 @@ return {
   -- Example 5: Lazy-loading but ensuring an immediate manual load.
   {
     "pluginE",
-    lazy = true,
+    -- lazy = true, Auto-Inserted by lazy.nvimm because of conditional config keys used.
     init = function()
       vim.cmd("doautocmd User PluginE") -- Forces manual load when needed.
     end
   },
   -- NOTE: Even though pluginE is lazy, the init function allows manually triggering it.
+
+  -- Example 6: Pointless / redundant use of 'lazy' keyword.
+  {
+    "pluginD",
+    lazy = false,
+    cmd = "MyCommand",
+  },
+  -- NOTE: This is unnecessary because lazy = false means the plugin loads at startup anyway.
+  -- 'cmd' is useful ONLY when 'lazy = true'. This is the case for ALL trigger plugin config keys.
 
   -- REMEMBER: Use 'lazy = true' for better performance, ensuring plugins only load when needed.
   -- If you set 'lazy = false', the plugin always loads at startup, making using any other optional
@@ -84,27 +92,22 @@ return {
   -- Example 1: Priority Affects Load Order Within the Same Group
   {
     "pluginA",
-    lazy = false,   -- Loads at startup (Startup Group)
     priority = 100, -- Higher priority
   },
   {
     "pluginB",
-    lazy = false,  -- Loads at startup (Startup Group)
     priority = 50, -- Lower priority
   },
-  -- NOTE: pluginA (priority 100) loads before
-  -- pluginB (priority 50) at startup.
+  -- NOTE: pluginA (priority 100) loads before pluginB (priority 50) at startup.
 
   -- Example 2: Priority Does NOT override Lazy Loading
   {
     "pluginA",
-    lazy = true,          -- Lazy-loaded (NOT ON STARTUP)
     priority = 100,
-    event = "BufReadPost" -- Load after entering a buffer.
+    event = "BufReadPost" -- Lazy load after entering a buffer.
   },
   {
     "pluginB",
-    lazy = false, -- Loads at startup.
     priority = 50
   },
   -- NOTE: pluginB loads first because it's NOT lazyily loaded.
@@ -125,7 +128,6 @@ return {
   -- Example 1: Mapping a key to load a plugin.
   {
     "pluginA",
-    lazy = true,
     keys = {
       { "<leader>f", ":Telescope find_files<CR>", desc = "Find Files" },
     }
@@ -136,7 +138,6 @@ return {
   -- Example 2: Multiple Keybindings
   {
     "pluginB",
-    lazy = true,
     keys = {
       { "gcc", ":CommentToggle<CR>", mode = "n",          desc = "Toggle Comment" },
       { "gc",  ":CommentToggle<CR>", mode = { "n", "v" }, desc = "Toggle Comment (Visual)" },
@@ -147,7 +148,6 @@ return {
   -- Example 3: Using a Function Instead of a Command
   {
     "pluginC",
-    lazy = true,
     keys = {
       {
         "<leader>x",
@@ -173,7 +173,6 @@ return {
   -- Example 1: Lazy-load a plugin for a specific filetype.
   {
     "pluginA",
-    lazy = true,
     ft = "python",
   },
   -- NOTE: pluginA will NOT load at startup. Instead, it only loads when
@@ -182,7 +181,6 @@ return {
   -- Example 2: Multiple filetypes.
   {
     "pluginB",
-    lazy = true,
     ft = { "javascript", "typescript" },
   },
   -- NOTE: pluginB will only load when opening either a JavaScript or TypeScript file.
@@ -190,7 +188,6 @@ return {
   -- Example 3: Using ft with dependencies.
   {
     "pluginC",
-    lazy = true,
     ft = "markdown",
     dependencies = { "pluginX", "pluginY" },
   },
@@ -200,10 +197,9 @@ return {
   -- Example 4: Plugin that loads for ALL filetypes.
   {
     "pluginD",
-    lazy = false,
   },
-  -- NOTE: If 'ft' is NOT specified and lazy = false, the plugin
-  -- loads on startup for all filetypes.
+  -- NOTE: If 'ft' is NOT specified, the plugin loads on startup for all filetypes, on startup
+  -- IF no other trigger key is specified.
 
   -- REMEMBER: Use 'ft' to optimize performance by only loading plugins when needed.
   -- This is particularly useful for language-specific plugins (LSPs, linters, formatters, etc.).
@@ -217,7 +213,6 @@ return {
   -- Example 1: Lazy-load a plugin when a command is used.
   {
     "pluginA",
-    lazy = true,
     cmd = "SomeCommand",
   },
   -- NOTE: pluginA will NOT load at startup. It will only load
@@ -226,7 +221,6 @@ return {
   -- Example 2: Multiple commands triggering the plugin.
   {
     "pluginB",
-    lazy = true,
     cmd = { "LspInfo", "LspStart", "LspStop" },
   },
   -- NOTE: pluginB will load when running ANY of the listed commands.
@@ -234,7 +228,6 @@ return {
   -- Example 3: Using cmd along with ft.
   {
     "pluginC",
-    lazy = true,
     cmd = "Format",
     ft = "lua",
   },
@@ -242,14 +235,6 @@ return {
   -- - The user opens a Lua file.
   -- - The user runs ':Format' in Neovim.
 
-  -- Example 4: Plugin that defines commands but loads at startup.
-  {
-    "pluginD",
-    lazy = false,
-    cmd = "MyCommand",
-  },
-  -- NOTE: This is unnecessary because lazy = false means the plugin loads at startup anyway.
-  -- 'cmd' is useful ONLY when lazy = true.
 
   -- REMEMBER: Use 'cmd' to delay loading plugins until a specific command is run.
   -- This is useful for plugins that provide utility commands but aren’t needed all the time.
@@ -262,7 +247,6 @@ return {
   -- Example 1: Lazy-load a plugin when an event occurs.
   {
     "pluginA",
-    lazy = true,
     event = "BufReadPost",
   },
   -- NOTE: pluginA will NOT load at startup.
@@ -271,7 +255,6 @@ return {
   -- Example 2: Using multiple events.
   {
     "pluginB",
-    lazy = true,
     event = { "BufReadPost", "BufNewFile" },
   },
   -- NOTE: pluginB loads when opening an existing file (BufReadPost)
@@ -280,7 +263,6 @@ return {
   -- Example 3: Using very early events for performance optimization.
   {
     "pluginC",
-    lazy = true,
     event = "VeryLazy",
   },
   -- NOTE: pluginC loads once Neovim has fully started but before user interaction.
@@ -289,7 +271,6 @@ return {
   -- Example 4: Loading when entering insert mode.
   {
     "pluginD",
-    lazy = true,
     event = "InsertEnter",
   },
   -- NOTE: pluginD loads only when the user first enters insert mode.
@@ -297,7 +278,6 @@ return {
   -- Example 5: Combining event with other lazy-load conditions.
   {
     "pluginE",
-    lazy = true,
     event = "BufWinEnter",
     cmd = "MyCommand",
   },
@@ -315,7 +295,6 @@ return {
   -- Example 1: Running setup code before a lazy-loaded plugin initializes.
   {
     "pluginA",
-    lazy = true,                   -- Plugin is lazy-loaded
     init = function()
       vim.g.pluginA_setting = true -- Set a global variable before the plugin loads.
     end
@@ -326,7 +305,6 @@ return {
   -- Example 2: Defining autocommands or key mappings before plugin loads.
   {
     "pluginB",
-    lazy = true,
     init = function()
       vim.api.nvim_create_autocmd("BufRead", {
         pattern = "*.txt",
@@ -342,7 +320,6 @@ return {
   -- Example 3: Overriding plugin settings BEFORE it loads.
   {
     "pluginC",
-    lazy = true,
     init = function()
       vim.g.pluginC_option = "custom_value"
     end,
@@ -356,7 +333,6 @@ return {
   -- Example 4: Avoiding conflicts with other plugins by setting conditions.
   {
     "pluginD",
-    lazy = true,
     init = function()
       if vim.g.loaded_other_plugin then
         vim.g.pluginD_disable_feature = true
@@ -375,7 +351,7 @@ return {
   -- Example 1: Running a setup function after the plugin loads.
   {
     "pluginA",
-    lazy = true, -- Plugin is lazy-loaded
+    lazy = true, -- Plugin is lazy-loaded. IMPORTANT: You must explicitly say you want to lazy load when not using a trigger key. (config is NOT one)
     config = function()
       require("pluginA").setup({
         option1 = true,
@@ -400,7 +376,7 @@ return {
   -- Example 3: Using 'config' when the plugin is NOT lazy.
   {
     "pluginC",
-    lazy = false, -- Plugin loads on startup.
+    lazy = false, -- Plugin loads on startup. IMPORTANT: This is the default behaviour enforced by lazy.nvim when NOT using a trigger key within the plugin config table.
     config = function()
       require("pluginC").setup({
         enable_feature = true
@@ -412,7 +388,7 @@ return {
   -- Example 4: Avoiding errors when the plugin is missing.
   {
     "pluginD",
-    lazy = true,
+    lazy = true, -- Plugin is lazy-loaded.
     config = function()
       local ok, pluginD = pcall(require, "pluginD")
       if not ok then return end -- Prevents errors if the plugin is not installed.
@@ -427,7 +403,6 @@ return {
   -- Example 5: Default config.
   {
     "pluginF",
-    lazy = true,
     config = true
   },
   -- NOTE: 'config = true' is equivalent to 'opts = {}', and also:
@@ -440,15 +415,15 @@ return {
   -- REMEMBER: The 'config' function runs **AFTER** the plugin loads.
   -- It is used to configure the plugin, call `setup()`, or apply settings dynamically.
 
-  -- IMPORTANT: If you need to set global variables or pre-load configurations **before** the plugin loads,
-  -- use the 'init' key instead.
+  -- IMPORTANT: If you need to set global variables or pre-load configurations **BEFORE** the plugin loads,
+  -- use the 'init' key instead. ALSO! Some plugins do require you to specify that you wish to use the default config
+  -- either through 'opts = {}' (empty table) or through 'config = true'.
 
   -- WARN: The '_opts' key:
 
   -- Example 1: Providing options to the plugin’s setup function automatically.
   {
     "pluginA",
-    lazy = true,
     opts = {
       option1 = true,
       option2 = "value"
@@ -468,7 +443,6 @@ return {
   -- Example 2: Using 'opts' with an explicit 'config' function.
   {
     "pluginB",
-    lazy = true,
     opts = {
       settingA = false,
       settingB = "custom"
@@ -484,7 +458,6 @@ return {
   -- Example 3: Modifying 'opts' dynamically.
   {
     "pluginC",
-    lazy = true,
     opts = function()
       return {
         dynamicSetting = vim.g.some_global_var or "default_value"
@@ -496,7 +469,6 @@ return {
   -- Example 4: Defining 'opts' but overriding them in 'config'.
   {
     "pluginD",
-    lazy = true,
     opts = {
       default_setting = "on"
     },
@@ -510,7 +482,6 @@ return {
   -- Example 5: 'opts' without a setup function.
   {
     "pluginE",
-    lazy = true,
     opts = {
       setting1 = true,
       setting2 = false
@@ -518,6 +489,18 @@ return {
   },
   -- NOTE: If the plugin does NOT have a 'setup()' function, 'opts' does nothing.
 
+  -- Example 6: Empty 'opts' table.
+  {
+    "pluginE",
+    opts = {} -- IMPORTANT: This alone will trigger `lazy = true` automatically.
+  },
+  -- NOTE: An empty opts table  will result in the plugin using the default configuration
+  -- set for it. Equivalent to:
+  --  {
+  --    "pluginE",
+  --    lazy = true,
+  --    config = true
+  --  },
   -- REMEMBER: The 'opts' key is a shortcut for setting up a plugin. It automatically
   -- passes options to `require("pluginName").setup(opts)`, simplifying plugin configuration.
   -- It's a **convenience feature** making configs cleaner.
@@ -531,7 +514,6 @@ return {
   -- Example 1: A plugin depends on another plugin.
   {
     "pluginA",
-    lazy = true,
     dependencies = {
       "pluginB", -- pluginA depends on pluginB
       "pluginC"  -- pluginA also depends on pluginC
@@ -542,7 +524,6 @@ return {
   -- Example 2: Plugin dependencies in a specific order.
   {
     "pluginX",
-    lazy = true,
     dependencies = {
       "pluginY", -- pluginX requires pluginY to be loaded first
       "pluginZ"  -- pluginX also requires pluginZ to be loaded before it
@@ -553,7 +534,6 @@ return {
   -- Example 3: Using 'dependencies' with lazy loading plugins.
   {
     "pluginD",
-    lazy = true,
     dependencies = {
       { "pluginE", lazy = true } -- pluginD will load after pluginE is loaded.
     },
@@ -563,7 +543,6 @@ return {
   -- Example 4: Optional dependencies.
   {
     "pluginF",
-    lazy = true,
     dependencies = {
       { "pluginG", lazy = false } -- pluginG is required at startup, but pluginF is lazy.
     },
@@ -574,5 +553,6 @@ return {
   -- before the plugin you're defining. This is crucial when plugins have interdependencies.
 
   -- IMPORTANT: lazy.nvim automatically ensures dependencies are loaded first,
-  -- and you do not need to manually manage the load order.
+  -- and you do not need to manually manage the load order. ALSO! If a plugin is ONLY USED
+  -- as a dependency, it will be marked as lazy unless explicitly set otherwise.
 }
