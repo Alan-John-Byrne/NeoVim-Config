@@ -1,7 +1,6 @@
 -- PLUGIN: The 'mini.icons' plugin provides better icons within directory navigation tools like 'mini.files'.
 return {
   "echasnovski/mini.icons",
-  lazy = true,
   opts = {
     file = {
       [".keep"] = { glyph = "󰊢", hl = "MiniIconsGrey" },

@@ -4,8 +4,11 @@
 -- WARN: See below for how everything works together.
 return {
   "neovim/nvim-lspconfig", -- Handles LSP configuration.
-  enabled = true,          -- TESTING
-  event = "BufEnter",
+  event = "VeryLazy",      -- NOTE: 'VeryLazy' only loads the plugin when needed (On powershell files).
+  -- IMPORTANT: 'VeryLazy' allows package managers (e.g.: lazy.nvim, Mason, etc...) to load the plugin ahead of time,
+  -- so we can request them later within another plugins config functions. Otherwise we get errors saying a plugin 'doesn't
+  -- exist', cause we create a race condition saying we need it to load the plugin before even it's package manager has a chance to load.
+  enabled = true, -- TESTING
   dependencies = {
     -- TODO: Package / Plugin Management:
     "williamboman/mason.nvim",           -- Mason (LSP, DAP, Linters, Formatters).

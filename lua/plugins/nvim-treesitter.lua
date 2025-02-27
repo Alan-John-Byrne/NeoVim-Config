@@ -1,15 +1,15 @@
 -- PLUGIN: The 'nvim-treesitter' provides better text highlighting.
 return {
   "nvim-treesitter/nvim-treesitter",
+  lazy = vim.fn.argc(-1) == 0, -- load treesitter early when opening a file from the cmdline
+  event = "VeryLazy",
   dependencies = {
     "nvim-treesitter/nvim-treesitter-textobjects", -- NOTE: Provides better text object highlighting.
   },
-  version = false, -- last release is way too old and doesn't work on Windows
+  version = false,                                 -- last release is way too old and doesn't work on Windows
   build = ":TSUpdate",
-  event = "VeryLazy",
-  lazy = vim.fn.argc(-1) == 0, -- load treesitter early when opening a file from the cmdline
   init = function(plugin)
-    -- PERF: add nvim-treesitter queries to the rtp and it's custom query predicates early
+    -- PERF: Add nvim-treesitter queries to the rtp and it's custom query predicates early
     -- This is needed because a bunch of plugins no longer `require("nvim-treesitter")`, which
     -- no longer trigger the **nvim-treesitter** module to be loaded in time.
     -- Luckily, the only things that those plugins need are the custom queries, which we make available
@@ -20,7 +20,7 @@ return {
   cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
   keys = {
     { "<c-space>", desc = "Increment Selection" },
-    { "<bs>", desc = "Decrement Selection", mode = "x" },
+    { "<bs>",      desc = "Decrement Selection", mode = "x" },
   },
   opts_extend = { "ensure_installed" },
   ---@type TSConfig

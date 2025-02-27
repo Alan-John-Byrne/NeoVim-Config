@@ -1,8 +1,8 @@
 -- PLUGIN: The 'bufferline.nvim' plugin provides tabular functionality at the top of every buffer for switching between buffers.
 return {
   "akinsho/bufferline.nvim",
-  version = "*",
   event = "VeryLazy",
+  version = "*",
   dependencies = "nvim-tree/nvim-web-devicons",
   keys = {
     { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>",            desc = "Toggle Pin" },

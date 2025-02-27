@@ -9,7 +9,7 @@
 return {
   "mfussenegger/nvim-jdtls",
   enabled = true,
-  lazy = true, -- NOTE: Lazy load when 'needed', NOT when neovim starts. Plugin is loaded based on OTHER CONDITIONS in the plugin spec. (The config function below in this case / BufEnter in a .java file).
+  lazy = true, -- NOTE: Lazy load must be included here, it's not done automatically. Plugin is loaded based on the config function, which lazy.nvim won't detect.
   dependencies = {
     "mfussenegger/nvim-dap",
   },

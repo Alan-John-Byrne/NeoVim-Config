@@ -2,7 +2,5 @@
 return {
   "windwp/nvim-autopairs",
   event = "InsertEnter",
-  config = true,
-  --  NOTE: use opts = {} for passing setup options
-  -- this is equivalent to setup({}) function
+  config = true, -- WARN: Some plugins (like this one) require you to specify that you wish to use the default settings in the config.
 }

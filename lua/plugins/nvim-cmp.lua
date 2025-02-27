@@ -1,11 +1,11 @@
 -- PLUGIN: The 'nvim-cmp' plugin provide auto-completion support for many programming and markup languages.
 return {
   {
-    'hrsh7th/nvim-cmp', -- main plugin
+    'hrsh7th/nvim-cmp',
+    event = 'InsertEnter',
     dependencies = {
       "L3MON4D3/LuaSnip",
     },
-    event = 'InsertEnter', -- Load on insert mode
     config = function()
       require('cmp').setup()
       -- nvim-cmp setup

@@ -1,6 +1,7 @@
 -- PLUGIN: The 'gitsigns.nvim' plugin provides provides visual aids within buffers contained within a git project.
 return {
   "lewis6991/gitsigns.nvim",
+  event = "VeryLazy",
   opts = {
     signs = {
       add = { text = "▎" },

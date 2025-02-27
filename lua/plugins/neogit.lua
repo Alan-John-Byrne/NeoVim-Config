@@ -2,14 +2,13 @@
 -- management expierence.
 return {
   "NeogitOrg/neogit",
-  enabled = true,            -- TESTING
-  event = { "VimEnter" },    --IMPORTANT: THIS 'event' argument is used to actual LOAD the plugin, into the current sessio
+  enabled = true, -- TESTING
+  event = "VeryLazy",
   dependencies = {
-    "nvim-lua/plenary.nvim", -- IMPORTANT: REQUIRED.
+    "nvim-lua/plenary.nvim",
     "sindrets/diffview.nvim",
     "ibhagwan/fzf-lua",
   },
-  config = true,
   keys = {
     { "<leader>gC", "<cmd>Neogit kind=split<CR>", desc = "Open Neogit status popup" },
     { "<leader>gc", "<cmd>Neogit commit<CR>",     desc = "Open Neogit commit popup" },
