@@ -13,16 +13,15 @@ return {
           icon = "🛠", -- Icon used for the sign, and in search results.
           color = "error", -- can be a hex color, or a named color (see below)
           alt = { "FIXME", "BUG", "FIXIT", "ISSUE", "IMPORTANT" }, -- a set of other keywords that all map to this FIX keywords
-        },
-        TODO = { icon = "🔲", color = "info", alt = { "REMEMBER" } },
-        HACK = { icon = "❗", color = "warning" },
-        WARN = { icon = "⚠ ", color = "warning", alt = { "WARNING", "TEXT", "EXAMPLES", "EXAMPLE" } },
-        PERF = { icon = "📈", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
-        NOTE = { icon = "✏", color = "hint", alt = { "INFO" } },
-        TEST = { icon = "🧪", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
-        HEADING = { icon = "✨", color = "heading", alt = { "FIN", "END", "SECTION" } },
-        BANNER = { icon = "💫", color = "banner", alt = { "HEY", "XXX" } },
-        PLUGIN = { icon = "", color = "plugin" },
+        }, -- 'test' and 'info' are the same colour.
+        TEST = { icon = "🧪", color = "info", alt = { "TESTING", "PASSED", "FAILED" } },
+        PERF = { icon = "📈", color = "info", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+        TODO = { icon = "🔲", color = "info", alt = { "INFO", "REMEMBER" } },
+        QUESTION = { icon = "✨", color = "heading", alt = { "SECTION", "HEADING" } },
+        ANSWER = { icon = "💫", color = "plugin", alt = { "PLUGIN" } },
+        WARN = { icon = "⚠", color = "warning", alt = { "DEFINITION", "DEF", "WARNING", "EXAMPLES", "EXAMPLE" } },
+        NOTE = { icon = "✏", color = "hint", alt = { "GOAL" } },
+        XXX = { icon = "❗", color = "banner", alt = { "FIN", "END", "HACK" } },
       },
       colors = {
         error = { "#FF6060" },
