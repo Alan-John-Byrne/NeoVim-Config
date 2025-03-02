@@ -16,5 +16,5 @@ return {
     { "[B",         "<cmd>BufferLineMovePrev<cr>",             desc = "Move buffer prev" },
     { "]B",         "<cmd>BufferLineMoveNext<cr>",             desc = "Move buffer next" },
   },
-  opts = {},
+  opts = {}, -- Calling bufferline.setup({}) for initialization.
 }

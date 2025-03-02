@@ -28,7 +28,5 @@ return {
     { "<leader>gw", "<cmd>Neogit worktree<CR>",   desc = "Open Neogit worktree popup" },
   },
   -- IMPORTANT: NOT RECOMMENDED:
-  -- WARN: LAZYVIM comes automatically set with some keymaps for 'lazygit', if you don't have the exectuable for this program installed on your system, these keymaps will be useless and take up space in the which-key menu.
-  -- TODO: To handle this issue, remove the section pertaining to lazygit within the below file in you nvim-data directory.
-  -- C:\Users\{username}\AppData\Local\nvim-data\lazy\LazyVim\lua\lazyvim\config\keymaps.lua
+  -- WARN: Automatically, there are a set of keymaps for 'lazygit', if you don't have the exectuable for this program within your PATH, these keymaps will be useless.
 }

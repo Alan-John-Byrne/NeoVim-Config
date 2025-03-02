@@ -5,48 +5,40 @@ return {
   enabled = true, --TESTING
   event = "VimEnter",
   dependencies = { "nvim-lua/plenary.nvim" },
-  opts = function(_, opts)
-    local extended_opts = {
-      signs = true,
-      keywords = {
-        FIX = {
-          icon = "🛠", -- Icon used for the sign, and in search results.
-          color = "error", -- can be a hex color, or a named color (see below)
-          alt = { "FIXME", "BUG", "FIXIT", "ISSUE", "IMPORTANT" }, -- a set of other keywords that all map to this FIX keywords
-        }, -- 'test' and 'info' are the same colour.
-        TEST = { icon = "🧪", color = "info", alt = { "TESTING", "PASSED", "FAILED" } },
-        PERF = { icon = "📈", color = "info", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
-        TODO = { icon = "🔲", color = "info", alt = { "INFO", "REMEMBER" } },
-        QUESTION = { icon = "✨", color = "heading", alt = { "SECTION", "HEADING" } },
-        ANSWER = { icon = "💫", color = "plugin", alt = { "PLUGIN" } },
-        WARN = { icon = "⚠", color = "warning", alt = { "DEFINITION", "DEF", "WARNING", "EXAMPLES", "EXAMPLE" } },
-        NOTE = { icon = "✏", color = "hint" },
-        GOAL = { icon = "✏", color = "goal" },
-        XXX = { icon = "❗", color = "banner", alt = { "FIN", "END", "HACK" } },
-      },
-      colors = {
-        error = { "#FF6060" },
-        goal = { "#065535" },
-        warning = { "DiagnosticWarn" },
-        info = { "DiagnosticInfo" },
-        hint = { "DiagnosticHint" },
-        default = { "Identifier" },
-        test = { "#FF00FF" },
-        heading = { "#C9D137" },
-        banner = { "#AFAFAF" },
-        plugin = { "#C571BB" },
-      },
-      highlight = {
-        max_line_len = 1000, -- NOTE: ignore lines longer than this
-      },
-    }
-
-    -- Merging custom options in with base LazyVim plugin config options.
-    opts = vim.tbl_extend("force", opts, extended_opts)
-
-    -- Returning the merged options.
-    return opts
-  end,
+  opts = {
+    signs = true,
+    keywords = {
+      FIX = {
+        icon = "🛠", -- Icon used for the sign, and in search results.
+        color = "error", -- can be a hex color, or a named color (see below)
+        alt = { "FIXME", "BUG", "FIXIT", "ISSUE", "IMPORTANT" }, -- a set of other keywords that all map to this FIX keywords
+      }, -- 'test' and 'info' are the same colour.
+      TEST = { icon = "🧪", color = "info", alt = { "TESTING", "PASSED", "FAILED" } },
+      PERF = { icon = "📈", color = "info", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+      TODO = { icon = "🔲", color = "info", alt = { "INFO", "REMEMBER" } },
+      QUESTION = { icon = "✨", color = "heading", alt = { "SECTION", "HEADING" } },
+      ANSWER = { icon = "💫", color = "plugin", alt = { "PLUGIN" } },
+      WARN = { icon = "⚠", color = "warning", alt = { "DEFINITION", "DEF", "WARNING", "EXAMPLES", "EXAMPLE" } },
+      NOTE = { icon = "✏", color = "hint" },
+      GOAL = { icon = "✏", color = "goal" },
+      XXX = { icon = "❗", color = "banner", alt = { "FIN", "END", "HACK" } },
+    },
+    colors = {
+      error = { "#FF6060" },
+      goal = { "#065535" },
+      warning = { "DiagnosticWarn" },
+      info = { "DiagnosticInfo" },
+      hint = { "DiagnosticHint" },
+      default = { "Identifier" },
+      test = { "#FF00FF" },
+      heading = { "#C9D137" },
+      banner = { "#AFAFAF" },
+      plugin = { "#C571BB" },
+    },
+    highlight = {
+      max_line_len = 1000,   -- NOTE: ignore lines longer than this
+    },
+  }
 }
 
 --  TODO: Use 'event' to defer plugin loading until a specific event occurs, improving startup time. Use 'dependencies' to ensure that required plugins or libraries are loaded before the plugin itself, ensuring it functions correctly.
