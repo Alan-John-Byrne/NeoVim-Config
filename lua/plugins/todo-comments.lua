@@ -15,28 +15,30 @@ return {
       }, -- 'test' and 'info' are the same colour.
       TEST = { icon = "🧪", color = "info", alt = { "TESTING", "PASSED", "FAILED" } },
       PERF = { icon = "📈", color = "info", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
-      TODO = { icon = "🔲", color = "info", alt = { "INFO", "REMEMBER" } },
+      TODO = { icon = "🔲", color = "info", alt = { "REMEMBER" } },
       QUESTION = { icon = "✨", color = "heading", alt = { "SECTION", "HEADING" } },
       ANSWER = { icon = "💫", color = "plugin", alt = { "PLUGIN" } },
-      WARN = { icon = "⚠", color = "warning", alt = { "DEFINITION", "DEF", "WARNING", "EXAMPLES", "EXAMPLE" } },
-      NOTE = { icon = "✏", color = "hint" },
-      GOAL = { icon = "✏", color = "goal" },
+      WARN = { icon = "⚠", color = "warning", alt = { "DEFINITION", "DEF", "WARNING" } },
+      EXAMPLE = { icon = "✍", color = "example", alt = { "EXAMPLES" } },
+      NOTE = { icon = "✏", color = "hint", alt = { "INFO" } },
+      GOAL = { icon = "🥅", color = "goal" },
       XXX = { icon = "❗", color = "banner", alt = { "FIN", "END", "HACK" } },
     },
     colors = {
       error = { "#FF6060" },
-      goal = { "#065535" },
-      warning = { "DiagnosticWarn" },
-      info = { "DiagnosticInfo" },
+      goal = { "#B5B1F1" },
+      warning = { "#e1aa02" },
+      example = { "#01b3bd" },
+      info = { "#7eaeb8" },
       hint = { "DiagnosticHint" },
       default = { "Identifier" },
       test = { "#FF00FF" },
-      heading = { "#C9D137" },
+      heading = { "#bcc435" },
       banner = { "#AFAFAF" },
-      plugin = { "#C571BB" },
+      plugin = { "#d78bda" },
     },
     highlight = {
-      max_line_len = 1000,   -- NOTE: ignore lines longer than this
+      max_line_len = 1000, -- NOTE: ignore lines longer than this
     },
   }
 }
