@@ -56,7 +56,7 @@
 --  55. TextChangedI: Occurs when text changes in insert mode; after every change in insert mode.
 --  56. TextChangedP: Occurs when text changes in insert mode after a keypress; more granular than `TextChangedI`.
 --  57. TextYankPost: Occurs after yanking text; when using `y`, `yy`, or any yank command.
---  58. User: Occurs when explicitly triggered by the `doautocmd User` command; used for custom events.
+--  58. User: Occurs when explicitly triggered by the `doautocmd User` command; used for custom / plugin events.
 --  59. FileChangedShell: Occurs when a file changes outside of Vim; when detected by `:checktime`.
 --  60. FileChangedShellPost: Occurs after handling an external file change; after confirming reloading or ignoring changes.
 --  61. FileChangedShellPre: Occurs before handling an external file change.
