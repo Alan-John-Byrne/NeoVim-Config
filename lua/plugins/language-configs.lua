@@ -4,34 +4,34 @@
 -- WARN: See below for how everything works together.
 return {
   "neovim/nvim-lspconfig", -- Handles LSP configuration.
-  event = "VeryLazy",      -- NOTE: 'VeryLazy' only loads the plugin when needed (On powershell files).
+  event = "VeryLazy", -- NOTE: 'VeryLazy' only loads the plugin when needed (On powershell files).
   -- IMPORTANT: 'VeryLazy' allows package managers (e.g.: lazy.nvim, Mason, etc...) to load the plugin ahead of time,
   -- so we can request them later within another plugins config functions. Otherwise we get errors saying a plugin 'doesn't
   -- exist', cause we create a race condition saying we need it to load the plugin before even it's package manager has a chance to load.
   enabled = true, -- TESTING
   dependencies = {
     -- TODO: Package / Plugin Management:
-    "williamboman/mason.nvim",           -- Mason (LSP, DAP, Linters, Formatters).
+    "williamboman/mason.nvim", -- Mason (LSP, DAP, Linters, Formatters).
     "williamboman/mason-lspconfig.nvim", -- Mason <-> nvim-lspconfig (LSP) bridge.
-    "jay-babu/mason-nvim-dap.nvim",      -- Mason <-> nvim-dap bridge (Debug Adapter Protocols / DAPs).
-    "rshkarin/mason-nvim-lint",          -- Mason <-> nvim-lint bridge (Linters).
-    "zapling/mason-conform.nvim",        -- Mason <-> conform bridge (Formatters).
-    "nvim-treesitter/nvim-treesitter",   -- Tree-sitter integration. (Syntax Highlighting)
+    "jay-babu/mason-nvim-dap.nvim", -- Mason <-> nvim-dap bridge (Debug Adapter Protocols / DAPs).
+    "rshkarin/mason-nvim-lint", -- Mason <-> nvim-lint bridge (Linters).
+    "zapling/mason-conform.nvim", -- Mason <-> conform bridge (Formatters).
+    "nvim-treesitter/nvim-treesitter", -- Tree-sitter integration. (Syntax Highlighting)
 
     -- TODO: Core Plugins:
-    "nvim-lua/plenary.nvim",  -- Required for various plugins.
-    "nvim-neotest/nvim-nio",  -- Required for nvim-dap-ui.
+    "nvim-lua/plenary.nvim", -- Required for various plugins.
+    "nvim-neotest/nvim-nio", -- Required for nvim-dap-ui.
     "mfussenegger/nvim-lint", -- nvim-lint (Linters).
-    "stevearc/conform.nvim",  -- conform (Formatters).
-    "mfussenegger/nvim-dap",  -- nvim-dap (Debug Adapter Protocols / DAPs).
-    "rcarriga/nvim-dap-ui",   -- Debugging UI for nvim-dap.
+    "stevearc/conform.nvim", -- conform (Formatters).
+    "mfussenegger/nvim-dap", -- nvim-dap (Debug Adapter Protocols / DAPs).
+    "rcarriga/nvim-dap-ui", -- Debugging UI for nvim-dap.
 
     -- XXX: Other Plugins:
-    "L3MON4D3/LuaSnip",                  -- LuaSnip (Loads snippets from VSCode).
-    "hrsh7th/nvim-cmp",                  -- nvim-cmp (Auto-Completion).
-    "hrsh7th/cmp-nvim-lsp",              -- LSP source for nvim-cmp.
-    "saadparwaiz1/cmp_luasnip",          -- Snippet source for nvim-cmp
-    "theHamsta/nvim-dap-virtual-text",   -- Provides nice variable text when debugging.
+    "L3MON4D3/LuaSnip", -- LuaSnip (Loads snippets from VSCode).
+    "hrsh7th/nvim-cmp", -- nvim-cmp (Auto-Completion).
+    "hrsh7th/cmp-nvim-lsp", -- LSP source for nvim-cmp.
+    "saadparwaiz1/cmp_luasnip", -- Snippet source for nvim-cmp
+    "theHamsta/nvim-dap-virtual-text", -- Provides nice variable text when debugging.
     "jbyuki/one-small-step-for-vimkind", -- Debug adapter for 'lua' not provided by Mason package manager!
   },
   config = function()
@@ -68,9 +68,10 @@ return {
     })
 
     -- TODO: 3. Setup Linters & Formatters:
-    -- NOTE: 'mason-null-ls' & 'mason-conform allows us to then manually configure Linters and Formatters, respectively.
+    -- NOTE: 'mason-nvim-lint' & 'mason-conform allows us to then manually configure Linters and Formatters, respectively.
     -- WARN: Some function as both linters and formatters. (eg: markdownlint)
-    -- REMEMBER: Linters from 'nvim-lint' ONLY kick into action when you save a buffer.
+    -- REMEMBER: Linters & formatters ONLY kick into action when you save a buffer. (So we use autocommands)
+    -- XXX: Linters:
     require("mason-nvim-lint").setup({
       ensure_installed = { "selene", "markdownlint" }, -- Auto-install these Linters.
       automatic_installation = true,
@@ -81,16 +82,42 @@ return {
       lua = { "selene" },
     }
 
+    -- Autocommand to trigger linter automatically.
+    vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
+      pattern = { "*.lua", "*.md" },
+      callback = function()
+        require("lint").try_lint()
+      end,
+    })
+
+    -- XXX: Linters (continued): Setting linter specific settings via args table.
+    require("lint").linters.markdownlint.args = {
+      "--disable",
+      "MD013",
+      "MD026",
+      "MD041",
+      "MD033",
+    }
+
+    -- XXX: Formatters:
     require("mason-conform").setup({
-      ensure_installed = { "stylua", "markdownlint", "markdown-toc" }, -- Auto-install these Formatters.
+      ensure_installed = { "stylua", "prettier" }, -- Auto-install these Formatters.
       automatic_installation = true,
     })
 
     require("conform").setup({ -- Hook these Formatters into Neovim.
       formatters_by_ft = {
-        markdown = { "markdownlint", "markdown-toc" },
+        markdown = { "prettier" },
         lua = { "stylua" },
       },
+    })
+
+    -- Autocommand to trigger formatter automatically.
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      pattern = { "*.lua", "*.md" },
+      callback = function()
+        require("conform").format()
+      end,
     })
 
     -- TODO: 4 Setup Debug Adapters (DAP)
@@ -192,8 +219,7 @@ return {
             if csproj ~= "" then -- If not in the current directory. MOVE UP ONE DIRECTORY.
               -- Found the project directory, now extract project name, to find corresponding '.dll' file.
               local project_name = vim.fn.fnamemodify(csproj, ":t:r")
-              local debug_dir = current_dir ..
-                  "/bin/Debug/net8.0" --WARN: .NET8.0 is just the runtime currently being used, by me. Change if you are using a different runtime.
+              local debug_dir = current_dir .. "/bin/Debug/net8.0" --WARN: .NET8.0 is just the runtime currently being used, by me. Change if you are using a different runtime.
               local dll_path = debug_dir .. "/" .. project_name .. ".dll"
 
               -- Checking if the '.dll' file exists, then returning it. (It's the compiled code containing the 'Debug symbols' required by the debugger)
@@ -217,9 +243,9 @@ return {
     dap.adapters.python = {
       type = "executable",
       command = debugpy_path .. "/venv/Scripts/python", -- NOTE: Using the packages version of python installed via it's virtual environment.
-      args = { "-m", "debugpy.adapter" },               -- NOTE: "debugpy" is actually a plugin for python, which is preferrably installed within a virtual environment.
+      args = { "-m", "debugpy.adapter" }, -- NOTE: "debugpy" is actually a plugin for python, which is preferrably installed within a virtual environment.
       options = {
-        detached = false,                               -- IMPORTANT: Specific to windows in the case of Python, we don't want other terminals opening up outside of the neovim session / the console you're using.
+        detached = false, -- IMPORTANT: Specific to windows in the case of Python, we don't want other terminals opening up outside of the neovim session / the console you're using.
       },
     }
     -- Python configuration
@@ -307,10 +333,11 @@ return {
         "java",
         "c_sharp",
         "markdown",
+        "go",
         "powershell",
-      },                                           -- Specify languages you want Tree-sitter for
+      }, -- Specify languages you want Tree-sitter for
       highlight = {
-        enable = true,                             -- Enable highlighting based on Tree-sitter
+        enable = true, -- Enable highlighting based on Tree-sitter
         additional_vim_regex_highlighting = false, -- Disable regex highlighting (Tree-sitter will handle this)
       },
       indent = {
@@ -328,22 +355,23 @@ return {
         end,
       },
       mapping = {
-        ["<Tab>"] = cmp.mapping.select_next_item(),        -- Next completion item (Tab)
-        ["<S-Tab>"] = cmp.mapping.select_prev_item(),      -- Previous completion item (Shift-Tab)
+        ["<Tab>"] = cmp.mapping.select_next_item(), -- Next completion item (Tab)
+        ["<S-Tab>"] = cmp.mapping.select_prev_item(), -- Previous completion item (Shift-Tab)
         ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Confirm selection (Enter / Carriage Return)
       },
       sources = {
         { name = "nvim_lsp" }, -- LSP completions. (DEPENDENCY: cmp-nvim-lsp / LSP source for nvim-cmp)
-        { name = "luasnip" },  -- LuaSnip completions (DEPENDENCY: lazy loaded VSCode snippets / Loads snippets from VSCode).
-        { name = "buffer" },   -- Buffer completions (NOT DEPENDENCY: words from the current buffer - already there by default).
+        { name = "luasnip" }, -- LuaSnip completions (DEPENDENCY: lazy loaded VSCode snippets / Loads snippets from VSCode).
+        { name = "buffer" }, -- Buffer completions (NOT DEPENDENCY: words from the current buffer - already there by default).
       },
     })
 
     -- TODO: 9. Registering which-key keymaps for the Debug Adapter(s), Debug Adapter UI, and Mason Package Manager.
     -- IMPORTANT: Define keymaps to be registered with 'which-key' using ONLY 'vim.keymap.set'. (ITS THE STANDARD)
     vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "Toggle Breakpoint" })
-    vim.keymap.set("n", "<leader>dB", function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end,
-      { desc = "Toggle Conditioned Breakpoint" })
+    vim.keymap.set("n", "<leader>dB", function()
+      dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
+    end, { desc = "Toggle Conditioned Breakpoint" })
     vim.keymap.set("n", "<leader>dc", dap.continue, { desc = "Start/Continue Debugging" })
     vim.keymap.set("n", "<leader>di", dap.step_into, { desc = "Step Into" })
     vim.keymap.set("n", "<leader>dp", dap.pause, { desc = "Pause" })
