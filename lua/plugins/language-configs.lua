@@ -98,6 +98,7 @@ return {
     require("conform").setup({ -- Hook these Formatters into Neovim.
       formatters_by_ft = {
         markdown = { "prettier" },
+        go = { "goimports" }
       },
     })
 
