@@ -144,7 +144,19 @@ map("n", "]q", vim.cmd.cnext, { desc = "Next Quickfix" })
 
 -- formatting
 map({ "n", "v" }, "<leader>cf", function()
-  vim.lsp.buf.format({ async = true })
+  local bufnr = vim.api.nvim_get_current_buf()
+  local clients = vim.lsp.buf_get_clients(bufnr)
+  local lua_is_active = false
+  for index, client in ipairs(clients) do
+    if client.name == "lua_ls" then
+      lua_is_active = true
+    end
+  end
+  if lua_is_active then
+    vim.lsp.buf.format({ async = false }) -- Format using 'lua_ls' LSP. IMPORTANT: Must NOT be ASYNCHRONOUS, must FORMAT AFTER SAVING CONTENTS to buffer.
+  else
+    require("conform").format()           -- This Triggers conform based formatters.
+  end
 end, { desc = "Format" })
 
 -- diagnostic
