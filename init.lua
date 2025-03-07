@@ -2,6 +2,7 @@
 require("config.options")
 require("config.autocmds")
 require("config.keymaps")
+require("config.customcmds")
 -- NOTE: Load lazy last after you have everything already setup.
 require("config.lazy")
 
