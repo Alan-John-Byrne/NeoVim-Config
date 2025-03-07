@@ -69,7 +69,7 @@ return {
             or path:match("%.gif$") then
           -- XXX: Open Preview Pane. (Requires PowerShell7 in Global Env Variables
           -- & WezTerm in PowerShell7 Profile Env Variables)
-          command = "silent !wezterm cli split-pane -- pwsh -Command " ..
+          command = "silent !wezterm cli split-pane --percent 90 -- pwsh -Command " ..
               "\"wezterm imgcat '" .. path .. "'; Read-Host 'Press Enter to continue'\""
           vim.api.nvim_command(command)
         else
