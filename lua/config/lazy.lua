@@ -1,4 +1,4 @@
--- Setting up (Bootstrapping) Lazyvim Plugin Manager.
+-- INFO: Setting up (Bootstrapping) Lazyvim Plugin Manager.
 -- IMPORTANT: Accessing the 'stdpath' vimscript function, via the vim table (API), to use it in lua. THIS IS THE ONLY WAY TO USE VIMSCRIPT FUNCTIONS IN LUA PROGRAMS.
 -- NOTE: The 'stdpath' is used for find stardard path used for our nvim config. See ':help stdpath' for details.
 -- Lazy Plugin Manager is only interested in our nvim data directory / path. That being 'C:\Users\{yourusername}\Appdata\Local\nvim-data"

@@ -1,6 +1,5 @@
--- Keymaps are automatically loaded on the VeryLazy event
--- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
--- Add any additional keymaps here
+-- INFO: Keymaps are automatically loaded on the VeryLazy event.
+
 -- TODO: Convenience save and quit all.
 vim.keymap.set("n", "<leader>q", ":wqall<CR>", { desc = "Save and Quit All" })
 
