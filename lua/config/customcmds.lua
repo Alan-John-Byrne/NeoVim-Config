@@ -1,3 +1,5 @@
+-- INFO: Autocmds are automatically loaded on the VeryLazy event.
+
 -- NOTE: Show currently running linters for the current buffer's file type.
 vim.api.nvim_create_user_command("LintInfo", function()
   local filetype = vim.bo.filetype

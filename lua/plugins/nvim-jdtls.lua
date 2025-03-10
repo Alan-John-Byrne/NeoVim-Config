@@ -9,7 +9,6 @@
 return {
   "mfussenegger/nvim-jdtls",
   enabled = true,
-  lazy = true, -- NOTE: Lazy load must be included here, it's not done automatically. Plugin is loaded based on the config function, which lazy.nvim won't detect.
   dependencies = {
     "mfussenegger/nvim-dap",
   },
@@ -20,13 +19,14 @@ return {
     -- (i.e., this function is not in the form of function(_, opts)).
     -- This helps prevent duplicate LSP clients from attaching to the same buffer.
     --TODO: Setting the workspace directory used by JDTLS, for all projects (which is standard).
-    local workspace_dir_name = ".workspace" -- The name of the workspace directory.
-    local workspace_dir_path = "C:\\Users\\alanj\\Documents\\PowerShell\\coding\\javadev\\" .. workspace_dir_name
+    local base_path = "D:\\4-Personal-OneDrive\\OneDrive\\Coding\\javadev\\" -- Where is everything is based.
+    local workspace_dir_name = ".workspace"                                  -- The name of the workspace directory.
+    local workspace_dir_path = base_path .. workspace_dir_name
     -- TODO: LISTENING FOR A BUFENTER EVENT WHEN GOING INTO A JAVA FILE.
     vim.api.nvim_create_autocmd("BufEnter", {
       pattern = "*.java",
       callback = function()
-        -- TODO: 1ST: Getting the name of the project. Based on the project directory. (Catering for 'coding' directory, in case project is named 'testing' or 'code')
+        -- TODO: 1ST: Getting the name of the project. Based on the project directory.
         local project_name = "\\" .. vim.fn.fnamemodify(vim.fn.expand("%:p:h"), ":t") .. "\\"
         -- TODO: 2nd: Creating the config using the extracted settings:
         local config = {
@@ -39,14 +39,14 @@ return {
 
             -- IMPORTANT:💀 Must be set to the specifics of your machine. (Manual Installation required - MASON NOT COMPATIBLE)
             "-jar",
-            "C:\\Users\\alanj\\Documents\\Powershell\\coding\\javadev\\.setup_config\\jdtls\\plugins\\org.eclipse.equinox.launcher_1.6.900.v20240613-2009.jar",
+            base_path .. ".setup_config\\jdtls\\plugins\\org.eclipse.equinox.launcher_1.6.900.v20240613-2009.jar",
             -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                                         ^^^^^^^^^^^^^^
             -- Must point to the                                                                                       Change this to
             -- eclipse.jdt.ls installation                                                                             the actual version
 
             -- IMPORTANT:💀 Must be set to the specifics of your machine. (Manual Installation required - MASON NOT COMPATIBLE)
             "-configuration",
-            "C:\\Users\\alanj\\Documents\\Powershell\\coding\\javadev\\.setup_config\\jdtls\\config_win",
+            base_path .. ".setup_config\\jdtls\\config_win",
             -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                  ^^^
             -- Must point to the                                                                Change to one of `linux`, `win` or `mac`
             -- eclipse.jdt.ls installation                                                      Depending on your system.
@@ -62,7 +62,7 @@ return {
           --
           -- vim.fs.root requires Neovim 0.10.
           -- If you're using an earlier version, use: require('jdtls.setup').find_root({'.git', 'mvnw', 'gradlew'}),
-          root_dir = vim.fs.root(0, { "gradlew" }),
+          root_dir = vim.fs.root(0, { '.git', 'mvnw', 'gradlew', 'pom.xml', 'build.gradle' }),
 
           -- Here you can configure eclipse.jdt.ls specific settings
           -- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
@@ -81,8 +81,7 @@ return {
               },
               format = { -- IMPORTANT: Eclipse LSP format settings file. Allows for the altering of the default formatter provided by the eclipse formatter.
                 settings = {
-                  url =
-                  "C:\\Users\\alanj\\Documents\\Powershell\\coding\\javadev\\.setup_config\\eclipse-java-google-style.xml",
+                  url = base_path .. ".setup_config\\eclipse-java-google-style.xml",
                 },
               },
             },
@@ -98,7 +97,8 @@ return {
           init_options = {
             bundles = {    -- IMPORTANT: If using nvim-jdtls, you MUST CLONE THE REPO of the java-debug plugin manually via git, and paste it's path here.
               vim.fn.glob( -- WARN: If you move the java-debug folder (the one containing the plugin you just cloned), YOU CAN'T. Clone into that new folder, and rebuild.
-                "C:\\Users\\alanj\\Documents\\PowerShell\\coding\\javadev\\.setup_config\\java-debug\\com.microsoft.java.debug.plugin\\target\\com.microsoft.java.debug.plugin-0.53.1.jar",
+                base_path ..
+                ".setup_config\\java-debug\\com.microsoft.java.debug.plugin\\target\\com.microsoft.java.debug.plugin-0.53.1.jar",
                 true
               ),
             },
