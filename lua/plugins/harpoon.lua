@@ -1,11 +1,14 @@
 -- PLUGIN: Altering the 'harpoon' plugin, allows for easy switching between common files you are working on.
 return {
   "ThePrimeagen/harpoon",
-  enabled = true, --TESTING
+  enabled = true,     --TESTING
+  event = "VeryLazy", -- NOTE: Booting harpoon2 after nvim starts up.
   branch = "harpoon2",
   dependencies = { "nvim-lua/plenary.nvim" },
   keys = {
-    -- NOTE:  Booting harpoon2 only when it's keybindings are used.
+    -- INFO:  This would usually be "Booting harpoon2 only when it's keybindings are used",
+    -- but instead this time it's just for getting the proper arrow icons to show up. Harpoon
+    -- sets these icons in the background for keybindings in which-key for some reason.
     { "<leader>ha", mode = { "n" }, desc = "Add to harpoon" },
     { "<leader>hh", mode = { "n" }, desc = "Open harpoon" },
   },
