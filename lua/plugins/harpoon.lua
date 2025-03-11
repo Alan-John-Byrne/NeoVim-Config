@@ -12,7 +12,7 @@ return {
     { "<leader>ha", mode = { "n" }, desc = "Add to harpoon" },
     { "<leader>hh", mode = { "n" }, desc = "Open harpoon" },
   },
-  opts = function()
+  config = function()
     local harpoon = require("harpoon")
 
     -- XXX: Setup prior to further configuration.
