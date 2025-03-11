@@ -72,22 +72,24 @@ return {
       lua = { "selene" },
     }
 
-    -- Autocommand to trigger linter automatically.
+    -- XXX: Linters Specific Settings; Customize a linters config via it's 'args' table.
+    require("lint").linters.markdownlint.args = {
+      "--stdin", -- WARN: This is a required argument by this specifc linter. (Some linters require certain arguments to be passed.)
+      "--disable",
+      "MD013",
+      "MD026",
+      "MD049",
+      "MD033",
+    } -- NOTE: Please find full set of rules available for 'markdownlint' at:
+    --   https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint
+
+    -- IMPORTANT: Autocommand to trigger linters automatically.
     vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
       pattern = { "*.lua", "*.md" },
       callback = function()
         require("lint").try_lint()
       end,
     })
-
-    -- XXX: Linters (continued): Setting linter specific settings via args table.
-    require("lint").linters.markdownlint.args = {
-      "--disable",
-      "MD013",
-      "MD026",
-      "MD041",
-      "MD033",
-    }
 
     -- XXX: Formatters:
     require("mason-conform").setup({
