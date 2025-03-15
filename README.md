@@ -17,8 +17,6 @@
 
 ## Use Cases:
 
-### Examples:
-
 - **Studying Algorithms**:
   ![Kandan's Algorithm Code](.images/kandanes_algorithm_code.jpg)
 - **Image Previewer**: (Studying Algorithms w/ *MS Paint*🎨)
@@ -28,7 +26,7 @@
 
 - Debugging Software:
   ![Debugging Code](.images/debugging.jpg)
-- Unit Testing: ??? (Coming Soon)
+- Unit Testing: (Coming Soon)
 - Polyglot Development w/ WezTerm Multiplexing:
   ![WezTerm Multiplexing](.images/multiplex.jpg)
 
@@ -37,14 +35,14 @@
 | Language   | Debugging | LSP Support | TreeSitter Highlights | Linting  | Format On Save | Auto-Complete | Unit Testing |
 | ---------- | --------- | ----------- | --------------------- | -------- | -------------- | ------------- | ------------ |
 | MarkDown   | &#x274C;  | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      | &#x274C;     |
-| Python     | &#x2611;  | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      | ?            |
-| Lua        | Limited;  | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      | ?            |
-| Java       | &#x2611;  | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      | ?            |
-| Golang     | &#x2611;  | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      | ?            |
-| JavaScript | &#x2611;  | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      | ?            |
-| TypeScript | &#x2611;  | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      | ?            |
-| C#         | &#x2611;  | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      | ?            |
-| C++        | &#x2611;  | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      | ?            |
+| Python     | &#x2611;  | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      | Soon         |
+| Lua        | Limited   | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      | Soon         |
+| Java       | &#x2611;  | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      | Soon         |
+| Golang     | &#x2611;  | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      | Soon         |
+| JavaScript | &#x2611;  | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      | Soon         |
+| TypeScript | &#x2611;  | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      | Soon         |
+| C#         | &#x2611;  | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      | Soon         |
+| C++        | &#x2611;  | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      | Soon         |
 | PowerShell | &#x274C;  | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      | &#x274C;     |
 
 ## Setup:
@@ -70,7 +68,7 @@ In order for these languages to work, there are a few pre-requisites that need t
 ### Global Environment Variables:
 
 Some environment Variables are required to exposed to the OS at all times. For example, if you're
-using the WezTerm Multi-plexer, it won't be able to see the variables you've set within your terminal
+using the WezTerm Multiplexer (MUX), it won't be able to see the variables you've set within your terminal
 profiles, <u>**only those that are global and set via your system settings**.</u>
 
 | Variable               | Description                                        | Why?                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
