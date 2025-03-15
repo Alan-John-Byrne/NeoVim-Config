@@ -56,6 +56,16 @@ config.keys = {                            -- TODO: Custom keybindings: (Self-ex
     action = wezterm.action.IncreaseFontSize, -- Increase Font Size.
   },
   {
+    key = "t",
+    mods = "CTRL|ALT",
+    action = wezterm.action.SpawnTab("DefaultDomain"), -- Create a new tab.
+  },
+  {
+    key = "a",
+    mods = "CTRL",
+    action = wezterm.action.CloseCurrentTab({ confirm = true }), -- Close the current tab.
+  },
+  {
     key = "]",
     mods = "CTRL|ALT",
     action = wezterm.action.ActivateTabRelative(-1), -- Move to the right tab.
@@ -118,7 +128,7 @@ config.keys = {                            -- TODO: Custom keybindings: (Self-ex
   {
     key = "UpArrow",
     mods = "CTRL|ALT",
-    action = wezterm.action.AdjustPaneSize({ "Up", 3 }) -- Adjust Pane Upward.
+    action = wezterm.action.AdjustPaneSize({ "Up", 4 }) -- Adjust Pane Upward.
   },
 }
 
