@@ -1,88 +1,38 @@
--- Options are automatically loaded before lazy.nvim startup
--- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
--- Add any additional options here
---
--- Adding the PowerShell Profile Terminal Configuration:
---vim.o.shell = "pwsh.exe"
-vim.opt.shell = "pwsh"
-vim.opt.shellcmdflag = "-nologo -noprofile -ExecutionPolicy RemoteSigned -command"
-vim.opt.shellxquote = ""
--- NOTE: This is just pointing to the PowerShell 7 executable, made available through environment variables. It also include your own personal powershell 7 profile.
+-- TODO: Options are automatically loaded before lazy.nvim startup. Add any additional options here:
 
--- IMPORTANT: The options.lua file is used for setting Vim options, not for direct VIM API calls. Accessing the global vim lua table, and setting options. See full list of options using the ':options' command.
+-- WARN: The options.lua file is used for accessing the global vim lua table, and setting VIM options.
+-- Not for direct VIM API calls. See full list of options using the ':options' command.
 
--- Sets how neovim will display certain whitespace characters in the editor.
---  See `:help 'list'`
---  and `:help 'listchars'`
-vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+-- XXX: Ways of setting options:
+--'vim.opt': The modern Lua API for setting options. Recommended way, use when possible. (modern, auto handle of scope)
+--'vim.o': Global-only options. Applies to all buffers and windows. Use to set global settings that apply across buffers and windows.
+--'vim.bo': Buffer-local options. Only applies to the CURRENT buffer. Use within plugin configuration functions or autocommands.
+--'vim.wo': Window-local options. Only applies to the CURRENT window. Use within plugin configuration functions or autocommands.
+--'vim.env': Allows for accessing your environment variables within Neovim. (eg: $env.HOME)
 
-vim.opt.termguicolors = true
-
--- NOTE: Buffer Related Options are noted with 'vim.bo. ....'
-
--- LAZYVIM SPECIFIC OPTIONS:
---- This file is automatically loaded by plugins.core
-vim.g.mapleader = " " -- WARN: ESSENTIAL. Makes 'Which-key' work.
+-- TODO: Plugin Global Settings:
+-- IMPORTANT: 'vim.g': Global variables. These are NOT options. They're used for configuring global settings used by plugins that require them to be set.
+-- 'local plugin_global = vim.g', you can't do this. 'vim.g' is a special meta-table handled by neovim so you can't do a 'shallow' or 'deep' copy.
+-- It must be 'vim.g' on it's own. Like so:
+vim.g.mapleader = " " -- 'which-key': Set "<leader>" key to 'space' allowing keymaps to work properly.
 vim.g.maplocalleader = "\\"
 
--- LazyVim auto format
-vim.g.autoformat = true
-
--- Snacks animations
--- Set to `false` to globally disable all snacks animations
-vim.g.snacks_animate = true
-
--- LazyVim picker to use.
--- Can be one of: telescope, fzf
--- Leave it to "auto" to automatically use the picker
--- enabled with `:LazyExtras`
-vim.g.lazyvim_picker = "auto"
-
--- LazyVim completion engine to use.
--- Can be one of: nvim-cmp, blink.cmp
--- Leave it to "auto" to automatically use the completion engine
--- enabled with `:LazyExtras`
-vim.g.lazyvim_cmp = "auto"
-
--- if the completion engine supports the AI source,
--- use that instead of inline suggestions
-vim.g.ai_cmp = true
-
--- LazyVim root dir detection
--- Each entry can be:
--- * the name of a detector function like `lsp` or `cwd`
--- * a pattern or array of patterns like `.git` or `lua`.
--- * a function with signature `function(buf) -> string|string[]`
-vim.g.root_spec = { "lsp", { ".git", "lua" }, "cwd" }
-
--- Optionally setup the terminal to use
--- This sets `vim.o.shell` and does some additional configuration for:
--- * pwsh
--- * powershell
--- LazyVim.terminal.setup("pwsh")
-
--- Set LSP servers to be ignored when used with `util.root.detectors.lsp`
--- for detecting the LSP root
-vim.g.root_lsp_ignore = { "copilot" }
-
--- Hide deprecation warnings
-vim.g.deprecation_warnings = false
-
--- Show the current document symbols location from Trouble in lualine
--- You can disable this for a buffer by setting `vim.b.trouble_lualine = false`
-vim.g.trouble_lualine = true
-
+-- REMEMBER: Modern Lua API: Setting options and auto-detecting if they're 'global', 'buffer-local', or 'window-local'.
 local opt = vim.opt
 
+-- NOTE: This points to the PowerShell7 executable, available through your environment variables. It includes your ".ps1" profile.
+opt.shell = "pwsh" -- Adding the PowerShell Profile Terminal Configuration:
+opt.shellcmdflag = "-nologo -noprofile -ExecutionPolicy RemoteSigned -command"
+opt.shellxquote = ""
 opt.autowrite = true -- Enable auto write
 -- only set clipboard if not in ssh, to make sure the OSC 52
 -- integration works automatically. Requires Neovim >= 0.10.0
 opt.clipboard = vim.env.SSH_TTY and "" or "unnamedplus" -- Sync with system clipboard
 opt.completeopt = "menu,menuone,noselect"
-opt.conceallevel = 2 -- Hide * markup for bold and italic, but not markers with substitutions
-opt.confirm = true -- Confirm to save changes before exiting modified buffer
-opt.cursorline = true -- Enable highlighting of the current line
-opt.expandtab = true -- Use spaces instead of tabs
+opt.conceallevel = 2                                    -- Hide * markup for bold and italic, but not markers with substitutions
+opt.confirm = true                                      -- Confirm to save changes before exiting modified buffer
+opt.cursorline = true                                   -- Enable highlighting of the current line
+opt.expandtab = true                                    -- Use spaces instead of tabs
 opt.fillchars = {
   foldopen = "",
   foldclose = "",
@@ -96,35 +46,35 @@ opt.formatexpr = "v:lua.require'lazyvim.util'.format.formatexpr()"
 opt.formatoptions = "jcroqlnt" -- tcqj
 opt.grepformat = "%f:%l:%c:%m"
 opt.grepprg = "rg --vimgrep"
-opt.ignorecase = true -- Ignore case
-opt.inccommand = "nosplit" -- preview incremental substitute
+opt.ignorecase = true                         -- Ignore case
+opt.inccommand = "nosplit"                    -- preview incremental substitute
 opt.jumpoptions = "view"
-opt.laststatus = 3 -- global statusline
-opt.linebreak = true -- Wrap lines at convenient points / Avoid wrapping in the middle of words
-opt.list = true -- Show some invisible characters (tabs...
-opt.mouse = "a" -- Enable mouse mode
-opt.number = true -- Print line number
-opt.pumblend = 10 -- Popup blend
-opt.pumheight = 10 -- Maximum number of entries in a popup
-opt.relativenumber = true -- Relative line numbers
-opt.ruler = false -- Disable the default ruler
-opt.scrolloff = 4 -- Lines of context
+opt.laststatus = 3                            -- global statusline
+opt.linebreak = true                          -- Wrap lines at convenient points / Avoid wrapping in the middle of words
+opt.list = true                               -- Show some invisible characters (tabs...
+opt.mouse = "a"                               -- Enable mouse mode
+opt.number = true                             -- Print line number
+opt.pumblend = 10                             -- Popup blend
+opt.pumheight = 10                            -- Maximum number of entries in a popup
+opt.relativenumber = true                     -- Relative line numbers
+opt.ruler = false                             -- Disable the default ruler
+opt.scrolloff = 4                             -- Lines of context
 opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
-opt.shiftround = true -- Round indent
-opt.shiftwidth = 2 -- Size of an indent
+opt.shiftround = true                         -- Round indent
+opt.shiftwidth = 2                            -- Size of an indent
 opt.shortmess:append({ W = true, I = true, c = true, C = true })
-opt.showmode = false -- Dont show mode since we have a statusline
-opt.sidescrolloff = 8 -- Columns of context
-opt.signcolumn = "yes" -- Always show the signcolumn, otherwise it would shift the text each time
-opt.smartcase = true -- Don't ignore case with capitals
-opt.smartindent = true -- Insert indents automatically
+opt.showmode = false                          -- Dont show mode since we have a statusline
+opt.sidescrolloff = 8                         -- Columns of context
+opt.signcolumn = "yes"                        -- Always show the signcolumn, otherwise it would shift the text each time
+opt.smartcase = true                          -- Don't ignore case with capitals
+opt.smartindent = true                        -- Insert indents automatically
 opt.spelllang = { "en" }
-opt.splitbelow = true -- Put new windows below current
+opt.splitbelow = true                         -- Put new windows below current
 opt.splitkeep = "screen"
-opt.splitright = true -- Put new windows right of current
+opt.splitright = true                         -- Put new windows right of current
 opt.statuscolumn = [[%!v:lua.require'snacks.statuscolumn'.get()]]
-opt.tabstop = 2 -- Number of spaces tabs count for
-opt.termguicolors = true -- True color support, 'termguicolors' must be set prior to the 'bufferline' plugin setup.
+opt.tabstop = 2                               -- Number of spaces tabs count for
+opt.termguicolors = true                      -- True color support, 'termguicolors' must be set prior to the 'bufferline' plugin setup.
 opt.timeoutlen = vim.g.vscode and 1000 or 300 -- Lower than default (1000) to quickly trigger which-key
 opt.undofile = true
 opt.undolevels = 10000
@@ -133,16 +83,7 @@ opt.virtualedit = "block" -- Allow cursor to move where there is no text in visu
 opt.wildmode = "longest:full,full" -- Command-line completion mode
 opt.winminwidth = 5 -- Minimum window width
 opt.wrap = false -- Disable line wrap
-
-if vim.fn.has("nvim-0.10") == 1 then
-  opt.smoothscroll = true
-  opt.foldexpr = "v:lua.require'lazyvim.util'.ui.foldexpr()"
-  opt.foldmethod = "expr"
-  opt.foldtext = ""
-else
-  opt.foldmethod = "indent"
-  opt.foldtext = "v:lua.require'lazyvim.util'.ui.foldtext()"
-end
-
--- Fix markdown indentation settings
-vim.g.markdown_recommended_style = 0
+opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" } -- Special symbols to use whilst editing.
+-- WARN: Sets how neovim will display certain whitespace characters in the editor.
+--  See `:help 'list'`
+--  and `:help 'listchars'`
