@@ -10,25 +10,29 @@
   <img src=".images/lazy_logo.png" alt="LazyVim Logo" width="100" height="70">
 </p>
 
-**GOAL:** Put multiple complex tools together to form a powerful and extensive development environment.
-
 > **NOTE:** This is a custom project/IDE using PowerShell7/WezTerm. A work in progress that's ever changing.
 > There's plans to create a compatible setup for Unix environments.
 
+**GOAL:** Put multiple complex tools together to form a powerful and extensive development environment.
+
+> **PAIN POINTS**: A list of common mistakes, and how to avoid them:
+>
+> - <u>_'File is too large to open' (mini.files)_</u>: If the file is currently stored
+>   on your OneDrive, please ensure your OneDrive is running and synced so you
+>   actually have the file locally on your machine, to open it.
+
 ## Use Cases:
 
-- **Studying Algorithms**:
-  ![Kandan's Algorithm Code](.images/kandanes_algorithm_code.jpg)
-- **Image Previewer**: (Studying Algorithms w/ *MS Paint*🎨)
-  ![MS Paint Illustration](.images/image_previewer.jpg)
+- **Study Algorithms w/ WezTerm Multiplexing (_<u>Image Previewer included</u>_)**:
+  ![Studying Kandane's Algorithm](.images/study_algoes.png)
 
   > **NOTE:** Image previewing ONLY WORKS in terminals that support the necessary image protocols, such as WezTerm, Kitty, or other compatible terminal emulators. This will **NOT** work in PowerShell, Command Prompt, or basic terminal emulators that lack support for those protocols.
 
-- Debugging Software:
+- **Debug Software w/ Nvim-Dap**:
   ![Debugging Code](.images/debugging.jpg)
-- Unit Testing: (Coming Soon)
-- Polyglot Development w/ WezTerm Multiplexing:
+- **Use Polyglot Development w/ WezTerm Multiplexing**:
   ![WezTerm Multiplexing](.images/multiplex.jpg)
+- _Unit Testing_: (Coming Soon)
 
 ## Language Feature Support:
 
@@ -47,8 +51,14 @@
 
 ## Setup:
 
-This setup does require some knowledge of powershell profiles for correctly setting environment variables
-(_used during open powershell sessions_), or you could just set them within the global table on windows.
+All can be setup in the following steps:
+
+1. Use a windows package manager of your choice (_i.e.: <u>winget</u> or <u>chocolatey</u>_) to install NeoVim onto your system.
+2. Clone or fork this repository to make it your own, into your '_C:\Users\<Username>\AppData\Local_' directory. (Overwrite the 'nvim' directory if it exists already after following step **1**)
+3. Install the following software, and configure the following environment variables <u>_exactly_</u> as is to complete the setup.
+
+> **NOTE**: This setup does require some knowledge of powershell profiles for correctly setting environment variables
+> (_used during open powershell sessions_), or you could just set them within the global table on windows.
 
 ### Environment Variables (Profile Specific)
 

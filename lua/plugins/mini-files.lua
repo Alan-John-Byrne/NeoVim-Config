@@ -10,7 +10,8 @@ return {
       { noremap = true, silent = true },
     },
   },
-  -- IMPORTANT: Below are the default configuration for the mini.files plugin, for illustrative purposes. No overwriting is happening here.
+  -- IMPORTANT: Below are the default configuration for the mini.files plugin.
+  -- For illustrative purposes. Omitting this would make no changes.
   opts = {
     -- NOTE: Customization of explorer windows
     windows = {
