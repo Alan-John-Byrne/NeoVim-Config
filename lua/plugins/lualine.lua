@@ -14,7 +14,29 @@ return {
       lualine_a = { 'mode' },
       lualine_b = { 'branch', 'diff', 'diagnostics' },
       lualine_c = { 'filename' },
-      lualine_x = { 'encoding', 'fileformat', 'filetype' },
+      lualine_x = {
+        { -- NOTE: Component for showing you're current input.
+          -- TODO: Only if loaded, and there's content, return it to this section of the lualine.
+          function() return require("noice").api.status.command.get() end,
+          cond = function()
+            -- WARN: Ensuring the noice plugin / package is first loaded.
+            return package.loaded["noice"] and require("noice").api.status.command.has()
+          end,
+          color = { fg = "#ff9e64" },
+        },
+        { -- NOTE: Component for showing when you're recording a marco (@recording?).
+          -- TODO: Only if loaded, and there's content, return it to this section of the lualine.
+          function() return require("noice").api.status.mode.get() end,
+          cond = function()
+            -- WARN: Ensuring the noice plugin / package is first loaded.
+            return package.loaded["noice"] and require("noice").api.status.mode.has()
+          end,
+          color = { fg = "#ff9e64" },
+        },
+        'encoding',
+        'fileformat',
+        'filetype'
+      },
       lualine_y = { 'progress' },
       lualine_z = { 'location' }
     },
