@@ -62,44 +62,51 @@ All can be setup in the following steps:
 
 ### Environment Variables (Profile Specific)
 
-This config is intended to demonstrate that it's possible to have multiple language support within neovim.
-In order for these languages to work, there are a few pre-requisites that need to be in place prior to utilisation.
+This config demonstrates the possibility of having multiple language supported within neovim.
+In order for these languages to work, there are a few pre-requisites that need to be in place prior to utilisation. Following is a table
+of environment variables that must be set to the correct values (*<u>paths to particular pieces of software</u>*) in accordance to the intended plugins 
+specifications. The plugins themselves dictate what versions of these software components are depended on in order to work correctly.
+So, in case of any updates to these plugin specs, please read the plugin specs in case errors pop up, to see if any dependencies listed below have
+been changed / updated.
 
 | Variable                        | Description                                               | Why?                                                                                                                                                        |
 | ------------------------------- | --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `JAVA_HOME`                     | Path to Java installation directory.                      | Java 21 required as 'JAVA_HOME' for nvim-jdtls to function. This variable points to the JDK itself, providing programs the java tools required to function. |
-| `DOTNET_ROOT`                   | .NET SDK root directory.                                  | .NET6.0 SDK / Runtime required for the OmniSharp LSP support within NeoVim. The latest that can be used is version 8.\*.\*                                  |
-| `CMAKE_EXPORT_COMPILE_COMMANDS` | Specifies default CMake generator.                        | We need to tell the 'Ninja' generator to create instructions for the 'clangd' LSP. It details how C++ projects are structured.                              |
-| `CMAKE_BUILD_TYPE`              | Specifies build type for CMake (e.g., Debug/Release).     | Change this between 'Debug' or 'Release' depending on whether or not you want to include debug symbols for debugging using nvim-dap in C++ projects.        |
-| `CMAKE_BUILD_GENERATOR`         | Specifies the generator to be used for the build process. | Ninja is one generator that is compatible with neovim.                                                                                                      |
+| `$env:JAVA_HOME`                     | Path to Java installation directory.                      | Java 21 required as 'JAVA_HOME' for nvim-jdtls to function. This variable points to the JDK itself, providing programs the java tools required to function. |
+| `$env:DOTNET_ROOT`                   | .NET SDK root directory.                                  | .NET6.0 SDK / Runtime required for the OmniSharp LSP support within NeoVim. The latest that can be used is version 8.\*.\*                                  |
+| `$env:CMAKE_EXPORT_COMPILE_COMMANDS` | Specifies default CMake generator.                        | We need to tell the 'Ninja' generator to create instructions for the 'clangd' LSP. It details how C++ projects are structured.                              |
+| `$env:CMAKE_BUILD_TYPE`              | Specifies build type for CMake (e.g., Debug/Release).     | Change this between 'Debug' or 'Release' depending on whether or not you want to include debug symbols for debugging using nvim-dap in C++ projects.        |
+| `$env:CMAKE_BUILD_GENERATOR`         | Specifies the generator to be used for the build process. | Ninja is one build generator that is compatible with neovim.                                                                                                      |
 
 > **NOTE:** **'CMAKE_BUILD_GENERATOR'** should only be specified within any 'CMakeLists.txt' files you have within your C++ projects. In case your using other IDEs like Visual Studio too.
 
 ### Global Environment Variables:
 
-Some environment Variables are required to exposed to the OS at all times. For example, if you're
+Some environment Variables are required to be exposed to the OS at all times. For example, if you're
 using the WezTerm Multiplexer (MUX), it won't be able to see the variables you've set within your terminal
-profiles, <u>**only those that are global and set via your system settings**.</u>
+profiles, <u>**only those that are set within the global table, via your system settings**</u>.
 
 | Variable               | Description                                        | Why?                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ---------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `$WEZTERM_CONFIG_FILE` | Path to '.wezterm.lua' config file. (NOT IN $PATH) | The 'wezterm.exe' process must be able to access its configuration file before it initializes. Since WezTerm is responsible for launching the shell or terminal program specified in 'config.default_prog' and 'config.launch_menu', the configuration needs to be available globally. Not just within a shell profile like '.bashrc' or 'profile.ps1'. If the '$WEZTERM_CONFIG_FILE' variable is only set in a shell profile, it won't be recognised when WezTerm starts, as the shell itself hasn't been launched yet. |
+| `$WEZTERM_CONFIG_FILE` | Path to '.wezterm.lua' config file. (Seperate to $PATH) | The 'wezterm.exe' process must be able to access its configuration file before it initializes. Since WezTerm is responsible for launching the shell or terminal program specified in 'config.default_prog' and 'config.launch_menu', the configuration needs to be available globally. Not just within a shell profile like '.bashrc' or 'profile.ps1'. If the '$WEZTERM_CONFIG_FILE' variable is only set in a shell profile, it won't be recognised when WezTerm starts, as the shell itself hasn't been launched yet. |
+| `path\to\pwsh.exe`      | Path to 'pwsh.exe'. (Included in $PATH)           | Required for WezTerm terminal emulator to properly execute PowerShell 7 commands and scripts.                                                                                                                                                                                                          |
 
 > **NOTE:** It's important that these variables are set correctly and in the right way so WezTerm
-> can see it's configuration and use any custom preferences you've set within your '.wezterm.lua' file.
+> can see it's configuration and use any custom preferences you've set within your '.wezterm.lua' config file.
 
 ### **Required executables to add to the "$PATH" variable:**
 
-Considering the scope and ambitious versatility of this configuration project, there's alot of programs that need to be
-exposed to the Windows OS via either a powershell profile, or your global environment variables table accessible via the windows settings.
-This allows for these programs to be used by plugins in neovim, allowing them to work as intended.
+Considering the scope and ambitious versatility of this configuration project, there's a lot of programs that need to be
+exposed to the OS via either a powershell profile, or your global environment variables table, accessible via the windows settings.
+This allows for these programs to be used by plugins in neovim, allowing them to work as intended. Why do I suggest exposing them via
+a profile instead of global table? To keep your global variables tidy, and only using the table for essential requirements intended to be
+placed there.
+
 
 | Executable                       | Description                                                                                                                 | Why?                                                                                                                                                                                                                                                                                                   |
 | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `nvim.exe`                       | Neovim                                                                                                                      | <u>_This project is based around this lightweight text editor._</u>                                                                                                                                                                                                                                    |
 | `oh-my-posh.exe`                 | Oh My Posh                                                                                                                  | Make your terminal look nice.                                                                                                                                                                                                                                                                          |
 | eg: `clangd.cmd`, `codelldb.cmd` | Neovim's Mason Plugin Manager, plugins.                                                                                     | Required to be 'findable' by other plugins mentioned within this config.                                                                                                                                                                                                                               |
-| `pwsh.exe`                       | PowerShell7. (<u>Use **GLOBAL** Path</u>)                                                                                   | Required for WezTerm terminal emulator to properly execute PowerShell 7 commands and scripts.                                                                                                                                                                                                          |
 | `py.exe`                         | Python Launcher.                                                                                                            | Program that uses the latest version of python installed on your system.                                                                                                                                                                                                                               |
 | eg: `pip.exe`                    | 'Scripts' directory of every python version you have installed on your system.                                              | These directories contain the corresponding modules required by that specific version of python. <u>_And that version of python could be a dependency of another part of the system._</u>                                                                                                              |
 | `lua5.1.exe & luarocks.exe`      | Lua V5.1 interpreter, and it's package manager.                                                                             | Most compatible version of the lua interpreter for neovim plugin build processes, along with it's package manager, luarocks.                                                                                                                                                                           |
