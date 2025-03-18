@@ -22,7 +22,20 @@ end
 function M.get_mason_package_path(package_name)
   local mason_registry = require("mason-registry") -- IMPORTANT: The mason registry only lists the LOADED plugins.
   local package = mason_registry.get_package(package_name)
-  return package:get_install_path() -- We need to retrieve the path of where the package is installed, because it will contain everything we need.
+  return package:get_install_path()                -- We need to retrieve the path of where the package is installed, because it will contain everything we need.
+end
+
+--- Returns a table containing all the seperate strings.
+---@param str string The string containing the 'split' pattern.
+---@param pattern  string  The pattern to split at.
+---@return string[] A table of strings
+---@nodiscard
+function M.split(str, pattern)
+  local seperated_strings = {}
+  for string in str:gmatch("[^" .. pattern .. ",]+") do
+    table.insert(seperated_strings, string)
+  end
+  return seperated_strings
 end
 
 -- Exporting the module.
