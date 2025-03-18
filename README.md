@@ -62,20 +62,20 @@ All can be setup in the following steps:
 
 ### Environment Variables (Profile Specific)
 
-This config demonstrates the possibility of having multiple language supported within neovim.
+This config demonstrates the possibility of having multiple languages supported within neovim.
 In order for these languages to work, there are a few pre-requisites that need to be in place prior to utilisation. Following is a table
-of environment variables that must be set to the correct values (*<u>paths to particular pieces of software</u>*) in accordance to the intended plugins 
+of environment variables that must be set to the correct values (_<u>paths to particular pieces of software</u>_) in accordance to the intended plugins
 specifications. The plugins themselves dictate what versions of these software components are depended on in order to work correctly.
 So, in case of any updates to these plugin specs, please read the plugin specs in case errors pop up, to see if any dependencies listed below have
 been changed / updated.
 
-| Variable                        | Description                                               | Why?                                                                                                                                                        |
-| ------------------------------- | --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Variable                             | Description                                               | Why?                                                                                                                                                        |
+| ------------------------------------ | --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `$env:JAVA_HOME`                     | Path to Java installation directory.                      | Java 21 required as 'JAVA_HOME' for nvim-jdtls to function. This variable points to the JDK itself, providing programs the java tools required to function. |
 | `$env:DOTNET_ROOT`                   | .NET SDK root directory.                                  | .NET6.0 SDK / Runtime required for the OmniSharp LSP support within NeoVim. The latest that can be used is version 8.\*.\*                                  |
 | `$env:CMAKE_EXPORT_COMPILE_COMMANDS` | Specifies default CMake generator.                        | We need to tell the 'Ninja' generator to create instructions for the 'clangd' LSP. It details how C++ projects are structured.                              |
 | `$env:CMAKE_BUILD_TYPE`              | Specifies build type for CMake (e.g., Debug/Release).     | Change this between 'Debug' or 'Release' depending on whether or not you want to include debug symbols for debugging using nvim-dap in C++ projects.        |
-| `$env:CMAKE_BUILD_GENERATOR`         | Specifies the generator to be used for the build process. | Ninja is one build generator that is compatible with neovim.                                                                                                      |
+| `$env:CMAKE_BUILD_GENERATOR`         | Specifies the generator to be used for the build process. | Ninja is one build generator that is compatible with neovim.                                                                                                |
 
 > **NOTE:** **'CMAKE_BUILD_GENERATOR'** should only be specified within any 'CMakeLists.txt' files you have within your C++ projects. In case your using other IDEs like Visual Studio too.
 
@@ -85,10 +85,10 @@ Some environment Variables are required to be exposed to the OS at all times. Fo
 using the WezTerm Multiplexer (MUX), it won't be able to see the variables you've set within your terminal
 profiles, <u>**only those that are set within the global table, via your system settings**</u>.
 
-| Variable               | Description                                        | Why?                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| ---------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Variable               | Description                                             | Why?                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ---------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `$WEZTERM_CONFIG_FILE` | Path to '.wezterm.lua' config file. (Seperate to $PATH) | The 'wezterm.exe' process must be able to access its configuration file before it initializes. Since WezTerm is responsible for launching the shell or terminal program specified in 'config.default_prog' and 'config.launch_menu', the configuration needs to be available globally. Not just within a shell profile like '.bashrc' or 'profile.ps1'. If the '$WEZTERM_CONFIG_FILE' variable is only set in a shell profile, it won't be recognised when WezTerm starts, as the shell itself hasn't been launched yet. |
-| `path\to\pwsh.exe`      | Path to 'pwsh.exe'. (Included in $PATH)           | Required for WezTerm terminal emulator to properly execute PowerShell 7 commands and scripts.                                                                                                                                                                                                          |
+| `path\to\pwsh.exe`     | Path to 'pwsh.exe'. (Included in $PATH)                 | Required for WezTerm terminal emulator to properly execute PowerShell 7 commands and scripts.                                                                                                                                                                                                                                                                                                                                                                                                                            |
 
 > **NOTE:** It's important that these variables are set correctly and in the right way so WezTerm
 > can see it's configuration and use any custom preferences you've set within your '.wezterm.lua' config file.
@@ -96,11 +96,9 @@ profiles, <u>**only those that are set within the global table, via your system 
 ### **Required executables to add to the "$PATH" variable:**
 
 Considering the scope and ambitious versatility of this configuration project, there's a lot of programs that need to be
-exposed to the OS via either a powershell profile, or your global environment variables table, accessible via the windows settings.
-This allows for these programs to be used by plugins in neovim, allowing them to work as intended. Why do I suggest exposing them via
-a profile instead of global table? To keep your global variables tidy, and only using the table for essential requirements intended to be
-placed there.
-
+exposed to the OS via either a powershell profile, or your global environment variables table ( accessible via the windows settings ).
+This allows for these programs to be used by the plugins within neovim, allowing them to work as intended. Why do I suggest exposing them via
+a profile instead of global table? To keep your global variables tidy. The global table should only be used for essential requirements.
 
 | Executable                       | Description                                                                                                                 | Why?                                                                                                                                                                                                                                                                                                   |
 | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |

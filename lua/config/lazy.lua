@@ -1,4 +1,4 @@
--- INFO: Setting up (Bootstrapping) Lazyvim Plugin Manager.
+-- INFO: Setting up (Bootstrapping) lazy.nvim Plugin Manager.
 -- IMPORTANT: Accessing the 'stdpath' vimscript function, via the vim table (API), to use it in lua. THIS IS THE ONLY WAY TO USE VIMSCRIPT FUNCTIONS IN LUA PROGRAMS.
 -- NOTE: The 'stdpath' is used for find stardard path used for our nvim config. See ':help stdpath' for details.
 -- Lazy Plugin Manager is only interested in our nvim data directory / path. That being 'C:\Users\{yourusername}\Appdata\Local\nvim-data"
@@ -25,7 +25,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     os.exit(1)
   end
 end
--- NOTE: Adding LazyVim path to the beginning of the runtime path table / array / list. Neovim comes here to get answers to questions it can't answer itself.
+-- NOTE: Adding lazy.nvim path to the beginning of the runtime path table / array / list. Neovim comes here to get answers to questions it can't answer itself.
 -- E.G.: For syntax highlight for particular types of files, if found, it will execute that file to get highlights.
 -- This is how plugin loading works, we add our plugin and it's directory to the runtime path, and neovim will look for that plugin lua code,
 -- when that plugin is loaded.
@@ -53,7 +53,7 @@ require("lazy").setup({
     -- IMPORTANT: You would override the LazyVim Distro's plugins via your own config.
   },
   defaults = {
-    -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
+    -- By default, only LazyVim plugins would be lazy-loaded. Your custom plugins would load during startup.
     -- If you know what you're doing, you can set this to `true` to have all your custom plugins lazy-loaded by default.
     lazy = false,
     -- It's recommended to leave version=false for now, since a lot the plugin that support versioning,

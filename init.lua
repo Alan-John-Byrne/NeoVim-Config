@@ -1,22 +1,20 @@
--- Bootstraping lazy.nvim, LazyVim (Distro) and plugins.
-require("config.options")
-require("config.autocmds")
-require("config.keymaps")
-require("config.customcmds")
+-- TODO: This section initializes essential configurations for the Neovim setup,
+-- enhancing the workflow for productivity with various plugins.
+require("config.options")    -- Customizes Neovim settings for a better user experience.
+require("config.autocmds")   -- Sets up automatic commands for improved functionality.
+require("config.keymaps")    -- Defines custom keybindings for quick access to commands.
+require("config.customcmds") -- Defines custom convenience commands for the user to use.
 -- NOTE: Load lazy last after you have everything already setup.
-require("config.lazy")
+require("config.lazy")       -- Bootstraping the lazy.nvim plugin manager.
 
--- WARN: When Neovim starts up, 'init.lua' isn't the only configuration file that Neovim looks for.
--- Neovim actually looks for a bunch of additional configuration files in something called the "runtimepath".
-
--- IMPORTANT: "require" works out of the box here because 'lua' directories are searched for in the runtime path.
-
--- TODO:
--- This section initializes essential configurations for my Neovim setup,
--- enhancing productivity and workflow with LazyVim and various plugins.
---  XXX:
--- 'config.options' customizes Neovim settings for a better user experience.
--- 'config.autocmds' sets up automatic commands for improved functionality.
--- 'config.keymaps' defines custom keybindings for quick access to commands.
--- 'config.lazy' handles plugin management for efficient loading.
--- and linting support.
+-- WARN: When Neovim starts up, "init.lua" isn't the only configuration
+-- file that Neovim looks for. Neovim actually looks for a bunch of additional
+-- configuration files in something called the "runtimepath" (vim.o.rtp).
+-- REMEMBER: Neovim's "require" mechanism looks through several kinds of subdirectories
+-- within each path included within the "runtimepath". It will look through the following
+-- child directories:
+-- 1. lua: Primary directory where your Lua modules should reside.
+--IMPORTANT: (Not necessary if using the lazy.nvim package manager.)
+-- 2. after: For Lua files that should be sourced after all other lua files in the "runtimepath".
+-- We override with 'opts' in lazy.nvim, so it's redundant with lazy.nvim.
+-- 3. pack: Another method for managing plugins, often used when managing plugins without a package manager like lazy.nvim.
