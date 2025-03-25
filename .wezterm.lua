@@ -1,5 +1,5 @@
 -- NOTE: Open the Debug menu using 'CTRL+SHIFT L'.
--- WARN: Pull in the wezterm API.
+-- WARN: Pull in the WezTerm API.
 local wezterm = require('wezterm')
 
 -- IMPORTANT: Configuration Location: (MUST BE SET WITHIN GLOBAL SYSTEM ENVIRONMENT VARIABLES, NOT A PROFILE)
@@ -35,6 +35,11 @@ config.font = wezterm.font_with_fallback({  -- Setting proper font families to f
 -- Setting keybindings.
 config.disable_default_key_bindings = true -- WARN: DISABLING DEFAULT KEYBINDINGS THAT ARE EITHER INCOMPATIBLE WITH WINDOWS, OR CAUSE I WANT TO CHANGE THEM.
 config.keys = {                            -- TODO: Custom keybindings: (Self-explanatory)
+  {
+    key = "L",
+    mods = "CTRL",
+    action = wezterm.action.ShowDebugOverlay -- Used for checking Wezterm Debug output.
+  },
   {
     key = "c",
     mods = "CTRL",
@@ -132,5 +137,5 @@ config.keys = {                            -- TODO: Custom keybindings: (Self-ex
   },
 }
 
--- IMPORTANT: Finally, return the built configuration to wezterm.
+-- IMPORTANT: Finally, return the built configuration to WezTerm.
 return config
