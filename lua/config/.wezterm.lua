@@ -138,4 +138,5 @@ config.keys = {                            -- TODO: Custom keybindings: (Self-ex
 }
 
 -- IMPORTANT: Finally, return the built configuration to WezTerm.
+-- INFO: This is not accessible via Neovim as a Module. It's not included within it's runtime.
 return config
