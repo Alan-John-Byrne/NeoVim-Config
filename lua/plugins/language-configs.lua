@@ -53,7 +53,24 @@ return {
     local lspconfig = require("lspconfig")
     require("mason-lspconfig").setup_handlers({
       function(server_name)
-        lspconfig[server_name].setup({}) -- XXX: Just use default settings for all other LSPs.
+        -- XXX: Configuring 'lua_ls' lsp
+        if server_name == "lua_ls" then
+          lspconfig[server_name].setup({
+            settings = {
+              Lua = {
+                workspace = {
+                  -- IMPORTANT: The 'lua_ls' lsp provides *SOME* linting. To allow it to
+                  -- recognise the global 'vim' table / variable, we must pass the neovim
+                  -- runtime library files into it's workspace library setting, via it's setup function.
+                  -- REMEMBER: The 'selene' linter will do most of the linting for lua instead. (Setup below)
+                  library = vim.api.nvim_get_runtime_file("", true)
+                }
+              }
+            }
+          })
+        else
+          lspconfig[server_name].setup({}) -- XXX: Just use default settings for all other LSPs.
+        end
       end,
     })
 
@@ -69,10 +86,19 @@ return {
 
     require("lint").linters_by_ft = { -- Hook these Linters into Neovim.
       markdown = { "markdownlint" },
+      html = { "htmlhint" },
       lua = { "selene" },
     }
 
     -- XXX: Linters Specific Settings; Customize a linters config via it's 'args' table.
+    require("lint").linters.selene.args = {
+      -- WARN: The 'selene' linter doesn't know about the neovim runtime
+      -- global variables like the 'vim' table, but the 'lua_ls' lsp does.
+      -- So, we provide a custom configuration for selene to just ignore it.
+      "--config", vim.fn.stdpath("config") ..
+    "lua\\config\\selene.toml"
+    }
+
     require("lint").linters.markdownlint.args = {
       "--stdin", -- WARN: This is a required argument by this specifc linter. (Some linters require certain arguments to be passed.)
       "--disable",
@@ -98,13 +124,18 @@ return {
     })
 
     require("conform").setup({ -- Hook these Formatters into Neovim.
+      format_on_save = {
+        timeout_ms = 50000,    -- Increase to 2 seconds
+        lsp_fallback = true,
+      },
       formatters_by_ft = {
         markdown = { "prettier" },
+        html = { "prettier" },
         go = { "goimports" }
-      },
+      }
     })
 
-    -- Autocommand to trigger formatter automatically on buffer content save.
+    -- IMPORTANT: Autocommand to trigger formatters automatically on buffer content save.
     vim.api.nvim_create_autocmd("BufWritePre", {
       pattern = "*", -- This applies to all files, you can change the pattern to a specific file type (e.g. "*.lua" or "*.md" etc)
       callback = function()
@@ -118,9 +149,9 @@ return {
           end
         end
         if lua_is_active then
-          vim.lsp.buf.format({ async = false }) -- Format using 'lua_ls' LSP. IMPORTANT: Must NOT be ASYNCHRONOUS, must FORMAT AFTER SAVING CONTENTS to buffer.
+          vim.lsp.buf.format({ async = false })                            -- Format using 'lua_ls' LSP. IMPORTANT: Must NOT be ASYNCHRONOUS, must FORMAT AFTER SAVING CONTENTS to buffer.
         else
-          require("conform").format()           -- This Triggers conform based formatters.
+          require("conform").format({ async = true, lsp_fallback = true }) -- This Triggers conform based formatters.
         end
       end,
     })

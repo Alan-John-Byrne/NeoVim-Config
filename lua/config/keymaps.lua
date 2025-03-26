@@ -141,7 +141,7 @@ map("n", "<leader>xq", "<cmd>copen<cr>", { desc = "Quickfix List" })
 map("n", "[q", vim.cmd.cprev, { desc = "Previous Quickfix" })
 map("n", "]q", vim.cmd.cnext, { desc = "Next Quickfix" })
 
--- formatting
+-- Formatting
 map({ "n", "v" }, "<leader>cf", function()
   local bufnr = vim.api.nvim_get_current_buf()
   local clients = vim.lsp.buf_get_clients(bufnr)
@@ -152,13 +152,13 @@ map({ "n", "v" }, "<leader>cf", function()
     end
   end
   if lua_is_active then
-    vim.lsp.buf.format({ async = false }) -- Format using 'lua_ls' LSP. IMPORTANT: Must NOT be ASYNCHRONOUS, must FORMAT AFTER SAVING CONTENTS to buffer.
+    vim.lsp.buf.format({ async = false, lsp_fallback = true })       -- Format using 'lua_ls' LSP. IMPORTANT: Must NOT be asynchronous, must format after saving contents to buffer.
   else
-    require("conform").format()           -- This Triggers conform based formatters.
+    require("conform").format({ async = true, lsp_fallback = true }) -- This Triggers conform based formatters.  WARN: "prettier" requires 'async' to be true for HTML.
   end
 end, { desc = "Format" })
 
--- diagnostic
+-- Diagnostics
 local diagnostic_goto = function(next, severity)
   local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
   severity = severity and vim.diagnostic.severity[severity] or nil
@@ -178,11 +178,12 @@ map("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
 map("t", "<C-/>", "<cmd>close<cr>", { desc = "Hide Terminal" })
 map("t", "<c-_>", "<cmd>close<cr>", { desc = "which_key_ignore" })
 
--- windows
+-- Window Mappings
 map("n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true })
 map("n", "<leader>|", "<C-W>v", { desc = "Split Window Right", remap = true })
 map("n", "<leader>wd", "<C-W>c", { desc = "Delete Window", remap = true })
--- tabs
+
+-- Tabs Mappings
 map("n", "<leader><tab>l", "<cmd>tablast<cr>", { desc = "Last Tab" })
 map("n", "<leader><tab>o", "<cmd>tabonly<cr>", { desc = "Close Other Tabs" })
 map("n", "<leader><tab>f", "<cmd>tabfirst<cr>", { desc = "First Tab" })
@@ -191,7 +192,7 @@ map("n", "<leader><tab>]", "<cmd>tabnext<cr>", { desc = "Next Tab" })
 map("n", "<leader><tab>d", "<cmd>tabclose<cr>", { desc = "Close Tab" })
 map("n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
 
--- native snippets. only needed on < 0.11, as 0.11 creates these by default
+-- Native snippets.  WARN: Only needed on < 0.11, as 0.11 creates these by default.
 if vim.fn.has("nvim-0.11") == 0 then
   map("s", "<Tab>", function()
     return vim.snippet.active({ direction = 1 }) and "<cmd>lua vim.snippet.jump(1)<cr>" or "<Tab>"
