@@ -23,6 +23,9 @@
 
 ## Use Cases:
 
+- **Work on Projects (<u>eg: _React + Ts /w Vite_</u>)**:
+  ![Vite + React + TS](.images/vite_reactts_project.png)
+
 - **Study Algorithms w/ WezTerm Multiplexing (_<u>Image Previewer included</u>_)**:
   ![Studying Kandane's Algorithm](.images/study_algoes.png)
 
