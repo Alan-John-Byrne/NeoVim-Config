@@ -15,11 +15,16 @@
 
 **GOAL:** Put multiple complex tools together to form a powerful and extensive development environment.
 
-> **PAIN POINTS**: A list of common mistakes, and how to avoid them:
+> **PAIN POINTS**: A list of mistakes I've made, and how to avoid them:
 >
 > - <u>_'File is too large to open' (mini.files)_</u>: If the file is currently stored
 >   on your OneDrive, please ensure your OneDrive is running and synced so you
 >   actually have the file locally on your machine, to open it.
+> - <u>_'Snacks terminal not opening in the same directory as the current buffer' (snacks.nvim)_</u>: The terminal
+>   provided by the snacks.nvim package (<u>_triggered via the keybind 'CTRL + /'_</u>) will open in the same directory
+>   where you initially entered neovim. I've added a which-key keybind to allow you
+>   set the current directory to the parent directory of the current buffer, use '\<leader> + \\'. Then when you enter
+>   the snacks terminal, it'll open in the same directory as the current buffer.
 
 ## Use Cases:
 
