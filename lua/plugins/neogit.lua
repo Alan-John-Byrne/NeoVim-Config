@@ -4,29 +4,32 @@ return {
   "NeogitOrg/neogit",
   enabled = true, -- TESTING
   event = "VeryLazy",
+  priority = 1,
   dependencies = {
     "nvim-lua/plenary.nvim",
     "sindrets/diffview.nvim",
     "ibhagwan/fzf-lua",
   },
-  keys = {
-    { "<leader>gC", "<cmd>Neogit kind=split<CR>", desc = "Open Neogit status popup" },
-    { "<leader>gc", "<cmd>Neogit commit<CR>",     desc = "Open Neogit commit popup" },
-    { "<leader>gp", "<cmd>Neogit push<CR>",       desc = "Open Neogit push popup" },
-    { "<leader>gb", "<cmd>Neogit bisect<CR>",     desc = "Open Neogit bisect popup" },
-    { "<leader>gB", "<cmd>Neogit branch<CR>",     desc = "Open Neogit branch + branch config popup" },
-    { "<leader>gd", "<cmd>Neogit diff<CR>",       desc = "Open Neogit diff popup" },
-    { "<leader>gf", "<cmd>Neogit fetch<CR>",      desc = "Open Neogit fetch popup" },
-    { "<leader>gl", "<cmd>Neogit log<CR>",        desc = "Open Neogit log popup" },
-    { "<leader>gm", "<cmd>Neogit merge<CR>",      desc = "Open Neogit merge popup" },
-    { "<leader>gP", "<cmd>Neogit pull<CR>",       desc = "Open Neogit pull popup" },
-    { "<leader>gr", "<cmd>Neogit rebase<CR>",     desc = "Open Neogit rebase popup" },
-    { "<leader>gR", "<cmd>Neogit remote<CR>",     desc = "Open Neogit remote + remote config popup" },
-    { "<leader>gS", "<cmd>Neogit reset<CR>",      desc = "Open Neogit reset popup" },
-    { "<leader>gT", "<cmd>Neogit stash<CR>",      desc = "Open Neogit stash popup" },
-    { "<leader>gt", "<cmd>Neogit tag<CR>",        desc = "Open Neogit tag popup" },
-    { "<leader>gw", "<cmd>Neogit worktree<CR>",   desc = "Open Neogit worktree popup" },
-  },
+  keys = function()
+    local neogit = require("neogit")
+    return { -- IMPORTANT: You have to use functions here to prevent methods from being called on entering neovim.
+      { '<leader>gC', function() neogit.open({ kind = 'split' }) end, desc = "Open Neogit status popup" },
+      { '<leader>gc', function() neogit.open({ 'commit' }) end,       desc = "Open Neogit commit popup" },
+      { '<leader>gp', function() neogit.open({ 'push' }) end,         desc = "Open Neogit push popup" },
+      { '<leader>gb', function() neogit.open({ 'branch' }) end,       desc = "Open Neogit branch + branch config popup" },
+      { '<leader>gd', function() neogit.open({ 'diff' }) end,         desc = "Open Neogit diff popup" },
+      { '<leader>gf', function() neogit.open({ 'fetch' }) end,        desc = "Open Neogit fetch popup" },
+      { '<leader>gl', function() neogit.open({ 'log' }) end,          desc = "Open Neogit log popup" },
+      { '<leader>gm', function() neogit.open({ 'merge' }) end,        desc = "Open Neogit merge popup" },
+      { '<leader>gP', function() neogit.open({ 'pull' }) end,         desc = "Open Neogit pull popup" },
+      { '<leader>gr', function() neogit.open({ 'rebase' }) end,       desc = "Open Neogit rebase popup" },
+      { '<leader>gR', function() neogit.open({ 'remote' }) end,       desc = "Open Neogit remote popup" },
+      { '<leader>gS', function() neogit.open({ 'reset' }) end,        desc = "Open Neogit reset popup" },
+      { '<leader>gT', function() neogit.open({ 'stash' }) end,        desc = "Open Neogit stash popup" },
+      { '<leader>gt', function() neogit.open({ 'tag' }) end,          desc = "Open Neogit tag popup" },
+      { '<leader>gw', function() neogit.open({ 'worktree' }) end,     desc = "Open Neogit worktree popup" },
+    }
+  end
   -- IMPORTANT: NOT RECOMMENDED:
   -- WARN: Automatically, there are a set of keymaps for 'lazygit', if you don't have the exectuable for this program within your PATH, these keymaps will be useless.
 }
