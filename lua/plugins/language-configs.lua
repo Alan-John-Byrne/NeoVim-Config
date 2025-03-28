@@ -38,10 +38,10 @@ return {
   config = function()
     --  TODO: 1. Setup Mason (UI-Based Package Manager), and Dap Virtual Text (Provides nice debugging variable value text notes.)
     -- IMPORTANT: Ensure "...\nvim-data\mason\bin" directory is accessible via the PATH.
-    -- This is how bridge plugins can access the plugins you install via the Mason UI, setup
+    -- This is how 'bridge' plugins can access the plugins you install via the Mason UI, setup
     -- immediately below.
     require("mason").setup()
-    require("nvim-dap-virtual-text").setup()
+    require("nvim-dap-virtual-text").setup({})
 
     -- TODO: 2. Setup LSPs (Auto-Install + Auto-Config)
     require("mason-lspconfig").setup({
@@ -64,6 +64,10 @@ return {
                   -- runtime library files into it's workspace library setting, via it's setup function.
                   -- REMEMBER: The 'selene' linter will do most of the linting for lua instead. (Setup below)
                   library = vim.api.nvim_get_runtime_file("", true)
+                },
+                -- INFO: Adjusting "hover over" behaviour for the 'lua_ls' LSP.
+                hover = {
+                  previewFields = 100 -- Expanding amount of rows viewable within module tables.
                 }
               }
             }
