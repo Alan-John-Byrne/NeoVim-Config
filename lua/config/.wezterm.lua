@@ -27,10 +27,11 @@ config.color_scheme = 'Gruvbox Dark (Gogh)' -- Changing the colourscheme.
 config.default_prog = { 'pwsh' }            -- 'pwsh' / PowerShell 7 must be available within the global environmental variables, not powershell profile.
 config.enable_scroll_bar = true             -- Enabling the scrollbar.
 config.font = wezterm.font_with_fallback({  -- Setting proper font families to fall back on if certain icons aren't available in some.
-  { family = 'JetBrainsMono NF',           weight = 'Light', italic = false, scale = 1 },
   { family = 'JetBrainsMono NFP',          weight = 'Light', italic = false, scale = 1 },
-  { family = 'Noto Sans Linear B Regular', weight = 'Light', italic = false, scale = 1 }
+  { family = 'JetBrainsMono NF',           weight = 'Light', italic = false, scale = 1 },
+  { family = 'Noto Sans Linear B Regular', weight = 'Light', italic = false, scale = 1 },
 })
+config.window_background_opacity = 0.85 -- Changing Wezterm window opacity.
 
 -- Setting keybindings.
 config.disable_default_key_bindings = true -- WARN: DISABLING DEFAULT KEYBINDINGS THAT ARE EITHER INCOMPATIBLE WITH WINDOWS, OR CAUSE I WANT TO CHANGE THEM.
