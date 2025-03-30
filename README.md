@@ -1,13 +1,16 @@
 # Inspired by the 💤[LazyVim](https://github.com/LazyVim/LazyVim) neovim distro, by folke.
 
-**<p align="center" >THE STACK</p>**
+**<p align="center" style="font-size:2rem;">Preview:</p>**
+<img src=".images/dashboard.png" alt="Dashboard" width="1000" height="400">
+
+**<p align="center" style="font-size:2rem;">The Stack:</p>**
 
 <p align="center">
-<img src=".images/wezterm.png" alt="WezTerm Logo" width="130" height="130">
-  <br>
-<img src=".images/neovim_logo.png" alt="NeoVim Logo" width="100" height="130">
-  <br>
-  <img src=".images/lazy_logo.png" alt="LazyVim Logo" width="100" height="70">
+    <img src=".images/wezterm.png" alt="WezTerm Logo" width="130" height="130">
+    <br>
+    <img src=".images/neovim_logo.png" alt="NeoVim Logo" width="100" height="130">
+    <br>
+    <img src=".images/lazy_logo.png" alt="LazyVim Logo" width="100" height="70">
 </p>
 
 > **NOTE:** This is a custom project/IDE using PowerShell7/WezTerm. A work in progress that's ever changing.
@@ -24,7 +27,8 @@
 >   provided by the snacks.nvim package (<u>_triggered via the keybind 'CTRL + /'_</u>) will open in the same directory
 >   where you initially entered neovim. I've added a which-key keybind to allow you
 >   set the current directory to the parent directory of the current buffer, use '\<leader> + \\'. Then when you enter
->   the snacks terminal, it'll open in the same directory as the current buffer.
+>   the snacks terminal, it'll open in the same directory as the current buffer, without having to first exit and re-enter
+>   neovim in that desired directory.
 
 ## Use Cases:
 
@@ -40,7 +44,7 @@
   ![Debugging Code](.images/debugging.jpg)
 - **Use Polyglot Development w/ WezTerm Multiplexing**:
   ![WezTerm Multiplexing](.images/multiplex.jpg)
-- _Unit Testing_: (Coming Soon)
+- _Unit Testing_: (<u>Coming Soon - /w neotest</u>)
 
 ## Language Feature Support:
 

@@ -143,7 +143,7 @@ map({ "n", "v" }, "<leader>cf", function()
   local bufnr = vim.api.nvim_get_current_buf()
   local clients = vim.lsp.buf_get_clients(bufnr)
   local lua_is_active = false
-  for index, client in ipairs(clients) do
+  for _, client in ipairs(clients) do
     if client.name == "lua_ls" then
       lua_is_active = true
     end

@@ -129,8 +129,8 @@ return {
 
     require("conform").setup({ -- Hook these Formatters into Neovim.
       format_on_save = {
-        timeout_ms = 50000,    -- Increase to 2 seconds
-        lsp_fallback = true,
+        timeout_ms = 5000,     -- Increased to 5 seconds. (Giving time for save operation ahead of format operation)
+        lsp_fallback = true,   -- If no seperate formatter is installed, and an LSP takes care of formatting, use that instead.
       },
       formatters_by_ft = {
         markdown = { "prettier" },
