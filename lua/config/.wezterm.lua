@@ -42,16 +42,6 @@ config.keys = {                            -- TODO: Custom keybindings: (Self-ex
     action = wezterm.action.ShowDebugOverlay -- Used for checking Wezterm Debug output.
   },
   {
-    key = "c",
-    mods = "CTRL",
-    action = wezterm.action.CopyTo("Clipboard"), -- Copy to the clipboard.
-  },
-  {
-    key = "v",
-    mods = "CTRL",
-    action = wezterm.action.PasteFrom("Clipboard"), -- Paste from the clipboard.
-  },
-  {
     key = "-",
     mods = "CTRL",
     action = wezterm.action.DecreaseFontSize, -- Decrease Font Size.
