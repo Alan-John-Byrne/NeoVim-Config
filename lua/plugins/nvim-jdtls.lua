@@ -37,6 +37,17 @@ return {
             -- IMPORTANT:💀 Must be set to the specifics of your machine.
             "Java", -- or '/path/to/java17_or_newer/bin/java' depends on if the `java.exe` (java runtime) is in your $PATH env variables
 
+            -- NOTE: Options specified in the documentation:
+            "-Declipse.application=org.eclipse.jdt.ls.core.id1", -- Specifying the Eclipse app ID to run (the JDT Language Server)
+            "-Dosgi.bundles.defaultStartLevel=4",                -- Setting the default start level for OSGi bundles in the Eclipse runtime.
+            "-Declipse.product=org.eclipse.jdt.ls.core.product", -- Defines which Eclipse product to run.
+            "-Dlog.protocol=true",                               -- Enables logging of the Language Server Protocol (LSP) communication.
+            "-Dlog.level=ALL",                                   -- Setting the logging level to capture all logs (maximum verbosity)
+            "-Xmx1g",                                            -- Setting the maximum Java heap size to 1 gigabyte.
+            "--add-modules=ALL-SYSTEM",                          -- REMEMBER: Making all modules in the JDK available.
+            "--add-opens", "java.base/java.util=ALL-UNNAMED",
+            "--add-opens", "java.base/java.lang=ALL-UNNAMED",    -- Both of these settings open specific packages in the Java module system to allow deep reflection access from unnamed modules.
+
             -- IMPORTANT:💀 Must be set to the specifics of your machine. (Manual Installation required - MASON NOT COMPATIBLE)
             "-jar",
             base_path .. ".setup_config\\jdtls\\plugins\\org.eclipse.equinox.launcher_1.6.900.v20240613-2009.jar",
