@@ -23,20 +23,23 @@ config.launch_menu = {
   -- (I use PowerShell... I know... lol... leave me alone... SHHHHHHH!!! GO AWAY!!!)
 }
 
-config.color_scheme = 'Gruvbox Dark (Gogh)' -- Changing the colourscheme.
-config.default_prog = { 'pwsh' }            -- 'pwsh' / PowerShell 7 must be available within the global environmental variables, not powershell profile.
-config.enable_scroll_bar = true             -- Enabling the scrollbar.
-config.font = wezterm.font_with_fallback({  -- Setting proper font families to fall back on if certain icons aren't available in some.
+config.adjust_window_size_when_changing_font_size = false -- Don't change the size of the window when adjusting the font size.
+config.color_scheme = 'Gruvbox Dark (Gogh)'               -- Changing the colourscheme.
+config.default_prog = { 'pwsh' }                          -- 'pwsh' / PowerShell 7 must be available within the global environmental variables, not powershell profile.
+config.enable_scroll_bar = true                           -- Enabling the scrollbar.
+config.font = wezterm.font_with_fallback({                -- Setting proper font families to fall back on if certain icons aren't available in some.
   { family = 'JetBrainsMono NFP',          weight = 'Light', italic = false, scale = 1 },
   { family = 'JetBrainsMono NF',           weight = 'Light', italic = false, scale = 1 },
   { family = 'Noto Sans Linear B Regular', weight = 'Light', italic = false, scale = 1 },
 })
-config.window_background_opacity = 0.85 -- Changing Wezterm window opacity.
+config.window_background_opacity = 1 -- Changing Wezterm window opacity.
 
 -- Setting keybindings.
 config.disable_default_key_bindings = true -- WARN: DISABLING DEFAULT KEYBINDINGS THAT ARE EITHER INCOMPATIBLE WITH WINDOWS, OR CAUSE I WANT TO CHANGE THEM.
 config.keys = {                            -- TODO: Custom keybindings: (Self-explanatory)
+  -- IMPORTANT: Avoid setting / overwritting 'CTRL+c' as it clashes with mutliple NeoVim plugins including 'neogit' & the 'snacks.nvim' terminal.
   {
+
     key = "L",
     mods = "CTRL",
     action = wezterm.action.ShowDebugOverlay -- Used for checking Wezterm Debug output.
