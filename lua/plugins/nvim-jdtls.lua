@@ -1,11 +1,17 @@
--- PLUGIN: OVERWRITING THE 'NVIM-JDTLS.NVIM' PLUGIN TO SUPPORT JAVA DEVELOPMENT.
--- IMPORTANT: THIS CONFIG WILL APPEAR AS IS WITHIN LSPINFO AS LSPCONFIG ACTUALLY HANDLES THIS FOR YOU.
--- WARN: FOR JDTLS TO WORK, THE WORKSPACE DIRECTORY MUST BE ABOVE ALL PROJECT FILES, AND GRADLE OR MAVEN MUST BE USED TO CREATE PROJECTS.
--- NOTE: REQUIREMENTS:
--- TODO: - JAVASE 21.*.* (set as both the default binary and as 'JAVA_HOME')
--- TODO: - java-debug 0.53.1 from "https://github.com/microsoft/java-debug"
--- TODO: - gradle-7.3.3 from "https://gradle.org/releases/"
--- IMPORTANT: REQUIRMENTS FOR THIS PLUGIN ARE LISTED, AND MUST BE INSTALLED MANUALLY, NOT VIA THE MASON PACKAGE MANAGER!!!!
+-- XXX: Java Project Setup:
+-- When using the 'gradle init --type java-application' command to setup a java project
+-- it will NOT generate a unique package structure. This can cause naming conflicts if you later publish to Maven Central, or any registry.
+-- To prevent this, you must MANUALLY create the proper 'src' directory hierarchy inside the 'app' module:
+-- New hierarchy -> 'src/main/java/com/<yourname>/<projectname>/App.java'.
+-- So, this structure sets your package name to -> 'com.<yourname>.<project_name>'.
+-- After creating this structure, MOVE your 'App.java' file into it and UPDATE the package declaration at the top of the file.
+-- Finally, delete the old 'src' structure to avoid confusion.
+-- PLUGIN: 'nvim-jdtls.nvim' extends the capabilities of the built-in LSP support in Neovim, to support Java.
+-- TODO: Requirements:
+-- > JAVASE 21.*.* (set as both the default binary and as 'JAVA_HOME')
+-- > java-debug 0.53.1 from "https://github.com/microsoft/java-debug"
+-- > gradle-7.3.3 from "https://gradle.org/releases/"
+-- IMPORTANT: Requirments must be installed manually, not via the mason package manager!
 return {
   "mfussenegger/nvim-jdtls",
   enabled = true,
@@ -13,36 +19,32 @@ return {
     "mfussenegger/nvim-dap",
   },
   config = function()
-    -- TODO: Initial: First requiring jdtls (yes the plugin is requiring itself, this is normal).
-    -- WARNING: This config function fully overwrites the default LazyVim configuration to allow for a custom setup.
-    -- NOTE: The default 'opts' table is excluded here as it's not passed
-    -- (i.e., this function is not in the form of function(_, opts)).
-    -- This helps prevent duplicate LSP clients from attaching to the same buffer.
-    --TODO: Setting the workspace directory used by JDTLS, for all projects (which is standard).
-    local base_path = "D:\\4-Personal-OneDrive\\OneDrive\\Coding\\javadev\\" -- Where is everything is based.
-    local workspace_dir_name = ".workspace"                                  -- The name of the workspace directory.
+    -- TODO: Setting the workspace directory used by JDTLS, for all projects (this is standard).
+    -- WARN: The workspace directory must be at the root directory, above all project files.
+    local base_path =
+    "D:\\4-Personal-OneDrive\\OneDrive\\Coding\\javadev\\" -- Root directory, where all project sub-directories are.
+    local workspace_dir_name =
+    ".workspace"                                           -- The name of the workspace meta-data folder. (Used by ALL projects)
     local workspace_dir_path = base_path .. workspace_dir_name
-    -- TODO: LISTENING FOR A BUFENTER EVENT WHEN GOING INTO A JAVA FILE.
+    -- TODO: Listening for a 'BufEnter' event when going into a java file.
     vim.api.nvim_create_autocmd("BufEnter", {
       pattern = "*.java",
       callback = function()
-        -- TODO: 1ST: Getting the name of the project. Based on the project directory.
-        local project_name = "\\" .. vim.fn.fnamemodify(vim.fn.expand("%:p:h"), ":t") .. "\\"
-        -- TODO: 2nd: Creating the config using the extracted settings:
+        -- NOTE: Creating the configuration for the LSP.
         local config = {
           -- The command that starts the language server
           -- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
           cmd = {
 
             -- IMPORTANT:💀 Must be set to the specifics of your machine.
-            "Java", -- or '/path/to/java17_or_newer/bin/java' depends on if the `java.exe` (java runtime) is in your $PATH env variables
+            "Java", -- or '/path/to/java17_or_newer/bin/java' depends on if the `java.exe` (java runtime) is in your $PATH env variables.
 
-            -- NOTE: Options specified in the documentation:
-            "-Declipse.application=org.eclipse.jdt.ls.core.id1", -- Specifying the Eclipse app ID to run (the JDT Language Server)
+            -- INFO: Options specified in the documentation:
+            "-Declipse.application=org.eclipse.jdt.ls.core.id1", -- Specifying the Eclipse app ID to run (the JDT Language Server).
             "-Dosgi.bundles.defaultStartLevel=4",                -- Setting the default start level for OSGi bundles in the Eclipse runtime.
             "-Declipse.product=org.eclipse.jdt.ls.core.product", -- Defines which Eclipse product to run.
             "-Dlog.protocol=true",                               -- Enables logging of the Language Server Protocol (LSP) communication.
-            "-Dlog.level=ALL",                                   -- Setting the logging level to capture all logs (maximum verbosity)
+            "-Dlog.level=ALL",                                   -- Setting the logging level to capture all logs (maximum verbosity).
             "-Xmx1g",                                            -- Setting the maximum Java heap size to 1 gigabyte.
             "--add-modules=ALL-SYSTEM",                          -- REMEMBER: Making all modules in the JDK available.
             "--add-opens", "java.base/java.util=ALL-UNNAMED",
@@ -51,16 +53,16 @@ return {
             -- IMPORTANT:💀 Must be set to the specifics of your machine. (Manual Installation required - MASON NOT COMPATIBLE)
             "-jar",
             base_path .. ".setup_config\\jdtls\\plugins\\org.eclipse.equinox.launcher_1.6.900.v20240613-2009.jar",
-            -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                                         ^^^^^^^^^^^^^^
-            -- Must point to the                                                                                       Change this to
-            -- eclipse.jdt.ls installation                                                                             the actual version
+            -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^                                            ^^^^^^^^^^^^^^^^^^
+            -- Must point to the                                                      Change this to
+            -- eclipse.jdt.ls installation                                            the actual version
 
             -- IMPORTANT:💀 Must be set to the specifics of your machine. (Manual Installation required - MASON NOT COMPATIBLE)
             "-configuration",
             base_path .. ".setup_config\\jdtls\\config_win",
-            -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                  ^^^
-            -- Must point to the                                                                Change to one of `linux`, `win` or `mac`
-            -- eclipse.jdt.ls installation                                                      Depending on your system.
+            -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^      ^^^^^^^^^^
+            -- Must point to the                Change to one of `linux`, `win` or `mac`
+            -- eclipse.jdt.ls installation      Depending on your system.
 
             -- IMPORTANT:💀 Must be set to the specifics of your machine.
             -- See `data directory configuration` section in the README
@@ -71,7 +73,7 @@ return {
           -- This is the default if not provided, you can remove it. Or adjust as needed.
           -- One dedicated LSP server & client will be started per unique root_dir
           --
-          -- vim.fs.root requires Neovim 0.10.
+          -- vim.fs.root requires Neovim v0.10+.
           -- If you're using an earlier version, use: require('jdtls.setup').find_root({'.git', 'mvnw', 'gradlew'}),
           root_dir = vim.fs.root(0, { '.git', 'mvnw', 'gradlew', 'pom.xml', 'build.gradle' }),
 
@@ -83,10 +85,14 @@ return {
               configuration = {
                 -- WARN: See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request And search for `interface RuntimeOption`
                 -- NOTE: The `name` is NOT arbitrary, but must match one of the elements from `enum ExecutionEnvironment` in the link above
-                runtimes = { -- IMPORTANT: Even if nvim-jdtls requires the Java 17 jdk to be set as 'JAVA_HOME' we can still use the plugin for projects built in later versions.
+                runtimes = {            -- IMPORTANT: Even if nvim-jdtls requires the Java 21 JDK to be set as 'JAVA_HOME' we can still use the plugin for projects built in other versions.
                   {
-                    name = "JAVASE_21",
+                    name = "JAVASE_21", -- Create Java 21 Projects.
                     path = "C:\\Program Files\\Java\\jdk-21",
+                  },
+                  {
+                    name = "JAVASE_17", -- Create Java 17 Projects.
+                    path = "C:\\Program Files\\Java\\jdk-17",
                   },
                 },
               },
@@ -97,14 +103,11 @@ return {
               },
             },
           },
-          -- Language server `initializationOptions`
-          -- You need to extend the `bundles` with paths to jar files
-          -- if you want to use additional eclipse.jdt.ls plugins.
-          --
-          -- See https://github.com/mfussenegger/nvim-jdtls#java-debug-installation
-          -- IMPORTANT: Activating JDTLS only when interacting with java files.
-          --
-          -- If you don't plan on using the debugger or other eclipse.jdt.ls plugins you can remove this
+          -- REMEMBER:
+          -- Language server `initializationOptions`:
+          -- You need to extend the `bundles` with paths to jar files if you want to
+          -- use additional eclipse.jdt.ls plugins. See https://github.com/mfussenegger/nvim-jdtls#java-debug-installation.
+          -- If you don't plan on using the debugger or other eclipse.jdt.ls plugins you can remove this.
           init_options = {
             bundles = {    -- IMPORTANT: If using nvim-jdtls, you MUST CLONE THE REPO of the java-debug plugin manually via git, and paste it's path here.
               vim.fn.glob( -- WARN: If you move the java-debug folder (the one containing the plugin you just cloned), YOU CAN'T. Clone into that new folder, and rebuild.
@@ -115,7 +118,8 @@ return {
             },
           },
         }
-        -- NOTE: 3rd: Require jdtls and attach to the java related buffer, within the project, using the configuration above.
+        -- NOTE: Requiring the LSP and attaching it to the java buffer,
+        -- using the configuration.
         local jdtls = require("jdtls")
         jdtls.start_or_attach(config)
       end,
