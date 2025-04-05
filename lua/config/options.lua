@@ -9,6 +9,9 @@
 --'vim.bo': Buffer-local options. Only applies to the CURRENT buffer. Use within plugin configuration functions or autocommands.
 --'vim.wo': Window-local options. Only applies to the CURRENT window. Use within plugin configuration functions or autocommands.
 --'vim.env': Allows for accessing your environment variables within Neovim. (eg: $env.HOME)
+--
+-- INFO: Neovim V0.11 disables LSP virtual text by default. MUST ENABLE IT.
+vim.diagnostic.config({ virtual_text = true })
 
 -- TODO: Plugin Global Settings:
 -- IMPORTANT: 'vim.g': Global variables. These are NOT options. They're used for configuring global settings used by plugins that require them to be set.

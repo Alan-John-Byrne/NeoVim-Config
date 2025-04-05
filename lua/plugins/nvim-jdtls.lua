@@ -2,10 +2,13 @@
 -- When using the 'gradle init --type java-application' command to setup a java project
 -- it will NOT generate a unique package structure. This can cause naming conflicts if you later publish to Maven Central, or any registry.
 -- To prevent this, you must MANUALLY create the proper 'src' directory hierarchy inside the 'app' module:
--- New hierarchy -> 'src/main/java/com/<yourname>/<projectname>/App.java'.
--- So, this structure sets your package name to -> 'com.<yourname>.<project_name>'.
--- After creating this structure, MOVE your 'App.java' file into it and UPDATE the package declaration at the top of the file.
--- Finally, delete the old 'src' structure to avoid confusion.
+-- 1. Create a new src hierarchy for your "main files" -> 'src/main/java/com/<yourname>/<projectname>/App.java'
+-- 2. Create a new src hierarchy for your "test files" -> 'src/test/java/com/<yourname>/<projectname>/AppTest.java'
+-- 3. Within your 'build.gradle.kts' file, reset your main class using -> 'mainClass.set("com.<yourname>.<projectname>.App")'.
+-- 4. Move your 'App.java' file into the new main 'src' hierarchy, and UPDATE the package declaration at the top of the file to match -> 'com.<yourname>.<projectname>.App'
+-- 5. Refactor the package names within your source files to reflect the hierarchy change -> 'com.<yourname>.<projectname>'.
+-- 6. Move your 'AppTest.java' file into the new test 'src' hierarchy, and UPDATE the package declaration at the top of the file to match -> 'com.<yourname>.<projectname>.App'.
+-- 7. Finally, delete the old 'src' main and test directory hierarchies.
 -- PLUGIN: 'nvim-jdtls.nvim' extends the capabilities of the built-in LSP support in Neovim, to support Java.
 -- TODO: Requirements:
 -- > JAVASE 21.*.* (set as both the default binary and as 'JAVA_HOME')
@@ -20,11 +23,9 @@ return {
   },
   config = function()
     -- TODO: Setting the workspace directory used by JDTLS, for all projects (this is standard).
-    -- WARN: The workspace directory must be at the root directory, above all project files.
-    local base_path =
-    "D:\\4-Personal-OneDrive\\OneDrive\\Coding\\javadev\\" -- Root directory, where all project sub-directories are.
-    local workspace_dir_name =
-    ".workspace"                                           -- The name of the workspace meta-data folder. (Used by ALL projects)
+    -- WARN: The workspace meta-data directory must be in the root directory, above all project files.
+    local base_path = "D:\\4-Personal-OneDrive\\OneDrive\\Coding\\javadev\\"
+    local workspace_dir_name = ".workspace"
     local workspace_dir_path = base_path .. workspace_dir_name
     -- TODO: Listening for a 'BufEnter' event when going into a java file.
     vim.api.nvim_create_autocmd("BufEnter", {
@@ -87,11 +88,11 @@ return {
                 -- NOTE: The `name` is NOT arbitrary, but must match one of the elements from `enum ExecutionEnvironment` in the link above
                 runtimes = {            -- IMPORTANT: Even if nvim-jdtls requires the Java 21 JDK to be set as 'JAVA_HOME' we can still use the plugin for projects built in other versions.
                   {
-                    name = "JAVASE_21", -- Create Java 21 Projects.
+                    name = "JavaSE_21", -- Create Java 21 Projects.
                     path = "C:\\Program Files\\Java\\jdk-21",
                   },
                   {
-                    name = "JAVASE_17", -- Create Java 17 Projects.
+                    name = "JavaSE_17", -- Create Java 17 Projects.
                     path = "C:\\Program Files\\Java\\jdk-17",
                   },
                 },
@@ -118,8 +119,7 @@ return {
             },
           },
         }
-        -- NOTE: Requiring the LSP and attaching it to the java buffer,
-        -- using the configuration.
+        -- NOTE: Requiring the LSP and attaching it to the java buffer, using the configuration.
         local jdtls = require("jdtls")
         jdtls.start_or_attach(config)
       end,
