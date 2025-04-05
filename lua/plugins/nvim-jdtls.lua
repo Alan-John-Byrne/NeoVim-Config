@@ -1,14 +1,22 @@
--- XXX: Java Project Setup:
--- When using the 'gradle init --type java-application' command to setup a java project
--- it will NOT generate a unique package structure. This can cause naming conflicts if you later publish to Maven Central, or any registry.
--- To prevent this, you must MANUALLY create the proper 'src' directory hierarchy inside the 'app' module:
--- 1. Create a new src hierarchy for your "main files" -> 'src/main/java/com/<yourname>/<projectname>/App.java'
--- 2. Create a new src hierarchy for your "test files" -> 'src/test/java/com/<yourname>/<projectname>/AppTest.java'
--- 3. Within your 'build.gradle.kts' file, reset your main class using -> 'mainClass.set("com.<yourname>.<projectname>.App")'.
--- 4. Move your 'App.java' file into the new main 'src' hierarchy, and UPDATE the package declaration at the top of the file to match -> 'com.<yourname>.<projectname>.App'
--- 5. Refactor the package names within your source files to reflect the hierarchy change -> 'com.<yourname>.<projectname>'.
--- 6. Move your 'AppTest.java' file into the new test 'src' hierarchy, and UPDATE the package declaration at the top of the file to match -> 'com.<yourname>.<projectname>.App'.
--- 7. Finally, delete the old 'src' main and test directory hierarchies.
+-- XXX: Java Project Setup: (When working on large projects and / or publishing packages to registries later)
+-- When using the 'gradle init --type java-application' command to setup a java project, it will NOT generate
+-- a unique package structure. This can cause naming conflicts if you later publish to Maven Central, or any
+-- other registry. To prevent this, you MUST MANUALLY CREATE the proper 'src directory hierarchies' inside the
+-- 'app' module of the java project.
+-- --------------------------------------------------(STEPS)--------------------------------------------------------
+-- 0.  If present, within the base root directory (above all projects), DELETE the '.workspace' metadata directory. It stores all project structures.
+-- 1.  CREATE a new src hierarchy for the "main files" -> 'src/main/java/com/<yourname>/<projectname>/App.java'.
+-- 2.  CREATE a new src hierarchy for the "test files" -> 'src/test/java/com/<yourname>/<projectname>/AppTest.java'.
+-- 3.  DELETE the old src directory hierarchies. (i.e.: DELETE -> 'src/main/java/App.java' & 'src/main/java/AppTest.java')
+-- 4.  MOVE the 'App.java' file into the new main src hierarchy.
+-- 5.  MOVE the 'AppTest.java' file into the new test src hierarchy.
+-- 6.  UPDATE the package declaration within the src files to reflect the hierarchy changes. (i.e.: CHANGE TO -> 'com.<yourname>.<projectname>')
+-- 7.  If present, DELETE the '.gradle' directory in the root of the java project.
+-- 8.  If present, DELETE the 'build' directory within the 'app' module / directory, thats in the root of the java project.
+-- 9.  Within the 'build.gradle.kts' file, RE-SET the main class to reflect previous changes / steps. (i.e.: CHANGE TO -> 'mainClass.set("com.<yourname>.<projectname>.App")')
+-- 10. Within the root of the java project, RUN a 'clean build' using the following command -> 'gradle clean build'.
+-- Extra. If the nvim-jdtls LSP is already running (BEFORE STEP 0.), run the nvim command 'JdtRestart' to restart the LSP server, now you're all set!
+-- ---------------------------------------------------(FIN)---------------------------------------------------------
 -- PLUGIN: 'nvim-jdtls.nvim' extends the capabilities of the built-in LSP support in Neovim, to support Java.
 -- TODO: Requirements:
 -- > JAVASE 21.*.* (set as both the default binary and as 'JAVA_HOME')
