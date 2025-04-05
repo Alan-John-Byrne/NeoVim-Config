@@ -3,20 +3,6 @@
 -- TODO: Convenience save and quit all.
 vim.keymap.set("n", "<leader>q", ":wqall<CR>", { desc = "Save and Quit All" })
 
--- XXX: Keymaps for inserting a line above or below the current line.
-vim.keymap.set(
-  "n",
-  "<leader>o",
-  "o<Esc>xxxxxxxxxxxxxxxxxxxxxxk",
-  { desc = "Insert line below.", noremap = true, silent = true }
-)
-vim.keymap.set(
-  "n",
-  "<leader>O",
-  "O<Esc>xxxxxxxxxxxxxxxxxxxxxxj",
-  { desc = "Insert line above.", noremap = true, silent = true }
-)
-
 -- XXX: Set the current working directory to the buffer's directory, and Print the current working directory.
 vim.keymap.set("n", "<leader>\\", ":cd %:p:h<CR>", { desc = "Set to cwd.", noremap = true, silent = true })
 vim.keymap.set("n", "<leader>P", ":pwd<CR>", { desc = "Print cwd.", noremap = true, silent = true })
