@@ -6,6 +6,9 @@ return {
   ---@type snacks.Config
   keys = {
     -- Top Pickers & Explorer
+    -- IMPORTANT: 'smart()' needs a 'sqlite3.dll' file placed in 'C:\Users\<Username>\AppData\Local\Temp\nvim',
+    -- download from 'https://www.sqlite.org/2025/sqlite-dll-win-x64-3480000.zip' and extract the TWO files manually
+    -- to that location. It will try to do it automatically using a shell script, but this can cause problems with anti-virus software.
     { "<leader><space>", function() Snacks.picker.smart() end,                                   desc = "Smart Find Files", },
     { "<leader>,",       function() Snacks.picker.buffers() end,                                 desc = "Buffers", },
     { "<leader>/",       function() Snacks.picker.grep() end,                                    desc = "Grep", },
