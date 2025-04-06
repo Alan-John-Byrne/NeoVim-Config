@@ -17,6 +17,9 @@
 -- 10. Within the root of the java project, RUN a 'clean build' using the following command -> 'gradle clean build'.
 -- Extra. If the nvim-jdtls LSP is already running (BEFORE STEP 0.), run the nvim command 'JdtRestart' to restart the LSP server, now you're all set!
 -- ---------------------------------------------------(FIN)---------------------------------------------------------
+-- WARN: If the LSP fails to start when entering a java buffer, straight away. Just delete the '.workspace' metadata directory,
+-- re-enter the buffer, and use the command 'LspRestart' from the 'nvim-lspconfig' plugin. This will restart the server.
+-- (You CAN'T use 'JdtRestart' because the 'nvim-jdtls' isn't loaded yet in this case. As it's having trouble loading)
 -- PLUGIN: 'nvim-jdtls.nvim' extends the capabilities of the built-in LSP support in Neovim, to support Java.
 -- TODO: Requirements:
 -- > JAVASE 21.*.* (set as both the default binary and as 'JAVA_HOME')
