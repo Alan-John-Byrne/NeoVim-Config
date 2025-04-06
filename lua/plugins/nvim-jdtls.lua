@@ -1,8 +1,16 @@
--- XXX: Java Project Setup: (When working on large projects and / or publishing packages to registries later)
--- When using the 'gradle init --type java-application' command to setup a java project, it will NOT generate
--- a unique package structure. This can cause naming conflicts if you later publish to Maven Central, or any
--- other registry. To prevent this, you MUST MANUALLY CREATE the proper 'src directory hierarchies' inside the
--- 'app' module of the java project.
+-- XXX: Java Project Setup: (When working on large projects and/or publishing packages to registries later)
+-- When using the 'gradle init --type java-application' command to setup a java project, it will generate the
+-- correct 'forward thinking' project structure, providing you give the following appropriate details:
+-- > Build Script: *whichever*
+-- > Test Framework: *whichever*
+-- > Project Name: com.<yourname>.<projectname>
+-- > Source Package: com.<yourname>.<projectname>
+-- > Target Java Version: *whichever*
+-- > Generate build using APIs: *whichever*
+-- INFO: IF YOU DON'T, a unique package structure will NOT be generated. This can cause naming conflicts if you
+-- plan to later publish the project package to Maven Central, or any other registry. To prevent this, you MUST
+-- MANUALLY CONVERT the project you just created using the appropriate 'src directory hierarchies' inside the 'app'
+-- module, of the java project.
 -- --------------------------------------------------(STEPS)--------------------------------------------------------
 -- 0.  If present, within the base root directory (above all projects), DELETE the '.workspace' metadata directory. It stores all project structures.
 -- 1.  CREATE a new src hierarchy for the "main files" -> 'src/main/java/com/<yourname>/<projectname>/App.java'.
