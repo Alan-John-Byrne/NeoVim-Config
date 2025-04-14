@@ -1,9 +1,10 @@
 # Inspired by the 💤[LazyVim](https://github.com/LazyVim/LazyVim) neovim distro, by folke.
 
-**<p align="center" style="font-size:2rem;">Preview:</p>**
-<img src=".images/dashboard.png" alt="Dashboard" width="1000" height="400">
+## **<p align="center">Preview:</p>**
 
-**<p align="center" style="font-size:2rem;">The Stack:</p>**
+![Vite + React + TS](.images/dashboard.png)
+
+## **<p align="center">The Stack:</p>**
 
 <p align="center">
     <img src=".images/wezterm.png" alt="WezTerm Logo" width="130" height="130">
@@ -33,10 +34,10 @@
 ## Use Cases:
 
 - **Work on Projects (<u>eg: _React + Ts /w Vite_</u>)**:
-  ![Vite + React + TS](.images/vite_reactts_project.png)
+  ![Vite + React + TS](.images/vite_reactts_project.jpg)
 
 - **Study Algorithms w/ WezTerm Multiplexing (_<u>Image Previewer included</u>_)**:
-  ![Studying Kandane's Algorithm](.images/study_algoes.png)
+  ![Studying Kandane's Algorithm](.images/study_algos.jpg)
 
   > **NOTE:** Image previewing ONLY WORKS in terminals that support the necessary image protocols, such as WezTerm, Kitty, or other compatible terminal emulators. This will **NOT** work in PowerShell, Command Prompt, or basic terminal emulators that lack support for those protocols.
 
