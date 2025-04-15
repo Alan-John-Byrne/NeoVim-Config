@@ -84,7 +84,7 @@ return {
     -- REMEMBER: Linters & formatters ONLY kick into action when you save a buffer. (So we use autocommands)
     -- XXX: Linters:
     require("mason-nvim-lint").setup({
-      ensure_installed = { "selene", "markdownlint" }, -- Auto-install these Linters.
+      ensure_installed = { "selene", "markdownlint", "htmlhint", "stylelint" }, -- Auto-install these Linters.
       automatic_installation = true,
     })
 
@@ -92,6 +92,7 @@ return {
       markdown = { "markdownlint" },
       html = { "htmlhint" },
       lua = { "selene" },
+      css = { "stylelint" }
     }
 
     -- XXX: Linters Specific Settings; Customize a linters config via it's 'args' table.
@@ -99,8 +100,7 @@ return {
       -- WARN: The 'selene' linter doesn't know about the neovim runtime
       -- global variables like the 'vim' table, but the 'lua_ls' lsp does.
       -- So, we provide a custom configuration for selene to just ignore it.
-      "--config", vim.fn.stdpath("config") ..
-    "lua\\config\\selene.toml"
+      "--config", vim.fn.stdpath("config") .. "lua\\config\\selene.toml"
     }
 
     require("lint").linters.markdownlint.args = {
@@ -123,7 +123,7 @@ return {
 
     -- XXX: Formatters:
     require("mason-conform").setup({
-      ensure_installed = { "prettier" }, -- Auto-install these Formatters.
+      ensure_installed = { "prettier", "goimports" }, -- Auto-install these Formatters.
       automatic_installation = true,
     })
 
@@ -135,6 +135,7 @@ return {
       formatters_by_ft = {
         markdown = { "prettier" },
         html = { "prettier" },
+        css = { "prettier" },
         go = { "goimports" }
       }
     })

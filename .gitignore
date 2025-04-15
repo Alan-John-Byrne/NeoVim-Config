@@ -1,5 +1,6 @@
 tt.*
 .tests
+test.lua
 doc/tags
 debug
 .repro

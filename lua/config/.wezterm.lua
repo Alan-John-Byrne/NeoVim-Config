@@ -32,14 +32,17 @@ config.font = wezterm.font_with_fallback({                -- Setting proper font
   { family = 'JetBrainsMono NF',           weight = 'Light', italic = false, scale = 1 },
   { family = 'Noto Sans Linear B Regular', weight = 'Light', italic = false, scale = 1 },
 })
-config.window_background_opacity = 1 -- Changing Wezterm window opacity.
+config.window_background_opacity = 0.9 -- Changing Wezterm window opacity.
 
 -- Setting keybindings.
 config.disable_default_key_bindings = true -- WARN: DISABLING DEFAULT KEYBINDINGS THAT ARE EITHER INCOMPATIBLE WITH WINDOWS, OR CAUSE I WANT TO CHANGE THEM.
 config.keys = {                            -- TODO: Custom keybindings: (Self-explanatory)
   -- IMPORTANT: Avoid setting / overwritting 'CTRL+c' as it clashes with mutliple NeoVim plugins including 'neogit' & the 'snacks.nvim' terminal.
   {
-
+    key = 'F11',
+    action = wezterm.action.ToggleFullScreen, -- Used to put the WezTerm instance into fullscreen mode.
+  },
+  {
     key = "L",
     mods = "CTRL",
     action = wezterm.action.ShowDebugOverlay -- Used for checking Wezterm Debug output.
