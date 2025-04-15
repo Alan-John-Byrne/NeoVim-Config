@@ -24,10 +24,7 @@ return {
     { "]B",         "<cmd>BufferLineMoveNext<cr>",             desc = "Move buffer next" },
   },
   opts = {
-    options = { -- TODO: See ':h bufferline-configurations' for more options.
-      indicator = {
-        style = 'underline'
-      },
+    options = { -- TODO: See ':h bufferline-configuration' for more options.
       numbers = 'ordinal',
       diagnostics = 'nvim_lsp',
       -- IMPORTANT: Changing the below style could mean having
@@ -137,7 +134,7 @@ return {
       close_button_selected = {
         fg = {
           attribute = "fg",
-          highlight = "WarningMsg"
+          highlight = "Question"
         },
         bg = {
           attribute = "bg",
@@ -150,7 +147,7 @@ return {
       close_button = {
         fg = {
           attribute = "fg",
-          highlight = "WarningMsg"
+          highlight = "Question"
         },
         bg = {
           attribute = "bg",
@@ -188,7 +185,7 @@ return {
       -- when you are NOT viewing that buffer.
       numbers = {
         fg = {
-          attribute = "bg",
+          attribute = "fg",
           highlight = "WinBar"
         },
         bg = {
@@ -216,7 +213,7 @@ return {
       modified_selected = {
         fg = {
           attribute = "fg",
-          highlight = "PMenu"
+          highlight = "Title"
         },
         bg = {
           attribute = "bg",
@@ -228,9 +225,9 @@ return {
       -- when you are NOT viewing that changed
       -- / altered buffer.
       modified = {
-        fg = {
+        fg = { -- 'fg' here is always ignored for some reason.
           attribute = "fg",
-          highlight = "WinBar"
+          highlight = "Title"
         },
         bg = {
           attribute = "bg",
@@ -279,7 +276,6 @@ return {
           attribute = "fg",
           highlight = "WinBar"
         },
-        underline = false -- Include or don't include an underline.
       },
       -- INFO:
       -- The colour of the tab seperators of the
@@ -300,11 +296,89 @@ return {
       tab_close = {
         fg = {
           attribute = "fg",
+          highlight = "Question"
+        },
+        bg = {
+          attribute = "bg",
+          highlight = "WinBar"
+        },
+      },
+      -- INFO:
+      -- Current Buffer name when
+      -- linting warning messages are shown.
+      warning_selected = {
+        fg = {
+          attribute = "fg",
+          highlight = "MoreMsg"
+        },
+        bg = {
+          attribute = "bg",
+          highlight = "PMenu"
+        },
+      },
+      -- INFO:
+      -- Other Buffer names when linting
+      -- warning messages are shown in them.
+      warning = {
+        fg = {
+          attribute = "fg",
+          highlight = "MoreMsg"
+        },
+        bg = {
+          attribute = "bg",
+          highlight = "WinBar"
+        },
+      },
+      -- INFO:
+      -- Buffer name linting error colour
+      -- for the previously opened buffer.
+      warning_visible = {
+        fg = {
+          attribute = "fg",
+          highlight = "MoreMsg"
+        },
+        bg = {
+          attribute = "bg",
+          highlight = "PMenu"
+        },
+      },
+      -- INFO:
+      -- Current Buffer name when
+      -- linting error messages are shown.
+      error_selected = {
+        fg = {
+          attribute = "fg",
+          highlight = "WarningMsg"
+        },
+        bg = {
+          attribute = "bg",
+          highlight = "PMenu"
+        },
+      },
+      -- INFO:
+      -- Other Buffer names when linting
+      -- error messages are shown in them.
+      error = {
+        fg = {
+          attribute = "fg",
           highlight = "WarningMsg"
         },
         bg = {
           attribute = "bg",
           highlight = "WinBar"
+        },
+      },
+      -- INFO:
+      -- Buffer name linting error colour
+      -- for the previously opened buffer.
+      error_visible = {
+        fg = {
+          attribute = "fg",
+          highlight = "WarningMsg"
+        },
+        bg = {
+          attribute = "bg",
+          highlight = "PMenu"
         },
       },
     }
