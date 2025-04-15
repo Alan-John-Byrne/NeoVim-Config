@@ -1,4 +1,4 @@
-# Inspired by the 💤[LazyVim](https://github.com/LazyVim/LazyVim) neovim distro, by folke.
+# <p align="center">Inspired by the _💤[LazyVim](https://github.com/LazyVim/LazyVim)_ distro.</p>
 
 ## **<p align="center">Preview:</p>**
 
@@ -14,12 +14,12 @@
     <img src=".images/lazy_logo.png" alt="LazyVim Logo" width="100" height="70">
 </p>
 
-> **NOTE:** This is a custom project/IDE using PowerShell7/WezTerm. A work in progress that's ever changing.
-> There's plans to create a compatible setup for Unix environments.
+> **NOTE:** This is a custom configuration project meant to mimick typical IDEs, using PowerShell7/WezTerm. It's a work
+> in progress. <u>_I'm hoping to cover Unix system settings at some point._</u>
 
-**GOAL:** Put multiple complex tools together to form a powerful and extensive development environment.
+**GOAL:** To put multiple complex tools together to form a powerful and extensive development environment.
 
-> **PAIN POINTS**: A list of mistakes I've made, and how to avoid them:
+> **PAIN POINTS**: \_<u>A list of mistakes I've made, and how to avoid them.</u>
 >
 > - <u>_'File is too large to open' (mini.files)_</u>: If the file is currently stored
 >   on your OneDrive, please ensure your OneDrive is running and synced so you
@@ -33,19 +33,19 @@
 
 ## Use Cases:
 
-- **Work on Projects (<u>eg: _React + Ts /w Vite_</u>)**:
+- **Work on Projects (eg: _React + Ts /w Vite_)**: (<u>_More frameworks & libraries can be supported_</u>)
   ![Vite + React + TS](.images/vite_reactts_project.jpg)
 
-- **Study Algorithms w/ WezTerm Multiplexing (_<u>Image Previewer included</u>_)**:
+- **Study Algorithms w/ WezTerm Multiplexing**: (_<u>Image Previewer included</u>_)
   ![Studying Kandane's Algorithm](.images/study_algos.jpg)
 
   > **NOTE:** Image previewing ONLY WORKS in terminals that support the necessary image protocols, such as WezTerm, Kitty, or other compatible terminal emulators. This will **NOT** work in PowerShell, Command Prompt, or basic terminal emulators that lack support for those protocols.
 
-- **Debug Software w/ Nvim-Dap**:
+- **Debug Software w/ Nvim-Dap:**
   ![Debugging Code](.images/debugging.jpg)
-- **Use Polyglot Development w/ WezTerm Multiplexing**:
+- **Use Polyglot Development w/ WezTerm Multiplexing:**
   ![WezTerm Multiplexing](.images/multiplex.jpg)
-- _Unit Testing_: (<u>Coming Soon - /w neotest</u>)
+- **_Unit Testing_**: (<u>_Coming Soon - /w neotest_</u>)
 
 ## Language Feature Support:
 
@@ -71,16 +71,16 @@ All can be setup in the following steps:
 3. Install the following software, and configure the following environment variables <u>_exactly_</u> as is to complete the setup.
 
 > **NOTE**: This setup does require some knowledge of powershell profiles for correctly setting environment variables
-> (_used during open powershell sessions_), or you could just set them within the global table on windows.
+> (_used during open powershell sessions_), _**OR**_ _you could just set them within the global environment table
+> on windows_ ~<u>_NOT AS CLEAN_</u>.
 
-### Environment Variables (Profile Specific)
+### Environment variables (_Profile Specific_):
 
-This config demonstrates the possibility of having multiple languages supported within neovim.
-In order for these languages to work, there are a few pre-requisites that need to be in place prior to utilisation. Following is a table
-of environment variables that must be set to the correct values (_<u>paths to particular pieces of software</u>_) in accordance to the intended plugins
-specifications. The plugins themselves dictate what versions of these software components are depended on in order to work correctly.
-So, in case of any updates to these plugin specs, please read the plugin specs in case errors pop up, to see if any dependencies listed below have
-been changed / updated.
+You can have multiple programming languages supported within neovim. However, in order for these languages to work, there are a few pre-requisites
+that need to be in place prior to utilisation. Following is a table of environment variables that must be set to the correct values
+(_<u>paths to particular pieces of software</u>_) in accordance to the intended plugins specifications. The plugins themselves dictate
+what versions of these software components are depended on in order to work correctly. So, in case of any updates to these plugin specs,
+please read them again in case of any changes being made to these dependencies.
 
 | Variable                             | Description                                               | Why?                                                                                                                                                        |
 | ------------------------------------ | --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -92,11 +92,10 @@ been changed / updated.
 
 > **NOTE:** **'CMAKE_BUILD_GENERATOR'** should only be specified within any 'CMakeLists.txt' files you have within your C++ projects. In case your using other IDEs like Visual Studio too.
 
-### Global Environment Variables:
+### Global environment variables:
 
 Some environment Variables are required to be exposed to the OS at all times. For example, if you're
-using the WezTerm Multiplexer (MUX), it won't be able to see the variables you've set within your terminal
-profiles, <u>**only those that are set within the global table, via your system settings**</u>.
+using the WezTerm Multiplexer (MUX), it will NOT be able to see the variables you've set within your terminal profile. <u>**It can only view those that are set within the global table, via your system settings.**</u>
 
 | Variable               | Description                                             | Why?                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ---------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -106,12 +105,12 @@ profiles, <u>**only those that are set within the global table, via your system 
 > **NOTE:** It's important that these variables are set correctly and in the right way so WezTerm
 > can see it's configuration and use any custom preferences you've set within your '.wezterm.lua' config file.
 
-### **Required executables to add to the "$PATH" variable:**
+### **Executables to add to "_$PATH_":**
 
-Considering the scope and ambitious versatility of this configuration project, there's a lot of programs that need to be
-exposed to the OS via either a powershell profile, or your global environment variables table ( accessible via the windows settings ).
-This allows for these programs to be used by the plugins within neovim, allowing them to work as intended. Why do I suggest exposing them via
-a profile instead of global table? To keep your global variables tidy. The global table should only be used for essential requirements.
+Considering the scope of this '_configuration_' project, there is a lot of programs that need to be
+exposed to the OS. Either via a powershell profile, or the global environment variables table (_accessible via your system settings_).
+Plugins will then be able to access and utilise these programs within neovim, allowing them to function as intended. Why do I suggest exposing them via
+a profile instead of global table? To keep your global environment variables table tidy, as it should only be used for programs that are required system wide.
 
 | Executable                       | Description                                                                                                                 | Why?                                                                                                                                                                                                                                                                                                   |
 | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
