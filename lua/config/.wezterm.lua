@@ -39,6 +39,16 @@ config.disable_default_key_bindings = true -- WARN: DISABLING DEFAULT KEYBINDING
 config.keys = {                            -- TODO: Custom keybindings: (Self-explanatory)
   -- IMPORTANT: Avoid setting / overwritting 'CTRL+c' as it clashes with mutliple NeoVim plugins including 'neogit' & the 'snacks.nvim' terminal.
   {
+    key = 'V',
+    mods = 'CTRL|SHIFT',
+    action = wezterm.action.PasteFrom 'Clipboard', -- Copy from clipboard.
+  },
+  {
+    key = 'C',
+    mods = 'CTRL|SHIFT',
+    action = wezterm.action.CopyTo 'Clipboard', -- Paste from clipboard. 
+  },
+  {
     key = 'F11',
     action = wezterm.action.ToggleFullScreen, -- Used to put the WezTerm instance into fullscreen mode.
   },
