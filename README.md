@@ -95,15 +95,31 @@ please read them again in case of any changes being made to these dependencies.
 ### Global environment variables:
 
 Some environment Variables are required to be exposed to the OS at all times. For example, if you're
-using the WezTerm Multiplexer (MUX), it will NOT be able to see the variables you've set within your terminal profile. <u>**It can only view those that are set within the global table, via your system settings.**</u>
+using the WezTerm Multiplexer (MUX), it will _NOT_ be able to see the variables you've set within your terminal profile. <u>**It can only view those that are set within User-level 'launchd' environment, modified by a 'LaunchAgent'.**</u>
 
-| Variable               | Description                                             | Why?                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| ---------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `$WEZTERM_CONFIG_FILE` | Path to '.wezterm.lua' config file. (Seperate to $PATH) | The 'wezterm.exe' process must be able to access its configuration file before it initializes. Since WezTerm is responsible for launching the shell or terminal program specified in 'config.default_prog' and 'config.launch_menu', the configuration needs to be available globally. Not just within a shell profile like '.bashrc' or 'profile.ps1'. If the '$WEZTERM_CONFIG_FILE' variable is only set in a shell profile, it won't be recognised when WezTerm starts, as the shell itself hasn't been launched yet. |
-| `path\to\pwsh.exe`     | Path to 'pwsh.exe'. (Included in $PATH)                 | Required for WezTerm terminal emulator to properly execute PowerShell 7 commands and scripts.                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| Variable               | Description                                             | Why?                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| ---------------------- | ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `$WEZTERM_CONFIG_FILE` | Path to '.wezterm.lua' config file. (Seperate to $PATH) | The 'wezterm' binary / process must be able to access its configuration file before it initializes. Since WezTerm is responsible for launching the shell or terminal program specified in 'config.default_prog' and 'config.launch_menu', the configuration needs to be available globally. Not just within a bash or zsh profile. If the '$WEZTERM_CONFIG_FILE' variable is only set in a shell profile, it won't be recognised when WezTerm starts, as the shell itself hasn't been launched yet. |
 
 > **NOTE:** It's important that these variables are set correctly and in the right way so WezTerm
 > can see it's configuration and use any custom preferences you've set within your '.wezterm.lua' config file.
+
+#### _Correctly setting $WEZTERM_CONFIG_FILE on macOS:_
+
+We must use a LaunchAgent via the '_launchd_' / _<u>Launch Daemon</u>_ binary.
+
+Within the '~/Library/LaunchAgent' directory, create a 'plist' / property list.
+Name it something meaningful, using reverse DNS notation, with the extension '.plist'
+and populate it with the following:
+
+<p align="center">
+<img src=".images/Setting $WEZTERM_CONFIG_FILE.png" alt="WezTerm Logo" width="850" height="340">
+</p>
+
+This is a property list (plist) containing instructions for launchd, which is macOS's service manager. It defines a <u>_LaunchAgent_</u> that sets a persistent
+environment variable for the user's session using the '_launchctl setenv_' command.
+
+> **NOTE**: An agent like this runs when the user logs in, allowing the variable to be globally available to any GUI application launched during the session.
 
 ### **Executables to add to "_$PATH_":**
 
