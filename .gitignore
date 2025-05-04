@@ -1,0 +1,14 @@
+tt.*
+.tests
+test.lua
+doc/tags
+debug
+.repro
+foo.*
+*.log
+data
+test-vim-api.lua
+lazy-lock.json
+.vscode
+(?)*
+*DS*

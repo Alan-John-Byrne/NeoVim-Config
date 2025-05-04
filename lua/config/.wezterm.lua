@@ -48,12 +48,12 @@ config.keys = {                            -- TODO: Custom keybindings: (Self-ex
   {
     key = 'V',
     mods = 'CTRL|SHIFT',
-    action = wezterm.action.PasteFrom 'Clipboard', -- Copy from clipboard.
+    action = wezterm.action.PasteFrom 'Clipboard', -- Paste from clipboard.
   },
   {
     key = 'C',
     mods = 'CTRL|SHIFT',
-    action = wezterm.action.CopyTo 'Clipboard', -- Paste from clipboard.
+    action = wezterm.action.CopyTo 'Clipboard', -- Copy from clipboard.
   },
   {
     key = 'F11',
