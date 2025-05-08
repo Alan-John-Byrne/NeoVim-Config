@@ -66,16 +66,35 @@ return {
       if os.getenv("WEZTERM_PANE") ~= nil then
         -- If the file does exist, get it's absolute path.
         local path = entry.path
+
         -- Check for matching image cases:
         if path:match("%.png$")
             or path:match("%.jpg$")
             or path:match("%.jpeg$")
             or path:match("%.gif$") then
-          -- XXX: Open Preview Pane. (Requires PowerShell7 in Global Env Variables
-          -- & WezTerm in PowerShell7 Profile Env Variables)
-          command = "silent !wezterm cli split-pane --percent 90 -- pwsh -Command " ..
-              "\"wezterm imgcat '" .. path .. "'; Read-Host 'Press Enter to continue'\""
-          vim.api.nvim_command(command)
+          -- XXX: Open preview pane using external 'WezTerm' commands.
+          -- INFO: Running command as a raw sub-process. 'vim.fn.jobstart' needed for precise control over external commands.
+          -- NOTE: Array of arguments avoids 'string quote issues' entirely.
+          vim.fn.jobstart(
+            {                                                                      -- XXX: Every item passed in the array / table here is considered an actual argument:
+              "wezterm", "cli", "split-pane", "--percent", "90", "--",             -- '--' means everything after is not a flag / option.
+              "bash", "-c",                                                        -- Invoke a new login interave bash shell.
+              "wezterm imgcat '" .. path .. "'; read -p 'Press Enter to continue'" -- Run the wezterm command.
+            }, { detach = true })                                                  -- 'detach' tells neovim not to wait for output or block the interface. Just to run the command and forget about it.
+          -- IMPORTANT: Bad Method:
+          -- local command = "silent !wezterm cli split-pane --percent 90 -- bash -c '" ..
+          --     "wezterm imgcat " .. path .. "; read -p \"Press Enter to continue\"'"
+          -- vim.api.nvim_command(command)
+          -- XXX: NEVER USE 'vim.api.nvim_command' OR 'vim.cmd'. These are treated as vimscript.
+          -- They're not
+          -- > Quote safe - Gets confused between `'` & `"`.
+          -- > Shell safe - Don't communicate effectively with the external shell environment.
+          -- WARN: This command string above is parsed in this order:
+          -- 1. First by lua
+          -- 2. Then by vim's command handler
+          -- 3. Then by the external shell, i.e. bash.
+          -- 4. Then again by 'bash -c'.
+          -- So things fall apart quickly.
         else
           print("Not an Image file.")
         end

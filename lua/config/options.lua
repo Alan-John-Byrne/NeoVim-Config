@@ -24,7 +24,7 @@ vim.g.maplocalleader = "\\"
 local opt = vim.opt
 
 -- NOTE: This points to the bash binary, available globally.
-opt.shell = "bash --login -i" -- Adding the bash login state.
+opt.shell = "/bin/bash -il" -- Adding the bash login state.
 opt.shellcmdflag = ""
 opt.shellxquote = ""
 opt.autowrite = true -- Enable auto write
