@@ -1,10 +1,13 @@
+-- SECTION: PART 0: Fix Neovim 'breaking-changes' issues:
+-- INFO: Neovim V0.11 disables LSP virtual text by default. MUST ENABLE IT.
+vim.diagnostic.config({ virtual_text = true })
 -- SECTION: PART 1: Some pre-config and API brief.
 -- XXX: The API:
 -- The overall API is complex, where the global vim table actually exposes three main portions that are used together,
 -- they are:
 -- > The 'Vim API' - accessed via the 'vim.cmd()' method and the 'vim.fn' (builtin-functions) sub-table. Provides compatibility with legacy Vim functions but uses 0-based indexing.
 -- > The 'Nvim API' - accessed via the '.api' table. Neovim-specific, low-level API requiring explicit arguments and using 0-based indexing.
--- > The 'Lua API' - includes high-level modules like `vim.lsp`, `vim.treesitter`, `vim.diagnostic`, and utility functions like `vim.inspect`, `vim.loop`, etc. 
+-- > The 'Lua API' - includes high-level modules like `vim.lsp`, `vim.treesitter`, `vim.diagnostic`, and utility functions like `vim.inspect`, `vim.loop`, etc.
 -- IMPORTANT: This distinction is vital because:
 -- -> 'Vim API' functions use 0-based when Lua uses 1-based indexing
 -- -> 'Nvim API' need all method arguments passed. Even though Lua (it's LSP and compiler) might accept some as nil.
