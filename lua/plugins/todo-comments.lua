@@ -13,29 +13,42 @@ return {
         color = "error", -- can be a hex color, or a named color (see below)
         alt = { "FIXME", "BUG", "FIXIT", "ISSUE", "IMPORTANT" }, -- a set of other keywords that all map to this FIX keywords
       }, -- 'test' and 'info' are the same colour.
-      TEST = { icon = "🧪", color = "info", alt = { "TESTING", "PASSED", "FAILED" } },
-      PERF = { icon = "📈", color = "info", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
-      TODO = { icon = "🔲", color = "info", alt = { "REMEMBER" } },
-      QUESTION = { icon = "✨", color = "heading", alt = { "SECTION", "HEADING" } },
-      ANSWER = { icon = "💫", color = "plugin", alt = { "PLUGIN" } },
-      WARN = { icon = "⚠", color = "warning", alt = { "DEFINITION", "DEF", "WARNING" } },
-      EXAMPLE = { icon = "✍", color = "example", alt = { "EXAMPLES" } },
-      NOTE = { icon = "✏", color = "hint", alt = { "INFO" } },
+      NOTE = { icon = "✏", color = "note", alt = {} }, -- Empty 'alt' table because of error.
+      TODO = { icon = "🧠", color = "todo", alt = { "REMEMBER" } },
+      INFO = { icon = "ℹ️", color = "info" },
+      TEST = { icon = "🧪", color = "test", alt = { "TESTING", "PASSED" } },
+      ERROR = { icon = "📈", color = "error", alt = { "PERFORMANCE", "FAILED", "OPTIMIZE" } },
       GOAL = { icon = "🥅", color = "goal" },
-      XXX = { icon = "❗", color = "banner", alt = { "FIN", "END", "HACK" } },
+      QUESTION = { icon = "✨", color = "question", alt = { "SECTION", "HEADING" } },
+      PLUGIN = { icon = "💫", color = "plugin", alt = { "ANSWER" } },
+      WARNING = { icon = "⚠", color = "warning", alt = { "DEFINITION", "DEF", "WARN" } },
+      EXAMPLE = { icon = "✍", color = "example", alt = { "EXAMPLES" } },
+      CHECK = { icon = "❗", color = "check", alt = { "XXX" } },
     },
     colors = {
-      error = { "#FF6060" },
-      goal = { "#B5B1F1" },
+      note = { "diagnosticHint" },
+      todo = { "#75a7d7" },
+      info = { "#607ee0" },
+      test = { "#dcdf7e" },
+      error = { "#d35858" },
+      goal = { "#b5b1f1" },
+      question = { "#bcc435" },
+      plugin = { "#d78bda" },
       warning = { "#e1aa02" },
       example = { "#01b3bd" },
-      info = { "#7eaeb8" },
-      hint = { "DiagnosticHint" },
-      default = { "Identifier" },
-      test = { "#FF00FF" },
-      heading = { "#bcc435" },
-      banner = { "#AFAFAF" },
-      plugin = { "#d78bda" },
+      check = { "#afafaf" },
+      -- Examples are below:
+      -- NOTE:
+      -- TODO:
+      -- INFO:
+      -- TEST:
+      -- ERROR:
+      -- GOAL:
+      -- QUESTION:
+      -- PLUGIN:
+      -- WARN:
+      -- EXAMPLE:
+      -- CHECK:
     },
     highlight = {
       max_line_len = 1000, -- NOTE: ignore lines longer than this
