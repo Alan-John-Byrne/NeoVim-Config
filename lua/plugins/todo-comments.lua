@@ -3,7 +3,6 @@
 return {
   "folke/todo-comments.nvim",
   enabled = true, --TESTING
-  event = "VimEnter",
   dependencies = { "nvim-lua/plenary.nvim" },
   opts = {
     signs = true,
@@ -19,11 +18,11 @@ return {
       TEST = { icon = "🧪", color = "test", alt = { "TESTING", "PASSED" } },
       ERROR = { icon = "📈", color = "error", alt = { "PERFORMANCE", "FAILED", "OPTIMIZE" } },
       GOAL = { icon = "🥅", color = "goal" },
-      QUESTION = { icon = "✨", color = "question", alt = { "SECTION", "HEADING" } },
+      SECTION = { icon = "✨", color = "question", alt = { "QUESTION", "HEADING", "PART" } },
       PLUGIN = { icon = "💫", color = "plugin", alt = { "ANSWER" } },
       WARNING = { icon = "⚠", color = "warning", alt = { "DEFINITION", "DEF", "WARN" } },
       EXAMPLE = { icon = "✍", color = "example", alt = { "EXAMPLES" } },
-      CHECK = { icon = "❗", color = "check", alt = { "XXX" } },
+      XXX = { icon = "❗", color = "check", alt = { "CHECK" } },
     },
     colors = {
       note = { "diagnosticHint" },
@@ -48,7 +47,7 @@ return {
       -- PLUGIN:
       -- WARN:
       -- EXAMPLE:
-      -- CHECK:
+      -- XXX:
     },
     highlight = {
       max_line_len = 1000, -- NOTE: ignore lines longer than this
