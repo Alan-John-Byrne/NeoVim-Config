@@ -26,7 +26,7 @@ return {
     "mfussenegger/nvim-dap",  -- nvim-dap (Debug Adapter Protocols / DAPs).
     "rcarriga/nvim-dap-ui",   -- Debugging UI for nvim-dap.
 
-    -- XXX: Other Plugins:
+    -- TODO: Other Plugins:
     "L3MON4D3/LuaSnip",                  -- LuaSnip (Loads snippets from VSCode).
     "hrsh7th/nvim-cmp",                  -- nvim-cmp (Auto-Completion).
     "hrsh7th/cmp-nvim-lsp",              -- LSP source for nvim-cmp.
@@ -46,37 +46,44 @@ return {
     -- TODO: 2. Setup LSPs (Auto-Install + Auto-Config)
     require("mason-lspconfig").setup({
       ensure_installed = { "lua_ls", "pyright", "vtsls", "clangd", "powershell_es" }, -- Auto-install these LSPs
-      automatic_installation = true,
+      automatic_enable = true,
     })
 
+    -- WARN: New Configuration:
     -- NOTE: Setting up all installed LSPs.
-    local lspconfig = require("lspconfig")
-    require("mason-lspconfig").setup_handlers({
-      function(server_name)
-        -- XXX: Configuring 'lua_ls' lsp
-        if server_name == "lua_ls" then
-          lspconfig[server_name].setup({
-            settings = {
-              Lua = {
-                workspace = {
-                  -- IMPORTANT: The 'lua_ls' lsp provides *SOME* linting. To allow it to
-                  -- recognise the global 'vim' table / variable, we must pass the neovim
-                  -- runtime library files into it's workspace library setting, via it's setup function.
-                  -- REMEMBER: The 'selene' linter will do most of the linting for lua instead. (Setup below)
-                  library = vim.api.nvim_get_runtime_file("", true)
+    local mason_lspconfig_test = require("mason-lspconfig")
+    for _, server_name in ipairs(mason_lspconfig_test.get_installed_servers()) do
+      if server_name == "lua_ls" then
+        vim.lsp.config(server_name, { -- INFO: Configure server via `vim.lsp.config()`, which is new in Neovim v0.11.
+          settings = {
+            Lua = {
+              workspace = {
+                -- IMPORTANT: The 'lua_ls' lsp provides *SOME* linting. To allow it to
+                -- recognise the global 'vim' table / variable, we must pass the neovim
+                -- runtime library files into it's workspace library setting, via it's setup function.
+                -- REMEMBER: The 'selene' linter will do most of the linting for lua instead. (Setup below)
+                library = vim.api.nvim_get_runtime_file("", true)
+              },
+              -- INFO: Adjusting "hover over" behaviour for the 'lua_ls' LSP.
+              hover = {
+                previewFields = 100 -- Expanding amount of rows viewable within module tables.
+              },
+              runtime = {
+                version = 'LuaJIT',
+              },
+              diagnostics = {
+                globals = {
+                  'vim',
+                  'require',
                 },
-                -- INFO: Adjusting "hover over" behaviour for the 'lua_ls' LSP.
-                hover = {
-                  previewFields = 100 -- Expanding amount of rows viewable within module tables.
-                }
-              }
-            }
-          })
-        else
-          lspconfig[server_name].setup({}) -- XXX: Just use default settings for all other LSPs.
-        end
-      end,
-    })
+              },
+            },
+          },
+        })
+      else
+        vim.lsp.config(server_name, {}) -- XXX: Just use default settings for all other LSPs.
+      end
+    end
 
     -- TODO: 3. Setup Linters & Formatters:
     -- NOTE: 'mason-nvim-lint' & 'mason-conform allows us to then manually configure Linters and Formatters, respectively.
