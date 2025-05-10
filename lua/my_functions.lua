@@ -20,9 +20,7 @@ end
 ---@return string
 ---@nodiscard
 function M.get_mason_package_path(package_name)
-  local mason_registry = require("mason-registry") -- IMPORTANT: The mason registry only lists the LOADED plugins.
-  local package = mason_registry.get_package(package_name)
-  return package:get_install_path()                -- We need to retrieve the path of where the package is installed, because it will contain everything we need.
+  return string.format(vim.fn.expand("$MASON/packages/%s"), package_name)
 end
 
 --- Returns a table containing all the seperate strings.
