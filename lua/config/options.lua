@@ -1,29 +1,35 @@
--- TODO: Options are automatically loaded before lazy.nvim startup. Add any additional options here:
-
--- WARN: The options.lua file is used for accessing the global vim lua table, and setting VIM options.
--- Not for direct VIM API calls. See full list of options using the ':options' command.
-
--- XXX: Ways of setting options:
---'vim.opt': The modern Lua API for setting options. Recommended way, use when possible. (modern, auto handle of scope)
+-- SECTION: PART 1: Some pre-config and API brief.
+-- XXX: The API:
+-- The overall API is complex, where the global vim table actually exposes three main portions that are used together,
+-- they are:
+-- > The 'Vim API' - accessed via the 'vim.cmd()' method and the 'vim.fn' (builtin-functions) sub-table. Provides compatibility with legacy Vim functions but uses 0-based indexing.
+-- > The 'Nvim API' - accessed via the '.api' table. Neovim-specific, low-level API requiring explicit arguments and using 0-based indexing.
+-- > The 'Lua API' - includes high-level modules like `vim.lsp`, `vim.treesitter`, `vim.diagnostic`, and utility functions like `vim.inspect`, `vim.loop`, etc. 
+-- IMPORTANT: This distinction is vital because:
+-- -> 'Vim API' functions use 0-based when Lua uses 1-based indexing
+-- -> 'Nvim API' need all method arguments passed. Even though Lua (it's LSP and compiler) might accept some as nil.
+-- INFO: The options.lua file is used for accessing the global vim lua table, and setting options.
+-- Not for direct API calls. See full list of options using the ':options' command.
+-- TODO: Plugin Global Settings:
+-- WARN: 'vim.g': Global variables. These are NOT options. They're used for configuring global
+-- settings used by plugins that require them to be set, prior to them actually being loaded by 'lazy.nvim' itself.
+-- You can't do 'local plugin_global = vim.g'. As 'vim.g' is a special meta-table handled by neovim so you can't
+-- do a 'shallow' or 'deep' copy into a variable and control it from there. It must be 'vim.g' on it's own. Like so:
+vim.g.mapleader = " " -- 'which-key': Set "<leader>" key to 'space' allowing keymaps to work properly.
+vim.g.maplocalleader = "\\"
+-- SECTION: PART 2: Setting options using the Lua portion of the overall API.
+-- CHECK: Ways of setting options using the Lua API:
+--'vim.opt': Modern recommended way of setting options. Use when possible.
 --'vim.o': Global-only options. Applies to all buffers and windows. Use to set global settings that apply across buffers and windows.
 --'vim.bo': Buffer-local options. Only applies to the CURRENT buffer. Use within plugin configuration functions or autocommands.
 --'vim.wo': Window-local options. Only applies to the CURRENT window. Use within plugin configuration functions or autocommands.
 --'vim.env': Allows for accessing your environment variables within Neovim. (eg: $env.HOME)
---
--- INFO: Neovim V0.11 disables LSP virtual text by default. MUST ENABLE IT.
-vim.diagnostic.config({ virtual_text = true })
-
--- TODO: Plugin Global Settings:
--- IMPORTANT: 'vim.g': Global variables. These are NOT options. They're used for configuring global settings used by plugins that require them to be set.
--- 'local plugin_global = vim.g', you can't do this. 'vim.g' is a special meta-table handled by neovim so you can't do a 'shallow' or 'deep' copy.
--- It must be 'vim.g' on it's own. Like so:
-vim.g.mapleader = " " -- 'which-key': Set "<leader>" key to 'space' allowing keymaps to work properly.
-vim.g.maplocalleader = "\\"
-
--- REMEMBER: Modern Lua API: Setting options and auto-detecting if they're 'global', 'buffer-local', or 'window-local'.
+-- REMEMBER: Setting options via 'vim.opt' will auto-detect if they're 'global', 'buffer-local', or 'window-local'.
+-- NOTE: Options are automatically loaded before the 'lazy.nvim' package manager
+-- starts up. Add any additional options here:
 local opt = vim.opt
-
--- NOTE: This points to the PowerShell7 executable, available through your environment variables. It includes your ".ps1" profile.
+-- INFO: 'opt.shell' points to the PowerShell7 executable,
+-- available through your set environment variables, in your ".ps1" profile.
 opt.shell = "pwsh" -- Adding the PowerShell Profile Terminal Configuration:
 opt.shellcmdflag = "-nologo -noprofile -ExecutionPolicy RemoteSigned -command"
 opt.shellxquote = ""
