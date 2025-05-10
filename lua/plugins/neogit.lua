@@ -2,8 +2,11 @@
 -- management expierence.
 return {
   "NeogitOrg/neogit",
-  enabled = true, -- TESTING
-  event = "VeryLazy",
+  enabled = true,     -- TESTING
+  event = "VeryLazy", -- NOTE: 'VeryLazy' only loads the plugin when needed (On powershell files).
+  -- IMPORTANT: 'VeryLazy' allows package managers (e.g.: lazy.nvim, Mason, etc...) to load the plugin ahead of time,
+  -- so we can request them later within another plugins config functions. Otherwise we get errors saying a plugin 'doesn't
+  -- exist', cause we create a race condition saying we need it to load the plugin before even it's package manager has a chance to load.
   priority = 1,
   dependencies = {
     "nvim-lua/plenary.nvim",
@@ -12,7 +15,7 @@ return {
   },
   keys = function()
     local neogit = require("neogit")
-    return { -- IMPORTANT: You have to use functions here to prevent methods from being called on entering neovim.
+    return { -- REMEMBER: You have to use functions here to prevent methods from being called on entering neovim.
       { '<leader>gC', function() neogit.open({ kind = 'split' }) end, desc = "Open Neogit status popup" },
       { '<leader>gc', function() neogit.open({ 'commit' }) end,       desc = "Open Neogit commit popup" },
       { '<leader>gp', function() neogit.open({ 'push' }) end,         desc = "Open Neogit push popup" },
@@ -31,5 +34,7 @@ return {
     }
   end
   -- IMPORTANT: NOT RECOMMENDED:
-  -- WARN: Automatically, there are a set of keymaps for 'lazygit', if you don't have the exectuable for this program within your PATH, these keymaps will be useless.
+  --  Automatically, there are a set of keymaps for 'lazygit',
+  --  if you don't have the exectuable for this program within your PATH,
+  --  these keymaps will be useless.
 }
