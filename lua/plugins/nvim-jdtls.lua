@@ -43,7 +43,7 @@ return {
   config = function()
     -- TODO: Setting the workspace directory used by JDTLS, for all projects (this is standard).
     -- WARN: The workspace meta-data directory must be in the root directory, above all project files.
-    local base_path = "D:\\4-Personal-OneDrive\\OneDrive\\Coding\\javadev\\"
+    local base_path = "~/coding/javadev/"
     local workspace_dir_name = ".workspace"
     local workspace_dir_path = base_path .. workspace_dir_name
     -- TODO: Listening for a 'BufEnter' event when going into a java file.
@@ -72,14 +72,14 @@ return {
 
             -- IMPORTANT:💀 Must be set to the specifics of your machine. (Manual Installation required - MASON NOT COMPATIBLE)
             "-jar",
-            base_path .. ".setup_config\\jdtls\\plugins\\org.eclipse.equinox.launcher_1.6.900.v20240613-2009.jar",
+            base_path .. ".setup_config/jdtls/plugins/org.eclipse.equinox.launcher_1.6.900.v20240613-2009.jar",
             -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^                                            ^^^^^^^^^^^^^^^^^^
             -- Must point to the                                                      Change this to
             -- eclipse.jdt.ls installation                                            the actual version
 
             -- IMPORTANT:💀 Must be set to the specifics of your machine. (Manual Installation required - MASON NOT COMPATIBLE)
             "-configuration",
-            base_path .. ".setup_config\\jdtls\\config_win",
+            base_path .. ".setup_config/jdtls/config_mac",
             -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^      ^^^^^^^^^^
             -- Must point to the                Change to one of `linux`, `win` or `mac`
             -- eclipse.jdt.ls installation      Depending on your system.
@@ -108,11 +108,7 @@ return {
                 runtimes = {            -- IMPORTANT: Even if nvim-jdtls requires the Java 21 JDK to be set as 'JAVA_HOME' we can still use the plugin for projects built in other versions.
                   {
                     name = "JavaSE_21", -- Create Java 21 Projects.
-                    path = "C:\\Program Files\\Java\\jdk-21",
-                  },
-                  {
-                    name = "JavaSE_17", -- Create Java 17 Projects.
-                    path = "C:\\Program Files\\Java\\jdk-17",
+                    path = "/opt/homebrew/opt/openjdk@21",
                   },
                 },
               },

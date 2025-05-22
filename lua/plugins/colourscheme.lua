@@ -1,9 +1,11 @@
 -- PLUGIN: The 'gruvbox.nvim' plugin provides a much loved colorscheme.
 return {
-  "folke/tokyonight.nvim",
-  lazy = false,                       -- INFO: Illustrating that the colourscheme MUST NOT be lazy.
+  -- "folke/tokyonight.nvim", Swap Whenever
+  "ellisonleao/gruvbox.nvim",
+  lazy = false, -- INFO: Illustrating that the colourscheme MUST NOT be lazy.
   config = function()
-    vim.cmd.colorscheme("tokyonight") -- Loading the colourscheme.
+    -- vim.cmd.colorscheme("tokyonight"), Swap Whenever
+    vim.cmd.colorscheme("gruvbox") -- Loading the colourscheme.
     -- IMPORTANT: The following must be done AFTER loading the colourscheme.
     if (true) then
       -- WARN: Controlling nvim transparency, and managing suitable colour combinations for

@@ -295,10 +295,10 @@ return {
     -- Python adapter setup
     dap.adapters.python = {
       type = "executable",
-      command = debugpy_path .. "/venv/Scripts/python", -- NOTE: Using the packages version of python installed via it's virtual environment.
-      args = { "-m", "debugpy.adapter" },               -- NOTE: "debugpy" is actually a plugin for python, which is preferrably installed within a virtual environment.
+      command = debugpy_path .. "/venv/bin/python", -- NOTE: Using the packages version of python installed via it's virtual environment.
+      args = { "-m", "debugpy.adapter" },           -- NOTE: "debugpy" is actually a plugin for python, which is preferrably installed within a virtual environment.
       options = {
-        detached = false,                               -- IMPORTANT: Specific to windows in the case of Python, we don't want other terminals opening up outside of the neovim session / the console you're using.
+        detached = false,                           -- IMPORTANT: Specific to windows in the case of Python, we don't want other terminals opening up outside of the neovim session / the console you're using.
       },
     }
     -- Python configuration
@@ -309,7 +309,7 @@ return {
         name = "Launch file",
         program = "${file}",
         pythonPath = function() -- NOTE: Here we are actually using the version of python installed by mason for debugpy.
-          return debugpy_path .. "/venv/Scripts/python"
+          return debugpy_path .. "/venv/bin/python"
         end,
       },
     }

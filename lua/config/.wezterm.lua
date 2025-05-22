@@ -34,8 +34,8 @@ config.launch_menu = {
     args = { 'bash', '-NoLogo' } -- Command used to launch the program.
   }
 }
-config.window_background_opacity = 0.7  -- Adjust between 0.0 and 1.0
-config.macos_window_background_blur = 7 -- Adjust blur radius (20-50 is typical)
+config.window_background_opacity = 1    -- Adjust between 0.0 and 1.0
+config.macos_window_background_blur = 0 -- Adjust blur radius (20-50 is typical)
 config.font_size = 18
 -- INFO: Must be an interative shell login.
 config.default_prog = { 'bash', '--login', '-i' } -- 'bash' / the bash binary is already available globally.
@@ -61,37 +61,37 @@ config.keys = {                            -- TODO: Custom keybindings: (Self-ex
   },
   {
     key = "L",
-    mods = "CTRL",
+    mods = "CMD",
     action = wezterm.action.ShowDebugOverlay -- Used for checking Wezterm Debug output.
   },
   {
     key = "-",
-    mods = "CTRL",
+    mods = "CMD",
     action = wezterm.action.DecreaseFontSize, -- Decrease Font Size.
   },
   {
     key = "=",
-    mods = "CTRL",
+    mods = "CMD",
     action = wezterm.action.IncreaseFontSize, -- Increase Font Size.
   },
   {
     key = "t",
-    mods = "CTRL|ALT",
+    mods = "CMD|ALT",
     action = wezterm.action.SpawnTab("DefaultDomain"), -- Create a new tab.
   },
   {
     key = "a",
-    mods = "CTRL",
+    mods = "CMD",
     action = wezterm.action.CloseCurrentTab({ confirm = true }), -- Close the current tab.
   },
   {
     key = "]",
-    mods = "CTRL|ALT",
+    mods = "CMD|ALT",
     action = wezterm.action.ActivateTabRelative(-1), -- Move to the right tab.
   },
   {
     key = "[",
-    mods = "CTRL|ALT",
+    mods = "CMD|ALT",
     action = wezterm.action.ActivateTabRelative(1), -- Move to the left tab.
   },
   {
@@ -106,47 +106,47 @@ config.keys = {                            -- TODO: Custom keybindings: (Self-ex
   },
   {
     key = "h",
-    mods = "CTRL|ALT",
+    mods = "CMD|ALT",
     action = wezterm.action.ActivatePaneDirection("Left") -- Move to the left Pane.
   },
   {
     key = "l",
-    mods = "CTRL|ALT",
+    mods = "CMD|ALT",
     action = wezterm.action.ActivatePaneDirection("Right") -- Move to the right Pane.
   },
   {
     key = "j",
-    mods = "CTRL|ALT",
+    mods = "CMD|ALT",
     action = wezterm.action.ActivatePaneDirection("Down") -- Move to the Pane below.
   },
   {
     key = "k",
-    mods = "CTRL|ALT",
+    mods = "CMD|ALT",
     action = wezterm.action.ActivatePaneDirection("Up") -- Move to the Pane above.
   },
   {
     key = "i",
-    mods = "CTRL|ALT",
+    mods = "CMD|ALT",
     action = wezterm.action.TogglePaneZoomState -- Temporarily set the pane to fill the entire window.
   },
   {
     key = "LeftArrow",
-    mods = "CTRL|ALT",
+    mods = "CMD|ALT",
     action = wezterm.action.AdjustPaneSize({ "Left", 3 }) -- Adjust Pane to the Left.
   },
   {
     key = "RightArrow",
-    mods = "CTRL|ALT",
+    mods = "CMD|ALT",
     action = wezterm.action.AdjustPaneSize({ "Right", 3 }) -- Adjust Pane to the Right.
   },
   {
     key = "DownArrow",
-    mods = "CTRL|ALT",
+    mods = "CMD|ALT",
     action = wezterm.action.AdjustPaneSize({ "Down", 3 }) -- Adjust Pane Downward.
   },
   {
     key = "UpArrow",
-    mods = "CTRL|ALT",
+    mods = "CMD|ALT",
     action = wezterm.action.AdjustPaneSize({ "Up", 4 }) -- Adjust Pane Upward.
   },
 }
