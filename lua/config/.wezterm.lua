@@ -149,6 +149,14 @@ config.keys = {                            -- TODO: Custom keybindings: (Self-ex
     mods = "CMD|ALT",
     action = wezterm.action.AdjustPaneSize({ "Up", 4 }) -- Adjust Pane Upward.
   },
+  -- INFO: macOS remappings for the CMD key. ('\x1b' means 'Esc' key.) -- Good for neovim remaps.
+  -- NOTE: These are sent to Neovim, where we can interpret them as input for a command / keymap binding.
+  { key = "h", mods = "CMD",     action = wezterm.action.SendString("@h") },
+  { key = "j", mods = "CMD",     action = wezterm.action.SendString("@j") },
+  { key = "k", mods = "CMD",     action = wezterm.action.SendString("@k") },
+  { key = "l", mods = "CMD",     action = wezterm.action.SendString("@l") },
+  { key = "k", mods = "CMD|ALT", action = wezterm.action.SendString("&k") },
+  { key = "j", mods = "CMD|ALT", action = wezterm.action.SendString("&j") },
 }
 
 -- IMPORTANT: Finally, return the built configuration to WezTerm.

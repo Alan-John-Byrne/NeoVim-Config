@@ -35,22 +35,23 @@ map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, 
 map({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
 
 -- Move to window using the <ctrl> hjkl keys (Normal Mode)
-map("n", "<C-h>", "<C-w>h", { desc = "Go to Left Window", remap = true })
-map("n", "<C-j>", "<C-w>j", { desc = "Go to Lower Window", remap = true })
-map("n", "<C-k>", "<C-w>k", { desc = "Go to Upper Window", remap = true })
-map("n", "<C-l>", "<C-w>l", { desc = "Go to Right Window", remap = true })
+map("n", "@h", "<C-w>h", { desc = "Go to Left Window", remap = true })
+map("n", "@j", "<C-w>j", { desc = "Go to Lower Window", remap = true })
+map("n", "@k", "<C-w>k", { desc = "Go to Upper Window", remap = true })
+map("n", "@l", "<C-w>l", { desc = "Go to Right Window", remap = true })
 --
 -- Move to window using the <ctrl> hjkl keys (Terminal Mode)
-map("t", "<C-h>", [[<C-\><C-N><C-w>h]], { desc = "Go to Left Window in Terminal", remap = true })
-map("t", "<C-j>", [[<C-\><C-N><C-w>j]], { desc = "Go to Lower Window in Terminal", remap = true })
-map("t", "<C-k>", [[<C-\><C-N><C-w>k]], { desc = "Go to Upper Window in Terminal", remap = true })
-map("t", "<C-l>", [[<C-\><C-N><C-w>l]], { desc = "Go to Right Window in Terminal", remap = true })
+map("t", "@h", [[<C-\><C-N><C-w>h]], { desc = "Go to Left Window in Terminal", remap = true })
+map("t", "@j", [[<C-\><C-N><C-w>j]], { desc = "Go to Lower Window in Terminal", remap = true })
+map("t", "@k", [[<C-\><C-N><C-w>k]], { desc = "Go to Upper Window in Terminal", remap = true })
+map("t", "@l", [[<C-\><C-N><C-w>l]], { desc = "Go to Right Window in Terminal", remap = true })
+-- INFO: "<Esc>[1;*" maps to an escape key press (hold down) followed by either 'h', 'j', 'k', 'l'
 
--- Resize window using <ctrl> arrow keys
-map("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase Window Height" })
-map("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease Window Height" })
-map("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease Window Width" })
-map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase Window Width" })
+-- Resize window vertically using <CMD> arrow keys.(Normal Mode & Terminal Mode)
+map({ "n", "t" }, "&k", "<cmd>resize +2<cr>", { desc = "Increase Window Width" })
+map({ "n", "t" }, "&j", "<cmd>resize -2<cr>", { desc = "Decrease Window Width" })
+
+-- NOTE: '@?' and '&?' keys are mapped via WezTerm.
 
 -- Move Lines
 map("n", "<A-j>", "<cmd>execute 'move .+' . v:count1<cr>==", { desc = "Move Down" })

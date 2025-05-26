@@ -45,7 +45,7 @@ return {
 
     -- TODO: 2. Setup LSPs (Auto-Install + Auto-Config)
     require("mason-lspconfig").setup({
-      ensure_installed = { "lua_ls", "pyright", "vtsls", "clangd", "powershell_es" }, -- Auto-install these LSPs
+      ensure_installed = { "lua_ls", "pyright", "vtsls", "clangd", "bashls" }, -- Auto-install these LSPs
       automatic_enable = true,
     })
 
@@ -91,7 +91,7 @@ return {
     -- REMEMBER: Linters & formatters ONLY kick into action when you save a buffer. (So we use autocommands)
     -- XXX: Linters:
     require("mason-nvim-lint").setup({
-      ensure_installed = { "selene", "markdownlint", "htmlhint", "stylelint" }, -- Auto-install these Linters.
+      ensure_installed = { "selene", "markdownlint", "htmlhint", "stylelint", "shellcheck" }, -- Auto-install these Linters.
       automatic_installation = true,
     })
 
@@ -99,7 +99,8 @@ return {
       markdown = { "markdownlint" },
       html = { "htmlhint" },
       lua = { "selene" },
-      css = { "stylelint" }
+      css = { "stylelint" },
+      bash = { "shellcheck" }
     }
 
     -- XXX: Linters Specific Settings; Customize a linters config via it's 'args' table.
@@ -130,7 +131,7 @@ return {
 
     -- XXX: Formatters:
     require("mason-conform").setup({
-      ensure_installed = { "prettier", "goimports" }, -- Auto-install these Formatters.
+      ensure_installed = { "prettier", "goimports", "beautysh" }, -- Auto-install these Formatters.
       automatic_installation = true,
     })
 
@@ -143,7 +144,8 @@ return {
         markdown = { "prettier" },
         html = { "prettier" },
         css = { "prettier" },
-        go = { "goimports" }
+        go = { "goimports" },
+        bash = { "beautysh" }
       }
     })
 
@@ -155,7 +157,7 @@ return {
         local bufnr = vim.api.nvim_get_current_buf()
         local clients = vim.lsp.buf_get_clients(bufnr)
         local lua_is_active = false
-        for index, client in ipairs(clients) do
+        for _, client in ipairs(clients) do
           if client.name == "lua_ls" then
             lua_is_active = true
           end
