@@ -157,6 +157,9 @@ config.keys = {                            -- TODO: Custom keybindings: (Self-ex
   { key = "l", mods = "CMD",     action = wezterm.action.SendString("@l") },
   { key = "k", mods = "CMD|ALT", action = wezterm.action.SendString("&k") },
   { key = "j", mods = "CMD|ALT", action = wezterm.action.SendString("&j") },
+  -- Keybind for saving using CMD on mac:
+  { key = "s", mods = "CMD",     action = wezterm.action.SendString("@s") },
+
 }
 
 -- IMPORTANT: Finally, return the built configuration to WezTerm.
