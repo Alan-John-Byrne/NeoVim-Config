@@ -32,7 +32,9 @@ config.font = wezterm.font_with_fallback({                -- Setting proper font
   { family = 'JetBrainsMono NF',           weight = 'Light', italic = false, scale = 1 },
   { family = 'Noto Sans Linear B Regular', weight = 'Light', italic = false, scale = 1 },
 })
-config.window_background_opacity = 0.9 -- Changing Wezterm window opacity.
+config.window_background_opacity = 1    -- Adjust between 0.0 and 1.0
+config.macos_window_background_blur = 0 -- Adjust blur radius (20-50 is typical)
+config.font_size = 12
 
 -- Setting keybindings.
 config.disable_default_key_bindings = true -- WARN: DISABLING DEFAULT KEYBINDINGS THAT ARE EITHER INCOMPATIBLE WITH WINDOWS, OR CAUSE I WANT TO CHANGE THEM.
@@ -46,7 +48,7 @@ config.keys = {                            -- TODO: Custom keybindings: (Self-ex
   {
     key = 'C',
     mods = 'CTRL|SHIFT',
-    action = wezterm.action.CopyTo 'Clipboard', -- Paste from clipboard. 
+    action = wezterm.action.CopyTo 'Clipboard', -- Paste from clipboard.
   },
   {
     key = 'F11',

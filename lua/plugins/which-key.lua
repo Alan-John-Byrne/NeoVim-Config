@@ -17,6 +17,7 @@ return {
         { "<leader><tab>", group = "tabs" },
         { "<leader>h", group = "harpoon", icon = { icon = "➤", color = "red" } }, -- NOTE: Added group here for the harpoon plugin keybindings.
         { "<leader>c", group = "code" },
+        { "<leader>t", group = "test suite", icon = { icon = "🛠", color = "yellow" } },
         { "<leader>d", group = "debug" },
         { "<leader>dp", group = "profiler" },
         { "<leader>f", group = "file/find" },
