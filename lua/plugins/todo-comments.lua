@@ -22,7 +22,7 @@ return {
       PLUGIN = { icon = "💫", color = "plugin", alt = { "ANSWER" } },
       WARNING = { icon = "⚠", color = "warning", alt = { "DEFINITION", "DEF", "WARN" } },
       EXAMPLE = { icon = "✍", color = "example", alt = { "EXAMPLES" } },
-      XXX = { icon = "❗", color = "check", alt = { "CHECK" } },
+      XXX = { icon = "❗", color = "check", alt = { "CHECK", "ADAPTER" } },
     },
     colors = {
       note = { "diagnosticHint" },
