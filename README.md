@@ -7,7 +7,11 @@
 ## **<p align="center">The Stack:</p>**
 
 <p align="center">
+    <img src=".images/apple_logo.png" alt="WezTerm Logo" width="100" height="120">
+    <br>
     <img src=".images/wezterm.png" alt="WezTerm Logo" width="130" height="130">
+    <br>
+    <img src=".images/bash_logo.png" alt="WezTerm Logo" width="300" height="130">
     <br>
     <img src=".images/neovim_logo.png" alt="NeoVim Logo" width="100" height="130">
     <br>
