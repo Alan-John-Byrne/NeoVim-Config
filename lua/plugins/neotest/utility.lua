@@ -54,4 +54,25 @@ function M.select_browsers()
   end)
 end
 
+--- Checks if an npm project is using the "Playwright" test framework.
+---@return boolean true/false
+---@nodiscard
+function M.is_playwright_project()
+  -- Getting the current working directory you were in when you entered neovim.
+  local root = vim.fn.getcwd()
+  -- Checking if "@playwright/test" package is within the dependencies. If so return true.
+  local package_json = root .. "/package.json"
+  if vim.fn.filereadable(package_json) == 1 then
+    local json = vim.fn.json_decode(vim.fn.readfile(package_json))
+    if json and json.devDependencies and json.devDependencies["@playwright/test"] then
+      return true
+    end
+    if json and json.dependencies and json.dependencies["@playwright/test"] then
+      return true
+    end
+  end
+  -- "@playwright/test" package not found, return false.
+  return false
+end
+
 return M

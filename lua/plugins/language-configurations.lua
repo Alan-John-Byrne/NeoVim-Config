@@ -191,7 +191,7 @@ return {
 
       --  NOTE: 'mason-nvim-dap' allows us to then manually configure debug adapters & configurations for different languages.
       local dap = require("dap")
-      local my_functions = require("my_functions")
+      local utility = require("utility")
 
       -- WARN: GOLANG DEBUG ADAPTER CONFIGURATION:
       local dap_go = require("dap-go")
@@ -233,7 +233,7 @@ return {
       -- IMPORTANT: MUST DO "g++ -g -o main *yourcppfile*.cpp" when building project. (If only compiling and debugging a single file.)
       -- WARN: The '-g' flag is super important, it provides the symbols for the debugger. '-o' will output an executable called 'main.exe'.
       -- REMEMBER: The 'Ninja' build tools must be installed on your system (set as default build tools for C++ projects) and entered into your system environment variables. It's Required for clangd lsp.
-      local codelldb_path = my_functions.get_mason_package_path("codelldb")
+      local codelldb_path = utility.get_mason_package_path("codelldb")
       dap.adapters.codelldb = {
         type = "executable",
         command = codelldb_path .. "\\extension\\adapter\\codelldb", -- IMPORTANT: Absolute Path to Codelldb.exe: "/absolute/path/to/codelldb".
@@ -262,7 +262,7 @@ return {
       }
 
       -- WARN: C# DEBUG ADAPTER CONFIGURATION:
-      local netcoredbg_path = my_functions.get_mason_package_path("netcoredbg")
+      local netcoredbg_path = utility.get_mason_package_path("netcoredbg")
       dap.adapters.coreclr = {
         type = "executable",
         command = netcoredbg_path .. "\\netcoredbg\\netcoredbg",
@@ -306,7 +306,7 @@ return {
 
       -- WARN: Python DEBUG ADAPTER CONFIGURATION:
       -- Get debugpy path
-      local debugpy_path = my_functions.get_mason_package_path("debugpy")
+      local debugpy_path = utility.get_mason_package_path("debugpy")
       -- Python adapter setup
       dap.adapters.python = {
         type = "executable",
@@ -331,7 +331,7 @@ return {
 
       -- WARN: JavaScript & TypeScript DEBUG ADAPTER CONFIGURATION:
       -- Get 'js-debug-adapter' path - (vscode-javascript-debug)
-      local vscode_javascript_debug_path = my_functions.get_mason_package_path("js-debug-adapter")
+      local vscode_javascript_debug_path = utility.get_mason_package_path("js-debug-adapter")
       dap.adapters["pwa-node"] = {
         type = "server",
         host = "localhost",

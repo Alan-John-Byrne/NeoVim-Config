@@ -99,7 +99,7 @@ return {
         "n",
         '<leader>tn',
         function()
-          require("helper_methods").refresh_playwright()
+          require("neotest.utility").refresh_playwright()
         end,
         { desc = 'Playwright: Refresh summary.', }
       )
@@ -110,7 +110,7 @@ return {
         "n",
         '<leader>tp',
         function()
-          require("helper_methods").select_browsers()
+          require("neotest.utility").select_browsers()
         end,
         { desc = 'Playwright: Run all tests in the project' }
       )
