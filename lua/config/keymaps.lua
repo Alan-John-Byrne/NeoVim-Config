@@ -1,6 +1,7 @@
 -- INFO: Keymaps are automatically loaded on the VeryLazy event.
+vim.ui.select = nil -- Reset to default
 
--- TODO: Convenience save and quit all.
+-- XXX: Convenience save and quit all.
 vim.keymap.set("n", "<leader>q", ":wqall<CR>", { desc = "Save and Quit All" })
 
 -- XXX: Set the current working directory to the buffer's directory, and Print the current working directory.
@@ -20,12 +21,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- XXX: Visual-Block Mode select & replace.
 vim.api.nvim_set_keymap("x", "<leader>v", ":s/\\%V", { noremap = true, silent = false })
 
--- LAZYVIM KEYMAPS:
---
--- This file is automatically loaded by lazyvim.config.init
-
--- IMPORTANT: DO NOT USE `LazyVim.safe_keymap_set` IN YOUR OWN CONFIG!!
--- use `vim.keymap.set` instead
 local map = vim.keymap.set
 
 -- better up/down
@@ -103,7 +98,7 @@ map("i", ".", ".<c-g>u")
 map("i", ";", ";<c-g>u")
 
 -- save file
-map({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save File" })
+map({ "i", "x", "n", "s" }, "@s", "<cmd>w<cr><esc>", { desc = "Save File" })
 
 -- better indenting
 map("v", "<", "<gv")
