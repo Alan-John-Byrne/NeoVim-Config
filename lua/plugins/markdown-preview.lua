@@ -1,3 +1,4 @@
+-- PLUGIN: The 'markdown-preview.nvim' plugin allows for previewing live changes to a markdown file. (e.g.: 'README' files)
 return {
   "iamcco/markdown-preview.nvim",
   cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },

@@ -2,7 +2,7 @@
 return {
   -- "folke/tokyonight.nvim", Swap Whenever
   "ellisonleao/gruvbox.nvim",
-  lazy = false, -- INFO: Illustrating that the colourscheme MUST NOT be lazy.
+  lazy = false, -- INFO: Illustrating that the colourscheme MUST NOT be 'lazy'.
   config = function()
     -- vim.cmd.colorscheme("tokyonight"), Swap Whenever
     vim.cmd.colorscheme("gruvbox") -- Loading the colourscheme.

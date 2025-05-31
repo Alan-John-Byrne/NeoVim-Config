@@ -1,7 +1,6 @@
 --  PLUGIN: The 'vim-visual-multi' plugin allows easy use of multiple cursors.
 return {
-  -- XXX: Originally a 'vim' plugin.
-  "mg979/vim-visual-multi",
+  "mg979/vim-visual-multi", -- Originally a 'vim' plugin.
   branch = "master",
   event = "VeryLazy",
   enabled = true, -- TESTING
@@ -23,7 +22,6 @@ return {
       ["Select Cursor Down"] = "", -- Disable
       ["Select Cursor Up"] = ""    -- Disable
     }
-
     -- REMEMBER: Most mappings provided by this plugin are not being used because
     -- the same functionality is provided by other plugins or neovim features.
   end
