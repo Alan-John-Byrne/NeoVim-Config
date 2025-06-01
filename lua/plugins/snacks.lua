@@ -1,5 +1,6 @@
--- PLUGIN: The 'nvim-treesitter' provides many text object selection tools
--- making life a lot easier and more convenient.
+-- PLUGIN: The 'snacks.nvim' plugin is a modular plugin for Neovim that offers a suite of lightweight utilities—such
+-- as smooth scrolling, non-disruptive buffer deletion, LSP-powered renaming, and a minimal file explorer—designed to
+-- enhance usability without adding bloat.
 return {
   "folke/snacks.nvim",
   lazy = false,

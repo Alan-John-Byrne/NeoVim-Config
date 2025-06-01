@@ -27,9 +27,9 @@ return {
     colors = {
       note = { "diagnosticHint" },
       todo = { "#75a7d7" },
-      info = { "#607ee0" },
+      info = { "#8692e3" },
       test = { "#dcdf7e" },
-      error = { "#d35858" },
+      error = { "#fa7070" },
       goal = { "#b5b1f1" },
       question = { "#bcc435" },
       plugin = { "#d78bda" },
