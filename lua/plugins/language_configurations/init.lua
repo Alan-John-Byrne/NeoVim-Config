@@ -20,6 +20,13 @@ return {
     },
     opts_extend = { "ensure_installed" },
     config = function()
+      -- NOTE: Adding support for 'plist' files to just be parsed as XML, by treesitter.
+      vim.filetype.add({
+        extension = {
+          plist = "xml",
+        },
+      })
+      -- Setting up various highlight configurations depending on filetype.
       local treesitter = require("nvim-treesitter.configs")
       treesitter.setup({
         highlight = { enable = true },
