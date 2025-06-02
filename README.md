@@ -116,22 +116,27 @@ using the WezTerm Multiplexer (MUX), it will NOT be able to see the variables yo
 > **NOTE:** It's important that these variables are set correctly and in the right way so WezTerm
 > can see it's configuration and use any custom preferences you've set within your '.wezterm.lua' config file.
 
-#### _Correctly setting $WEZTERM_CONFIG_FILE on macOS:_
+#### _Correctly setting WEZTERM_CONFIG_FILE on macOS:_
 
-We must use a LaunchAgent via the '_launchd_' / _<u>Launch Daemon</u>_ binary.
+We must use a '**_LaunchAgent_**' via the '_launchd_' / _<u>Launch Daemon</u>_ binary.
 
-Within the '~/Library/LaunchAgent' directory, create a 'plist' / property list.
-Name it something meaningful, using reverse DNS notation, with the extension '.plist'
+Within the '_~/Library/LaunchAgent_' directory, create a '_plist_' / property list file.
+Name it something meaningful, using reverse DNS notation (e.g.: '_com.user.wezterm.env.plist_'), with the extension '.plist'
 and populate it with the following:
 
 <p align="center">
-<img src=".images/Setting $WEZTERM_CONFIG_FILE.png" alt="WezTerm Logo" width="850" height="340">
+<img src=".images/Setting WEZTERM_CONFIG_FILE.png" alt="WezTerm Logo" width="850" height="340">
 </p>
 
-This is a property list (plist) containing instructions for launchd, which is macOS's service manager. It defines a <u>_LaunchAgent_</u> that sets a persistent
+This is a property list (_plist_) containing instructions for _launchd_ (**macOS's service manager**). It defines a <u>_LaunchAgent_</u> that sets a persistent
 environment variable for the user's session using the '_launchctl setenv_' command.
 
-> **NOTE**: An agent like this runs when the user logs in, allowing the variable to be globally available to any GUI application launched during the session.
+> **NOTE**: An agent like this runs when the user logs in, allowing the variable to be globally available to any GUI application launched during the session. So, after setting and saving this '.plist' agent file, you **_MUST APPLY_** it by:
+>
+> - 1st: Logging out of your system.
+> - 2nd: Logging back into your system.
+>
+> Only then will you see the configuration file be picked up by the Wezterm Terminal Emulator.
 
 ### **Binaries to add to "_PATH_":**
 
@@ -160,3 +165,38 @@ a profile instead of global table? To keep your global environment variables tab
 | `cmake`                    | CMake cross platform 'Meta' build system generator. It makes build ('instruction') files for other build systems to follow. | Required for managing the build process in a compiler-independent manner, when building complex C & C++ projects.                                                                                                                                                                              |
 | `ninja`                    | Ninja build system for C++ projects.                                                                                        | Required by CMake for building C++ projects, and for supporting the when using the 'clangd' LSP by providing 'compile_commands.json' files.                                                                                                                                                    |
 | `go & delve`               | Golang & Go 'Delve' Debug Adapter.                                                                                          | Required for go support and debugging golang code using 'nvim-dap'.                                                                                                                                                                                                                            |
+
+### **Luarocks modules / rocks (<u>_packages/libraries_</u>) support:**
+
+Luarocks is a native lua package manager. You can download and use modules to make life a little easier both within a Neovim and/or a Wezterm context.
+
+What do I mean by this?
+
+I mean that it's possible to use luarock modules within Neovim, and also Wezterm. The way this project is configured means that the surrounding WezTerm Application / process 'looks into' the Neovim configuration files, in order to find how it itself is configured, and to also find dependency utility modules. This was purely by choice to keep everything as tightly bundled together as possible.
+
+So, you can easily navigate to and from the same general directory hierarchy to make changes to both WezTerm and Neovim settings.
+
+However, there are steps to properly configure the 'tree' so that the luarock manager installs modules to the correct location so they can actually be used by these applications.
+
+_**<u>Steps to configure:</u>**_
+
+1. Download the luarocks package via homebrew.
+2. Create a directory called 'luarocks' within the '~/.config/' directory.
+3. Create a file called 'config.lua' file within that 'luarocks' directory.
+4. Type the following snippet into that 'config.lua' file:
+
+<p align="center">
+<img src=".images/luarocks_config.png" alt="WezTerm Logo" width="850" height="300">
+</p>
+
+> _Note_: This path should be later added to the runtimepath (rtp) for both your Neovim and Wezterm application instances, so both can look into this directory to be able to '<u>_require_</u>' modules installed via luarocks.
+
+5. Point the luarocks package manager to it's intended configuration file, by setting the LUAROCKS_CONFIG environment variable within either your '.bash_profile' or '.bashrc':
+
+<p align="center">
+<img src=".images/luarocks_env_var.png" alt="WezTerm Logo" width="850" height="75">
+</p>
+
+That's it, you should now be able to require modules both within a Neovim or Wezterm application runtime context.
+
+> _Note_: When using the 'luarocks install' command, you **MUST** use the '--tree' parameter to specify the name of the root you wish to access, in order to install the plugin there. 'system' is the default and is considered '_system-wide_', and is handled by homebrew.
