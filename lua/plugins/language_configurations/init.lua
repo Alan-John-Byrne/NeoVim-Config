@@ -82,7 +82,70 @@ return {
       })
     end
   },
-  -- SECTION: 2. Setting up the 'nvim-lspconfig' plugin, and all it's associated plugins.
+  -- SECTION: 2. Setting up Auto-Completions.
+  -- PLUGIN:(S)
+  -- * The 'luasnip' plugin provides a powerful and extensible snippet engine for Neovim,
+  -- allowing users to insert and manage code snippets efficiently using Lua.
+  -- * The nvim-cmp plugin is a completion engine for Neovim that provides intelligent autocompletion
+  -- from multiple sources like LSP, buffers, paths, and snippets.
+  {
+    {
+      'hrsh7th/nvim-cmp',
+      event = 'InsertEnter',
+      dependencies = {
+        "L3MON4D3/LuaSnip",
+      },
+      config = function()
+        -- nvim-cmp setup
+        local cmp = require('cmp')
+        -- NOTE: Lazy-loading in VSCode snippets for faster auto-completion.
+        require("luasnip.loaders.from_vscode").lazy_load()
+        local luasnip = require('luasnip')
+        cmp.setup({
+          snippet = {
+            expand = function(args)
+              luasnip.lsp_expand(args.body)
+            end,
+          },
+          mapping = {
+            ['<C-p>'] = cmp.mapping.select_prev_item(),
+            ['<C-n>'] = cmp.mapping.select_next_item(),
+            ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+            ['<C-f>'] = cmp.mapping.scroll_docs(4),
+            ['<C-Space>'] = cmp.mapping.complete(),
+            ['<CR>'] = cmp.mapping.confirm({ select = true }),
+          },
+          sources = {
+            { name = 'nvim_lsp' },
+            { name = 'buffer' },
+            { name = 'path' },
+            { name = 'luasnip' },
+          },
+        })
+      end,
+    },
+    {
+      "hrsh7th/cmp-nvim-lsp", -- LSP source for nvim-cmp.
+      after = 'nvim-cmp',     -- Load after nvim-cmp
+    },
+    {
+      'hrsh7th/cmp-buffer', -- Buffer source for cmp
+      after = 'nvim-cmp',
+    },
+    {
+      'hrsh7th/cmp-path', -- Path source for cmp
+      after = 'nvim-cmp',
+    },
+    {
+      'saadparwaiz1/cmp_luasnip', -- Snippet source for nvim-cmp
+      after = 'nvim-cmp',
+    },
+    {
+      'L3MON4D3/LuaSnip', -- -- LuaSnip (Loads snippets from VSCode).
+      after = 'nvim-cmp',
+    },
+  },
+  -- SECTION: 3. Setting up the 'nvim-lspconfig' plugin, and all it's associated plugins.
   -- PLUGIN: The 'nvim-lspconfig' plugin simplifies the setup and configuration of built-in
   -- Neovim LSP client support by providing pre-defined configurations for a wide range of language servers.
   {
@@ -110,12 +173,7 @@ return {
       "rcarriga/nvim-dap-ui",   -- Debugging UI for nvim-dap.
 
       -- TODO: Setup Other Vital Plugins:
-      "L3MON4D3/LuaSnip",                  -- LuaSnip (Loads snippets from VSCode).
       "hrsh7th/nvim-cmp",                  -- nvim-cmp (Auto-Completion). INFO: Provides auto-completion support for many programming and markup languages.
-      "hrsh7th/cmp-nvim-lsp",              -- LSP source for nvim-cmp.
-      'hrsh7th/cmp-buffer',                -- Buffer source for cmp
-      'hrsh7th/cmp-path',                  -- Path source for cmp
-      "saadparwaiz1/cmp_luasnip",          -- Snippet source for nvim-cmp
       "theHamsta/nvim-dap-virtual-text",   -- Provides nice variable text when debugging.
       "jbyuki/one-small-step-for-vimkind", -- Debug adapter for 'lua' not provided by Mason package manager!
       "leoluz/nvim-dap-go",                -- Debug adapter for 'go' / 'golang' not provided by Mason package manager!
@@ -130,14 +188,14 @@ return {
       require("nvim-treesitter.query_predicates")
     end,
     config = function()
-      -- SECTION: 3. Setup Mason (UI-Based Package Manager),
+      -- SECTION: 4. Setup Mason (UI-Based Package Manager),
       -- PLUGIN: The 'mason.nvim' plugin is a Neovim plugin that provides a unified interface for managing external tools
       -- like LSP servers, DAP servers, linters, and formatters by handling their installation and updates.
       require("mason").setup()
       -- IMPORTANT: Ensure "~/.local/share/nvim/mason/bin" directory is accessible via the PATH. This is how
       -- 'bridge' plugins can access the plugins you install via the Mason UI, setup immediately below.
 
-      -- SECTION: 4. Setup LSPs (Auto-Install + Auto-Config)
+      -- SECTION: 5. Setup LSPs (Auto-Install + Auto-Config)
       -- PLUGIN: The 'mason-lspconfig.nvim' plugin bridges mason.nvim and 'nvim-lspconfig' by automatically configuring
       -- and ensuring installation of LSP servers from the Mason package manager, for use with the 'nvim-lspconfig' plugin.
       require("mason-lspconfig").setup({
@@ -180,7 +238,7 @@ return {
         end
       end
 
-      -- SECTION: 5. Setup Linters & Formatters:
+      -- SECTION: 6. Setup Linters & Formatters:
       -- INFO: Some function as both linters and formatters. (eg: markdownlint)
       -- REMEMBER: Linters & formatters ONLY kick into action when you save a buffer. (*Autocommands are used for this*)
       -- XXX: Linters:
@@ -275,7 +333,7 @@ return {
         end,
       })
 
-      -- SECTION: 6. Setup Debug Adapters (DAP)
+      -- SECTION: 7. Setup Debug Adapters (DAP)
       local language_configuration_utility = require("plugins.language_configurations.utility") -- Helper methods for setup.
       -- PLUGIN:(S)
       -- * The 'nvim-dap' ("dap") plugin enables debugging capabilities in Neovim by providing a client implementation
@@ -463,7 +521,7 @@ return {
         },
       }
 
-      -- SECTION: 7. Setting up the Debug Adapter UI & Listeners for a better debug expierence.
+      -- SECTION: 8. Setting up the Debug Adapter UI & Listeners for a better debug expierence.
       -- PLUGIN: The 'nvim-dap-ui' plugin provides a user interface for the nvim-dap debugging framework,
       -- offering visual elements like scopes, breakpoints, stacks, and watches within Neovim.
       local dapui = require("dapui")
@@ -481,7 +539,7 @@ return {
         dapui.close()
       end
 
-      -- SECTION: 8. Setting nice icons for debug breakpoints, and Dap Virtual Text for nice debugging variable value text notes.
+      -- SECTION: 9. Setting nice icons for debug breakpoints, and Dap Virtual Text for nice debugging variable value text notes.
       -- PLUGIN: The 'nvim-dap-virtual-text' plugin displays variable values and execution context as virtual text inline
       -- with your code during debugging sessions with the 'nvim-dap' plugin.
       vim.fn.sign_define(
@@ -526,16 +584,6 @@ return {
         virt_text_win_col = nil -- position the virtual text at a fixed window column (starting from the first text column) ,
         -- e.g. 80 to position at column 80, see `:h nvim_buf_set_extmark()`
       }
-
-
-
-      -- SECTION: 9. Setting up Auto-Completions.
-      -- PLUGIN:(S) The 'luasnip' plugin provides a powerful and extensible snippet engine for Neovim,
-      -- allowing users to insert and manage code snippets efficiently using Lua. The nvim-cmp plugin is
-      -- a completion engine for Neovim that provides intelligent autocompletion from multiple sources like
-      -- LSP, buffers, paths, and snippets.
-      require("luasnip.loaders.from_vscode").lazy_load() -- Lazy-loading in VSCode snippets for faster auto-completion.
-      require("cmp").setup()
 
       -- SECTION: 10. Registering 'which-key' keymaps for the Debug Adapter(s), Debug Adapter UI, and Mason Package Manager.
       -- IMPORTANT: Define keymaps to be registered with 'which-key' using ONLY 'vim.keymap.set'. (ITS THE STANDARD)

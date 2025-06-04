@@ -28,6 +28,7 @@ return {
       note = { "diagnosticHint" },
       todo = { "#75a7d7" },
       info = { "#8692e3" },
+      check = { "#afafaf" },
       test = { "#dcdf7e" },
       error = { "#fa7070" },
       goal = { "#b5b1f1" },
@@ -35,7 +36,6 @@ return {
       plugin = { "#d78bda" },
       warning = { "#e1aa02" },
       example = { "#01b3bd" },
-      check = { "#afafaf" },
       -- Examples are below:
       -- NOTE:
       -- TODO:
