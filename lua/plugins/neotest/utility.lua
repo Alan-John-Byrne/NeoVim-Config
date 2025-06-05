@@ -54,24 +54,30 @@ function M.select_browsers()
   end)
 end
 
---- Checks if an npm project is using the "Playwright" test framework.
+--- Checks if the current npm project is using playwright.
 ---@return boolean true/false
 ---@nodiscard
 function M.is_playwright_project()
-  -- Getting the current working directory you were in when you entered neovim.
-  local root = vim.fn.getcwd()
-  -- Checking if "@playwright/test" package is within the dependencies. If so return true.
-  local package_json = root .. "/package.json"
-  if vim.fn.filereadable(package_json) == 1 then
-    local json = vim.fn.json_decode(vim.fn.readfile(package_json))
-    if json and json.devDependencies and json.devDependencies["@playwright/test"] then
-      return true
+  local playwright_filename = "playwright.config.ts"
+  -- Getting the current path / directory we are in.
+  local path = vim.fn.expand("%:p:h")
+  -- Whilst we have a path, AND it's not the 'root' directory.
+  while path and path ~= "/" do
+    -- Check if there is a 'node_modules' file in the current directory.
+    local node_modules = path .. "/node_modules"
+    if vim.fn.isdirectory(node_modules) == 1 then
+      -- Check if a 'playwright.config.ts' file is also in that same directory.
+      local target = path .. "/" .. playwright_filename
+      if vim.fn.filereadable(target) == 1 then
+        return true -- INFO: This is a playwright project.
+      end
     end
-    if json and json.dependencies and json.dependencies["@playwright/test"] then
-      return true
-    end
+    -- NOTE: If npm root is found, we still need the 'playwright.config.ts' file. Move up
+    -- to the parent directory if it's not found, and start the same search with the same
+    -- criteria again.
+    path = vim.fn.fnamemodify(path, ":h")
   end
-  -- "@playwright/test" package not found, return false.
+  -- WARN: npm root never found.
   return false
 end
 

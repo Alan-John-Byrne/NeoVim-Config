@@ -12,7 +12,7 @@ return {
     config = function()
       -- Setting up the neotest suite.
       require('neotest').setup({
-        -- XXX: CONSUMERS:
+        -- OOO: CONSUMERS:
         consumers = {
           playwright = require('neotest-playwright.consumers').consumers,
         },
@@ -48,27 +48,35 @@ return {
           -- Next adapter???
         },
       })
-      -- NOTE: Neotest Global / Shared Keybindings:
+      -- NOTE: Neotest Global / Shared Adapter Keybindings:
       local neotest = require('neotest')
-      vim.keymap.set("n", "<leader>tt", function()
-        neotest.run.run()
-      end, { desc = "Run nearest test" })
-
-      vim.keymap.set("n", "<leader>tf", function()
-        neotest.run.run(vim.fn.expand("%"))
-      end, { desc = "Run all tests in current file" })
-
-      vim.keymap.set("n", "<leader>to", function()
-        neotest.output.open({ enter = true, auto_close = true })
-      end, { desc = "Open test output" })
-
-      vim.keymap.set("n", "<leader>ts", function()
-        neotest.summary.toggle()
-      end, { desc = "Toggle test summary" })
-
-      vim.keymap.set("n", "<leader>td", function() -- NOTE: Cannot be used with Playwright, it doesn't support nvim dap.
-        neotest.run.run({ strategy = "dap" })
-      end, { desc = "Debug nearest test" })
+      local neotest_utility = require("plugins.neotest.utility")
+      local wk = require("which-key")
+      local notify = require("notify")
+      wk.add({
+        mode = { "n" },
+        { "<leader>tt",  group = "Gobal Test Control" },
+        { "<leader>ttt", function() neotest.run.run() end,                                        desc = "Run nearest test." },
+        { "<leader>ttf", function() neotest.run.run(vim.fn.expand("%")) end,                      desc = 'Run all tests in the current file.' },
+        { "<leader>ttp", function() neotest.output.open({ enter = true, auto_close = true }) end, desc = "Open test output." },
+        { "<leader>tts", function() neotest.summary.toggle() end,                                 desc = "Toggle test summary." },
+        -- IMPORTANT: 'Playwright' and some other testing adapters may not be compatible with nvim-dap.
+        {
+          "<leader>ttd",
+          function()
+            if not neotest_utility.is_playwright_project() then
+              neotest.run.run({ -- NOTE: If it's not a playwright project (i.e.: No 'playwright.config.ts / js is in the root of the npm project')
+                strategy =
+                "dap"
+              })
+            else
+              notify("Playwright is not supported, use a playwright preset.", vim.log.levels.ERROR,
+                { title = "Nvim-Dap" });
+            end
+          end,
+          desc = "Debug nearest test."
+        }, -- WARN: Cannot be used with Playwright, it doesn't support nvim dap.
+      })
     end,
   },
   -- SECTION: ADAPTER CONFIGURATIONS:
@@ -80,40 +88,20 @@ return {
     event = "VeryLazy",
     config = function()
       -- INFO: Playwright specific keymaps:
-      vim.keymap.set(
-        "n",
-        '<leader>ta',
-        function()
-          require('neotest').playwright.attachment()
-        end,
-        { desc = 'Playwright: Attach to a running test.' }
-      )
-      vim.keymap.set(
-        "n",
-        '<leader>tP',
-        "<cmd>NeotestPlaywrightPreset<CR>",
-        { desc = 'Playwright: Run all tests with a select preset.', }
-      )
       -- WARN: Keymap for refreshing playwright data (effects summary tree).
-      vim.keymap.set(
-        "n",
-        '<leader>tn',
-        function()
-          require("neotest.utility").refresh_playwright()
-        end,
-        { desc = 'Playwright: Refresh summary.', }
-      )
       -- WARN: Keymap for selecting projects / browsers (effects summary tree).
       -- IMPORTANT: Customizing invocation of 'NeotestPlaywrightProject'.
       -- Allows for automatic refresh of summary data on project selection.
-      vim.keymap.set(
-        "n",
-        '<leader>tp',
-        function()
-          require("neotest.utility").select_browsers()
-        end,
-        { desc = 'Playwright: Run all tests in the project' }
-      )
+      local wk = require("which-key")
+      wk.add({
+        mode = { "n" },
+        icon = { icon = "🛠", color = "yellow" },
+        { "<leader>tp",  group = "Playwright Test Options" },
+        { "<leader>tpa", function() require('neotest').playwright.attachment() end,              desc = 'Playwright: Attach to a running test.' },
+        { "<leader>tpP", "<cmd>NeotestPlaywrightPreset<CR>",                                     desc = 'Playwright: Choose Presets.' },
+        { "<leader>tpn", function() require("plugins.neotest.utility").refresh_playwright() end, desc = 'Playwright: Refresh data.' },
+        { "<leader>tpp", function() require("plugins.neotest.utility").select_browsers() end,    desc = 'Playwright: Choose Browsers.' },
+      })
     end
   }
   -- ADAPTER: ???:
