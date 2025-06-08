@@ -79,7 +79,7 @@ I plan on adding as many useful frameworks as possible.
 All can be setup in the following steps:
 
 1. Use brew to install NeoVim onto your system.
-2. Clone or fork this repository to make it your own, into your '_~/Users/alanbyrne/.config/_' directory. (Overwrite the 'nvim' directory if it exists already after following step **1**)
+2. Clone or fork this repository to make it your own, into your '_~/Users/*yourusername*/.config/_' directory. (Overwrite the 'nvim' directory if it exists already after following step **1**)
 3. Install the following software, and configure the following environment variables <u>_exactly_</u>, to complete the setup.
 
 > **NOTE**: This setup does require some knowledge of bash profiles for correctly setting environment variables
