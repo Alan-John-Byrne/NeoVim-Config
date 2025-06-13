@@ -93,7 +93,7 @@ return {
       'hrsh7th/nvim-cmp',
       event = 'InsertEnter',
       dependencies = {
-        "L3MON4D3/LuaSnip",
+        "L3MON4D3/LuaSnip", "onsails/lspkind.nvim",
       },
       config = function()
         -- nvim-cmp setup
@@ -121,6 +121,59 @@ return {
             { name = 'path' },
             { name = 'luasnip' },
           },
+          window = {
+            completion = {
+              winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
+              col_offset = -3,
+              side_padding = 0,
+            },
+          },
+          formatting = {
+            fields = { "kind", "abbr", "menu" },
+            format = function(entry, vim_item)
+              -- Use Visual Studio Code Icons Instead,for styling auto-complete dropdown.
+              if vim.tbl_contains({ 'path' }, entry.source.name) then
+                local icon, hl_group = require('nvim-web-devicons').get_icon(entry:get_completion_item().label)
+                if icon then
+                  vim_item.kind = icon
+                  vim_item.kind_hl_group = hl_group
+                  return vim_item
+                end
+              else
+                local lspkind_ok, _ = pcall(require, "lspkind")
+                -- If not available use your own custom icons.
+                if not lspkind_ok then
+                  -- Define your own kind_icons to use instead.
+                  local kind_icons = {
+                    Text = "",
+                    Method = "",
+                    Function = "",
+                    Constructor = "",
+                    -- etc...
+                  }
+                  -- From kind_icons array
+                  vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind) -- This concatenates the icons with the name of the item kind
+                  -- Source
+                  vim_item.menu = ({
+                    buffer = "[Buffer]",
+                    nvim_lsp = "[LSP]",
+                    luasnip = "[LuaSnip]",
+                    nvim_lua = "[Lua]",
+                    latex_symbols = "[LaTeX]",
+                  })[entry.source.name]
+                  return vim_item
+                  -- If available, use lspkind.
+                else
+                  -- Default to using the lspkind.nvim plugin for styling auto-complete dropdown.
+                  local kind = require("lspkind").cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
+                  local strings = vim.split(kind.kind, "%s", { trimempty = true })
+                  kind.kind = " " .. (strings[1] or "") .. " "
+                  kind.menu = "    (" .. (strings[2] or "") .. ")"
+                  return kind
+                end
+              end
+            end
+          }
         })
       end,
     },
