@@ -4,7 +4,7 @@ if true then return {} end -- IMPORTANT: ALWAYS RETURNING NOTHING! THESE ARE DOC
 -- NOTE: Every spec file (.lua file) under the "plugins" directory,
 -- that returns a plugin table, will be loaded automatically by lazy.nvim
 
--- XXX: This 'plugin_keys.lua' file is here to showcase what each
+-- OOO: This 'plugin_keys.lua' file is here to showcase what each
 -- particular plugin spec / table key is used for, and what it means.
 -- This includes:
 -- 1. lazy (MOST IMPORTANT): Specifies if the plugin should be lazy-loaded (given a condition key) or loaded at startup.

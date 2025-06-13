@@ -73,11 +73,11 @@ return {
               or path:match("%.jpg$")
               or path:match("%.jpeg$")
               or path:match("%.gif$") then
-            -- XXX: Open preview pane using external 'WezTerm' commands.
+            -- OOO: Open preview pane using external 'WezTerm' commands.
             -- INFO: Running command as a raw sub-process. 'vim.fn.jobstart' needed for precise control over external commands.
             -- NOTE: Array of arguments avoids 'string quote issues' entirely.
             vim.fn.jobstart(
-              {                                                                      -- XXX: Every item passed in the array / table here is considered an actual argument:
+              {                                                                      -- OOO: Every item passed in the array / table here is considered an actual argument:
                 "wezterm", "cli", "split-pane", "--percent", "90", "--",             -- '--' means everything after is not a flag / option.
                 "bash", "-c",                                                        -- Invoke a new login interave bash shell.
                 "wezterm imgcat '" .. path .. "'; read -p 'Press Enter to continue'" -- Run the wezterm command.
@@ -86,7 +86,7 @@ return {
             -- local command = "silent !wezterm cli split-pane --percent 90 -- bash -c '" ..
             --     "wezterm imgcat " .. path .. "; read -p \"Press Enter to continue\"'"
             -- vim.api.nvim_command(command)
-            -- XXX: NEVER USE 'vim.api.nvim_command' OR 'vim.cmd'. These are treated as vimscript.
+            -- OOO: NEVER USE 'vim.api.nvim_command' OR 'vim.cmd'. These are treated as vimscript.
             -- They're not
             -- > Quote safe - Gets confused between `'` & `"`.
             -- > Shell safe - Don't communicate effectively with the external shell environment.

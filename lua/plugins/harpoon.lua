@@ -15,7 +15,7 @@ return {
   config = function()
     local harpoon = require("harpoon")
 
-    -- XXX: Setup prior to further configuration.
+    -- OOO: Setup prior to further configuration.
     harpoon.setup({
       settings = {
         sync_on_ui_close = true

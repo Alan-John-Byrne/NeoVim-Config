@@ -1,4 +1,4 @@
--- XXX: PROGRAMMING LANGUAGE CONFIGURATIONS:
+-- OOO: PROGRAMMING LANGUAGE CONFIGURATIONS:
 -- INFO: ALL PLUGINS HERE WORK TOGETHER to provide multiple programming language support including features like
 -- 'hover descriptions', 'debugging support', 'better text highlighting', 'Linting', 'Formatting', and 'Auto-Complete'.
 return {
@@ -234,14 +234,14 @@ return {
             },
           })
         else
-          vim.lsp.config(server_name, {}) -- XXX: Just use default settings for all other LSPs.
+          vim.lsp.config(server_name, {}) -- OOO: Just use default settings for all other LSPs.
         end
       end
 
       -- SECTION: 6. Setup Linters & Formatters:
       -- INFO: Some function as both linters and formatters. (eg: markdownlint)
       -- REMEMBER: Linters & formatters ONLY kick into action when you save a buffer. (*Autocommands are used for this*)
-      -- XXX: Linters:
+      -- OOO: Linters:
       -- PLUGIN:(S)
       -- * The 'nvim-lint' plugin, is a lightweight plugin for asynchronous linting in Neovim using external linters, configured per filetype.
       -- * The 'mason-nvim-lint' plugin integrates Mason with the nvim-lint plugin, allowing for automatic installation and
@@ -261,7 +261,7 @@ return {
         ignore_install = {}
       })
 
-      -- XXX: Linters Specific Settings; Customize a linters config via it's 'args' table.
+      -- OOO: Linters Specific Settings; Customize a linters config via it's 'args' table.
       require("lint").linters.selene.args = {
         -- WARN: The 'selene' linter doesn't know about the neovim runtime
         -- global variables like the 'vim' table, but the 'lua_ls' lsp does.
@@ -287,7 +287,7 @@ return {
         end,
       })
 
-      -- XXX: Formatters:
+      -- OOO: Formatters:
       -- PLUGIN:(S)
       -- * The 'conform.nvim' plugin is a lightweight and fast formatting plugin for Neovim that formats
       -- code using external tools, configured per filetype.
@@ -525,7 +525,7 @@ return {
       -- PLUGIN: The 'nvim-dap-ui' plugin provides a user interface for the nvim-dap debugging framework,
       -- offering visual elements like scopes, breakpoints, stacks, and watches within Neovim.
       local dapui = require("dapui")
-      dapui.setup() -- XXX: Initialising UI.
+      dapui.setup() -- OOO: Initialising UI.
       dap.listeners.before.attach.dapui_config = function()
         dapui.open()
       end
@@ -604,7 +604,7 @@ return {
     end,
   },
   -- SECTION: 11. Java (JDTLS) Setup.
-  -- XXX: Java Project Setup: (When working on large projects and/or publishing packages to registries later)
+  -- OOO: Java Project Setup: (When working on large projects and/or publishing packages to registries later)
   -- When using the 'gradle init --type java-application' command to setup a java project, it will generate the
   -- correct 'forward thinking' project structure, providing you give the following appropriate details:
   -- > Build Script: *whichever*
