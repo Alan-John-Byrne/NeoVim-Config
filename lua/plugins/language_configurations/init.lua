@@ -2,6 +2,20 @@
 -- INFO: ALL PLUGINS HERE WORK TOGETHER to provide multiple programming language support including features like
 -- 'hover descriptions', 'debugging support', 'better text highlighting', 'Linting', 'Formatting', and 'Auto-Complete'.
 return {
+  -- SECTION: 0. Providing better hover for LSPs.
+  -- PLUGIN: The 'pretty_hover' plugin provides a replacment to the default LSP hover window (vim.lsp.buf.hover).
+  -- With a customizable, visually enhanced floating window using syntax-based highlighting, wrapping, and optional
+  -- borders—all without modifying global highlight groups or LSP handlers. *Very Handy*
+  {
+    "Fildo7525/pretty_hover",
+    config = function()
+      require("pretty_hover").setup({
+        border = "rounded",
+      })
+      -- NOTE: Replacing original 'vim.lsp.buf.hover' keymap with pretty_hover.
+      vim.keymap.set("n", "K", require("pretty_hover").hover, { desc = "Pretty hover" })
+    end
+  },
   -- SECTION: 1. Setup Tree-sitter (Language Parsing)
   -- PLUGIN: The 'nvim-treesitter' plugin provides better text highlighting, and also serves other core purposes for language support.
   {
@@ -93,7 +107,8 @@ return {
       'hrsh7th/nvim-cmp',
       event = 'InsertEnter',
       dependencies = {
-        "L3MON4D3/LuaSnip", "onsails/lspkind.nvim",
+        "L3MON4D3/LuaSnip",
+        "onsails/lspkind.nvim",
       },
       config = function()
         -- nvim-cmp setup
@@ -101,6 +116,25 @@ return {
         -- NOTE: Lazy-loading in VSCode snippets for faster auto-completion.
         require("luasnip.loaders.from_vscode").lazy_load()
         local luasnip = require('luasnip')
+        -- INFO: Custom VSCode Specific highlighting for auto-completion dropdown.
+        vim.api.nvim_set_hl(0, "CMPMenuSel", { bg = "#282C34", fg = "NONE" })
+        vim.api.nvim_set_hl(0, "CMPMenu", { fg = "#C5CDD9", bg = "#22252A" })
+        -- gray
+        vim.api.nvim_set_hl(0, 'CmpItemAbbrDeprecated', { bg = 'NONE', strikethrough = true, fg = '#808080' })
+        -- blue
+        vim.api.nvim_set_hl(0, 'CmpItemAbbrMatch', { bg = 'NONE', fg = '#569CD6' })
+        vim.api.nvim_set_hl(0, 'CmpItemAbbrMatchFuzzy', { link = 'CmpIntemAbbrMatch' })
+        -- light blue
+        vim.api.nvim_set_hl(0, 'CmpItemKindVariable', { bg = 'NONE', fg = '#9CDCFE' })
+        vim.api.nvim_set_hl(0, 'CmpItemKindInterface', { link = 'CmpItemKindVariable' })
+        vim.api.nvim_set_hl(0, 'CmpItemKindText', { link = 'CmpItemKindVariable' })
+        -- pink
+        vim.api.nvim_set_hl(0, 'CmpItemKindFunction', { bg = 'NONE', fg = '#C586C0' })
+        vim.api.nvim_set_hl(0, 'CmpItemKindMethod', { link = 'CmpItemKindFunction' })
+        -- front
+        vim.api.nvim_set_hl(0, 'CmpItemKindKeyword', { bg = 'NONE', fg = '#D4D4D4' })
+        vim.api.nvim_set_hl(0, 'CmpItemKindProperty', { link = 'CmpItemKindKeyword' })
+        vim.api.nvim_set_hl(0, 'CmpItemKindUnit', { link = 'CmpItemKindKeyword' })
         cmp.setup({
           snippet = {
             expand = function(args)
@@ -123,7 +157,14 @@ return {
           },
           window = {
             completion = {
-              winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
+              border = "rounded",
+              winhighlight = "Normal:CMPMenu,FloatBorder:CMPMenu,CursorLine:CMPMenuSel",
+              col_offset = -3,
+              side_padding = 0,
+            },
+            documentation = {
+              border = "rounded",
+              winhighlight = "Normal:CMPMenu,FloatBorder:CMPMenu,CursorLine:CMPMenuSel",
               col_offset = -3,
               side_padding = 0,
             },
@@ -164,7 +205,7 @@ return {
                   return vim_item
                   -- If available, use lspkind.
                 else
-                  -- Default to using the lspkind.nvim plugin for styling auto-complete dropdown.
+                  -- Default to using the lspkind.nvim plugin for styling auto-complete dropdown, if 'path' not present.
                   local kind = require("lspkind").cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
                   local strings = vim.split(kind.kind, "%s", { trimempty = true })
                   kind.kind = " " .. (strings[1] or "") .. " "
@@ -173,7 +214,7 @@ return {
                 end
               end
             end
-          }
+          },
         })
       end,
     },

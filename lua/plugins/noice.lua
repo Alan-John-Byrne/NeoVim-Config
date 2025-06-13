@@ -13,6 +13,7 @@ return {
   -- SECTION: Part 1: Setting up Noice pre-requisites.
   {
     "folke/noice.nvim",
+    enabled = true, -- TESTING
     dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify" },
     init = function()
       vim.opt.lazyredraw = false
@@ -98,11 +99,6 @@ return {
         progress = {        -- > Show status updates like loading / indexing from an LSP serveer. (e.g.: Loading index.)
           enabled = true,
           view = "mini",    -- Using the 'mini' view from the above views table. NOTE: The 'mini' view is non-instrusive.
-        },
-        hover = {           -- > Show hover tooltips.
-          enabled = true,
-          silent = true,    -- Stop hover errors if there's nothing under the cursor.
-          view = nil,       -- Default Neovim hover window.
         },
         signature = {       -- > Shows signature help as you type.
           enabled = true,
