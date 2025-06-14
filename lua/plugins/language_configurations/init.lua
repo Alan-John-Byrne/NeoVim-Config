@@ -10,7 +10,68 @@ return {
     "Fildo7525/pretty_hover",
     config = function()
       require("pretty_hover").setup({
+        -- NOTE:If you use nvim 0.11.0 or higher, you can choose whether you want to use the new
+        -- multi-lsp support or not. Otherwise this option is ignored.
+        multi_server = true,
         border = "rounded",
+        wrap = true,
+        max_width = nil,
+        max_height = nil,
+        toggle = false,
+        -- OOO: Tables grouping the detected strings and using the markdown highlighters.
+        header = {
+          detect = { "[\\@]class" },
+          styler = '###',
+        },
+        line = {
+          detect = { "[\\@]brief" },
+          styler = '**',
+        },
+        listing = {
+          detect = { "[\\@]li" },
+          styler = " - ",
+        },
+        references = {
+          detect = { "[\\@]ref", "[\\@]c", "[\\@]name" },
+          styler = { "**", "`" },
+        },
+        group = {
+          detect = {
+            -- NOTE: ["Group name"] = {"detectors"}
+            ["Parameters"] = { "[\\@]param", "[\\@]*param*" },
+            ["Types"] = { "[\\@]tparam" },
+            ["See"] = { "[\\@]see" },
+            ["Return Value"] = { "[\\@]retval" },
+          },
+          styler = "`",
+        },
+        -- OOO: Tables used for cleaner identification of hover segments.
+        code = {
+          start = { "[\\@]code" },
+          ending = { "[\\@]endcode" },
+        },
+        return_statement = {
+          "[\\@]return",
+          "[\\@]*return*",
+        },
+        -- OOO: Highlight groups used in the hover method. Feel free to define your own highlight group.
+        hl = {
+          error = {
+            color = "#DC2626",
+            detect = { "[\\@]error", "[\\@]bug" },
+            line = false, -- INFO: Flag detecting if the whole line should be highlighted.
+          },
+          warning = {
+            color = "#FBBF24",
+            detect = { "[\\@]warning", "[\\@]thread_safety", "[\\@]throw" },
+            line = false,
+          },
+          info = {
+            color = "#2563EB",
+            detect = { "[\\@]remark", "[\\@]note", "[\\@]notes" },
+          },
+          --  INFO: Below, you can set up your own highlight groups.
+        },
       })
       -- NOTE: Replacing original 'vim.lsp.buf.hover' keymap with pretty_hover.
       vim.keymap.set("n", "K", require("pretty_hover").hover, { desc = "Pretty hover" })
@@ -117,24 +178,26 @@ return {
         require("luasnip.loaders.from_vscode").lazy_load()
         local luasnip = require('luasnip')
         -- INFO: Custom VSCode Specific highlighting for auto-completion dropdown.
-        vim.api.nvim_set_hl(0, "CMPMenuSel", { bg = "#282C34", fg = "NONE" })
-        vim.api.nvim_set_hl(0, "CMPMenu", { fg = "#C5CDD9", bg = "#22252A" })
+        vim.api.nvim_set_hl(0, "CMPMenuSel", { bg = "#2c313c", fg = "#ffffff" })
+        vim.api.nvim_set_hl(0, "CMPMenu", { fg = nil, bg = nil })
         -- gray
-        vim.api.nvim_set_hl(0, 'CmpItemAbbrDeprecated', { bg = 'NONE', strikethrough = true, fg = '#808080' })
+        vim.api.nvim_set_hl(0, 'CmpItemAbbrDeprecated', { bg = nil, strikethrough = true, fg = '#808080' })
         -- blue
-        vim.api.nvim_set_hl(0, 'CmpItemAbbrMatch', { bg = 'NONE', fg = '#569CD6' })
+        vim.api.nvim_set_hl(0, 'CmpItemAbbrMatch', { bg = nil, fg = '#569CD6' })
         vim.api.nvim_set_hl(0, 'CmpItemAbbrMatchFuzzy', { link = 'CmpIntemAbbrMatch' })
         -- light blue
-        vim.api.nvim_set_hl(0, 'CmpItemKindVariable', { bg = 'NONE', fg = '#9CDCFE' })
+        vim.api.nvim_set_hl(0, 'CmpItemKindVariable', { bg = nil, fg = '#9CDCFE' })
         vim.api.nvim_set_hl(0, 'CmpItemKindInterface', { link = 'CmpItemKindVariable' })
         vim.api.nvim_set_hl(0, 'CmpItemKindText', { link = 'CmpItemKindVariable' })
         -- pink
-        vim.api.nvim_set_hl(0, 'CmpItemKindFunction', { bg = 'NONE', fg = '#C586C0' })
+        vim.api.nvim_set_hl(0, 'CmpItemKindFunction', { bg = nil, fg = '#C586C0' })
         vim.api.nvim_set_hl(0, 'CmpItemKindMethod', { link = 'CmpItemKindFunction' })
         -- front
-        vim.api.nvim_set_hl(0, 'CmpItemKindKeyword', { bg = 'NONE', fg = '#D4D4D4' })
+        vim.api.nvim_set_hl(0, 'CmpItemKindKeyword', { bg = nil, fg = '#D4D4D4' })
         vim.api.nvim_set_hl(0, 'CmpItemKindProperty', { link = 'CmpItemKindKeyword' })
         vim.api.nvim_set_hl(0, 'CmpItemKindUnit', { link = 'CmpItemKindKeyword' })
+        -- Disabling incorrect 'misuse of `cmp.setup()`' warning:
+        ---@diagnostic disable-next-line: redundant-parameter
         cmp.setup({
           snippet = {
             expand = function(args)
@@ -158,6 +221,8 @@ return {
           window = {
             completion = {
               border = "rounded",
+              -- NOTE: We must tell 'nvim-cmp' to use custom highlight groups
+              -- (via 'winhighlight') instead of the default ones (i.e.: Normal, FloatBorder, CursorLine etc...).
               winhighlight = "Normal:CMPMenu,FloatBorder:CMPMenu,CursorLine:CMPMenuSel",
               col_offset = -3,
               side_padding = 0,
