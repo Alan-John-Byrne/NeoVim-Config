@@ -146,3 +146,39 @@ a profile instead of global table? To keep your global environment variables tab
 | `cmake.exe`                      | CMake cross platform 'Meta' build system generator. It makes build ('instruction') files for other build systems to follow. | Required for managing the build process in a compiler-independent manner, when building complex C & C++ projects.                                                                                                                                                                                      |
 | `ninja.exe`                      | Ninja build system for C++ projects.                                                                                        | Required by CMake for building C++ projects, and for supporting the when using the 'clangd' LSP by providing 'compile_commands.json' files.                                                                                                                                                            |
 | `go.exe & delve.exe`             | Golang & Go 'Delve' Debug Adapter.                                                                                          | Required for go support and debugging golang code using 'nvim-dap'.                                                                                                                                                                                                                                    |
+
+### **Luarocks modules / rocks (<u>_packages/libraries_</u>) support:**
+
+Luarocks is a native lua package manager. You can download and use modules to make life a little easier both within a Neovim and/or a Wezterm context.
+
+<u>_What do I mean by this?_</u>
+
+I mean that it's possible to install luarock modules within Neovim's configuration directory hierarchy, and also allow Wezterm to '_see_' those modules so it too can use them.
+This project is configured in this exact way. The surrounding WezTerm application / process is '_pointed to_' the this install path. _This was purely by choice to keep everything
+as tightly bundled together as possible_. So, you can easily navigate to the same directory to make changes to rocks you've installed, and this will affect both NeoVim and WezTerm
+(_at least in terms of what luarock modules they 'see' at runtime_).
+
+_**<u>Steps to configure:</u>**_
+
+1. Download the lua package via chocolatey (<u>_this will **ALSO** include luarocks_</u>).
+   > _Note_: Chocolotey installs a windows compatible version of lua (v5.1), and luarocks.
+   > A 'luarocks' folder will be created within the 'ProgramData' directory in your C: drive.
+   > LuaRocks uses this directory as part of it's runtime configuration.
+2. Create a file called 'config.lua' file within that 'luarocks' directory.
+3. Type the following snippet into that 'config.lua' file:
+
+<p align="center">
+<img src=".images/luarocks_config.png" alt="luarocks configuration" width="850" height="260">
+</p>
+
+> _Note_: This path should be later added to the runtimepath (rtp) for both your Neovim and Wezterm application instances, so both can look into this directory to be able to '<u>_require_</u>' modules installed via luarocks.
+
+4. Point the luarocks package manager to it's intended configuration file, by setting the $env:LUAROCKS_CONFIG environment variable within your powershell profile.
+
+<p align="center">
+<img src=".images/luarocks_env_var.png" alt="luarocks environment variable" width="850" height="40">
+</p>
+
+That's it, you should now be able to require modules both within a Neovim or Wezterm application runtime context.
+
+> _Note_: When using the 'luarocks install' command, you **MUST** use the '--tree' parameter to specify the name of the root you wish to access, in order to install the plugin there. 'system' is the default, and is considered '_system-wide_', and is handled by chocolatey.

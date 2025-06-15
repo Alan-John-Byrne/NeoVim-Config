@@ -11,3 +11,6 @@ test-vim-api.lua
 lazy-lock.json
 .vscode
 (?)*
+*DS_*
+rocks/
+lib/

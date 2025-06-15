@@ -1,0 +1,22 @@
+{
+  "window_background_opacity": 1,
+  "macos_window_background_blur": 0,
+  "font_size": 15,
+  "color_scheme": "Gruvbox Dark (Gogh)",
+  "colors": {
+    "foreground": "#ffffff"
+  },
+  "default_prog": [ "pwsh" ],
+  "adjust_window_size_when_changing_font_size": false,
+  "launch_menu": [
+    {
+      "args": ["top"]
+    },
+    {
+      "label": "PowerShell",
+      "args": ["pwsh", "-NoLogo"]
+    }
+  ],
+  "enable_scroll_bar": true,
+  "disable_default_key_bindings": true
+}
