@@ -53,6 +53,7 @@ opt.fillchars = {
   diff = "╱",
   eob = " ",
 }
+opt.pumblend = 0 -- Popup blend (opacity)  WARN: '0' required for transparent LSP popups (using the "pretty_hover" plugin).
 opt.foldlevel = 99
 opt.formatexpr = "v:lua.require'lazyvim.util'.format.formatexpr()"
 opt.formatoptions = "jcroqlnt" -- tcqj
@@ -66,8 +67,7 @@ opt.linebreak = true                          -- Wrap lines at convenient points
 opt.list = true                               -- Show some invisible characters (tabs...
 opt.mouse = "a"                               -- Enable mouse mode
 opt.number = true                             -- Print line number
-opt.pumblend = 10                             -- Popup blend
-opt.pumheight = 10                            -- Maximum number of entries in a popup
+opt.pumheight = 50                            -- Maximum number of entries in a popup
 opt.relativenumber = true                     -- Relative line numbers
 opt.ruler = false                             -- Disable the default ruler
 opt.scrolloff = 4                             -- Lines of context
