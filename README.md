@@ -29,7 +29,8 @@
 >   If you open a single code file (e.g.: a _.py_ or _.js_ or _.ts_ file) with Neovim (i.e.: _nvim_ \<codeFileName>), the LSP for
 >   that particular language **_WILL NOT_** be able to establish the root directory context for that '_project_' (<u>even though it's not
 >   a full project you're worrying about, it's just a single script / code file</u>). You _**MUST**_ open Neovim within the
->   directory containing that file your concerned about (i.e.: **_JUST_** ' _nvim_ ' ), <u>**_it's a requirement for proper LSP use_**</u>.
+>   directory containing that file your concerned about (i.e.: **_JUST_** ' _nvim_ ' ), <u>\_An LSP server is designed around the concept
+>   of "projects" and "workspaces", so they require these in order to work correctly</u>.
 > - <u>_'File is too large to open'</u> (**mini.files**)_: If the file is currently stored
 >   on your OneDrive, please ensure your OneDrive is running and synced so you
 >   actually have the file locally on your machine, to open it.
