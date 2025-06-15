@@ -1,8 +1,10 @@
 -- PLUGIN: The 'gruvbox.nvim' plugin provides a much loved colorscheme.
 return {
+  -- "folke/tokyonight.nvim", Swap Whenever
   "ellisonleao/gruvbox.nvim",
-  lazy = false,                    -- INFO: Illustrating that the colourscheme MUST NOT be lazy.
+  lazy = false, -- INFO: Illustrating that the colourscheme MUST NOT be 'lazy'.
   config = function()
+    -- vim.cmd.colorscheme("tokyonight"), Swap Whenever
     vim.cmd.colorscheme("gruvbox") -- Loading the colourscheme.
     -- IMPORTANT: The following must be done AFTER loading the colourscheme.
     if (true) then
@@ -15,6 +17,7 @@ return {
       vim.api.nvim_set_hl(0, 'NormalFloat', { bg = nil })
       vim.api.nvim_set_hl(0, 'SignColumn', { bg = nil })
       vim.api.nvim_set_hl(0, 'CursorLine', { bg = nil })
+      vim.api.nvim_set_hl(0, 'NormalNC', { bg = nil })
       -- REMEMBER: 'vim.api' is Neovim's API. It's used by plugins,
       -- Lua, and vimscript.
     end

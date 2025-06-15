@@ -1,3 +1,4 @@
+-- PLUGIN: The 'markdown-preview' plugin provides a markdown previewer similar to live server in vscode.
 return {
   "iamcco/markdown-preview.nvim",
   cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },

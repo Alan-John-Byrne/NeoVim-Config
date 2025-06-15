@@ -1,6 +1,7 @@
 -- INFO: Keymaps are automatically loaded on the VeryLazy event.
+vim.ui.select = nil -- Reset to default
 
--- TODO: Convenience save and quit all.
+-- XXX: Convenience save and quit all.
 vim.keymap.set("n", "<leader>q", ":wqall<CR>", { desc = "Save and Quit All" })
 
 -- XXX: Set the current working directory to the buffer's directory, and Print the current working directory.
@@ -20,12 +21,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- XXX: Visual-Block Mode select & replace.
 vim.api.nvim_set_keymap("x", "<leader>v", ":s/\\%V", { noremap = true, silent = false })
 
--- LAZYVIM KEYMAPS:
---
--- This file is automatically loaded by lazyvim.config.init
-
--- IMPORTANT: DO NOT USE `LazyVim.safe_keymap_set` IN YOUR OWN CONFIG!!
--- use `vim.keymap.set` instead
 local map = vim.keymap.set
 
 -- better up/down
@@ -45,12 +40,12 @@ map("t", "<C-h>", [[<C-\><C-N><C-w>h]], { desc = "Go to Left Window in Terminal"
 map("t", "<C-j>", [[<C-\><C-N><C-w>j]], { desc = "Go to Lower Window in Terminal", remap = true })
 map("t", "<C-k>", [[<C-\><C-N><C-w>k]], { desc = "Go to Upper Window in Terminal", remap = true })
 map("t", "<C-l>", [[<C-\><C-N><C-w>l]], { desc = "Go to Right Window in Terminal", remap = true })
+-- INFO: "<Esc>[1;*" maps to an escape key press (hold down) followed by either 'h', 'j', 'k', 'l'
 
--- Resize window using <ctrl> arrow keys
-map("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase Window Height" })
-map("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease Window Height" })
-map("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease Window Width" })
-map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase Window Width" })
+-- Resize window vertically using <CMD> arrow keys. (Terminal Mode Only)
+map("t", "<M-k>", "<cmd>resize +2<cr>", { desc = "Increase Window Height" })
+map("t", "<M-j>", "<cmd>resize -2<cr>", { desc = "Decrease Window Height" })
+-- NOTE: M = Alt (on windows machines).
 
 -- Move Lines
 map("n", "<A-j>", "<cmd>execute 'move .+' . v:count1<cr>==", { desc = "Move Down" })
@@ -102,7 +97,7 @@ map("i", ".", ".<c-g>u")
 map("i", ";", ";<c-g>u")
 
 -- save file
-map({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save File" })
+map({ "i", "x", "n", "s" }, "<A-s>", "<cmd>w<cr><esc>", { desc = "Save File" })
 
 -- better indenting
 map("v", "<", "<gv")

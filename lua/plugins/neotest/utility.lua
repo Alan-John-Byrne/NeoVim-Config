@@ -54,4 +54,31 @@ function M.select_browsers()
   end)
 end
 
+--- Checks if the current npm project is using playwright.
+---@return boolean true/false
+---@nodiscard
+function M.is_playwright_project()
+  local playwright_filename = "playwright.config.ts"
+  -- Getting the current path / directory we are in.
+  local path = vim.fn.expand("%:p:h")
+  -- Whilst we have a path, AND it's not the 'root' directory.
+  while path and path ~= "/" do
+    -- Check if there is a 'node_modules' file in the current directory.
+    local node_modules = path .. "/node_modules"
+    if vim.fn.isdirectory(node_modules) == 1 then
+      -- Check if a 'playwright.config.ts' file is also in that same directory.
+      local target = path .. "/" .. playwright_filename
+      if vim.fn.filereadable(target) == 1 then
+        return true -- INFO: This is a playwright project.
+      end
+    end
+    -- NOTE: If npm root is found, we still need the 'playwright.config.ts' file. Move up
+    -- to the parent directory if it's not found, and start the same search with the same
+    -- criteria again.
+    path = vim.fn.fnamemodify(path, ":h")
+  end
+  -- WARN: npm root never found.
+  return false
+end
+
 return M

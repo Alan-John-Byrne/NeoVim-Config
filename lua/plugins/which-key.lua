@@ -15,9 +15,7 @@ return {
       {
         mode = { "n", "v" },
         { "<leader><tab>", group = "tabs" },
-        { "<leader>h", group = "harpoon", icon = { icon = "➤", color = "red" } }, -- NOTE: Added group here for the harpoon plugin keybindings.
         { "<leader>c", group = "code" },
-        { "<leader>t", group = "test suite", icon = { icon = "🛠", color = "yellow" } },
         { "<leader>d", group = "debug" },
         { "<leader>dp", group = "profiler" },
         { "<leader>f", group = "file/find" },
@@ -25,6 +23,8 @@ return {
         { "<leader>gh", group = "hunks" },
         { "<leader>q", group = "quit/session" },
         { "<leader>s", group = "search" },
+        { "<leader>h", group = "harpoon", icon = { icon = "➤", color = "red" } }, -- NOTE: Added group here for the harpoon plugin keybindings.
+        { "<leader>t", group = "testing suite", icon = { icon = "🛠", color = "yellow" } },
         { "<leader>u", group = "ui", icon = { icon = "󰙵 ", color = "cyan" } },
         { "<leader>x", group = "diagnostics/quickfix", icon = { icon = "󱖫 ", color = "green" } },
         { "[", group = "prev" },

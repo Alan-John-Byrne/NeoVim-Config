@@ -14,15 +14,6 @@ function M.insert(str1, str2, pos)
   return str1:sub(1, pos) .. str2 .. str1:sub(pos + 1)
 end
 
---- Gets / returns the Mason package path as a string.
---- Returns a string, which is the name of the package installed via mason.
----@param package_name  string  The name of the package.
----@return string
----@nodiscard
-function M.get_mason_package_path(package_name)
-  return string.format(vim.fn.expand("$MASON/packages/%s"), package_name)
-end
-
 --- Returns a table containing all the seperate strings.
 ---@param str string The string containing the 'split' pattern.
 ---@param pattern  string  The pattern to split at.
