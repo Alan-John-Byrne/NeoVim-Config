@@ -1,7 +1,82 @@
--- XXX: PROGRAMMING LANGUAGE CONFIGURATIONS:
+-- OOO: PROGRAMMING LANGUAGE CONFIGURATIONS:
 -- INFO: ALL PLUGINS HERE WORK TOGETHER to provide multiple programming language support including features like
 -- 'hover descriptions', 'debugging support', 'better text highlighting', 'Linting', 'Formatting', and 'Auto-Complete'.
 return {
+  -- SECTION: 0. Providing better hover for LSPs.
+  -- PLUGIN: The 'pretty_hover' plugin provides a replacment to the default LSP hover window (vim.lsp.buf.hover).
+  -- With a customizable, visually enhanced floating window using syntax-based highlighting, wrapping, and optional
+  -- borders—all without modifying global highlight groups or LSP handlers. *Very Handy*
+  {
+    "Fildo7525/pretty_hover",
+    config = function()
+      require("pretty_hover").setup({
+        -- NOTE:If you use nvim 0.11.0 or higher, you can choose whether you want to use the new
+        -- multi-lsp support or not. Otherwise this option is ignored.
+        multi_server = true,
+        border = "rounded",
+        wrap = true,
+        max_width = nil,
+        max_height = nil,
+        toggle = false,
+        -- OOO: Tables grouping the detected strings and using the markdown highlighters.
+        header = {
+          detect = { "[\\@]class" },
+          styler = '###',
+        },
+        line = {
+          detect = { "[\\@]brief" },
+          styler = '**',
+        },
+        listing = {
+          detect = { "[\\@]li" },
+          styler = " - ",
+        },
+        references = {
+          detect = { "[\\@]ref", "[\\@]c", "[\\@]name" },
+          styler = { "**", "`" },
+        },
+        group = {
+          detect = {
+            -- NOTE: ["Group name"] = {"detectors"}
+            ["Parameters"] = { "[\\@]param", "[\\@]*param*" },
+            ["Types"] = { "[\\@]tparam" },
+            ["See"] = { "[\\@]see" },
+            ["Return Value"] = { "[\\@]retval" },
+          },
+          styler = "`",
+        },
+        -- OOO: Tables used for cleaner identification of hover segments.
+        code = {
+          start = { "[\\@]code" },
+          ending = { "[\\@]endcode" },
+        },
+        return_statement = {
+          "[\\@]return",
+          "[\\@]*return*",
+        },
+        -- OOO: Highlight groups used in the hover method. Feel free to define your own highlight group.
+        hl = {
+          error = {
+            color = "#DC2626",
+            detect = { "[\\@]error", "[\\@]bug" },
+            line = false, -- INFO: Flag detecting if the whole line should be highlighted.
+          },
+          warning = {
+            color = "#FBBF24",
+            detect = { "[\\@]warning", "[\\@]thread_safety", "[\\@]throw" },
+            line = false,
+          },
+          info = {
+            color = "#2563EB",
+            detect = { "[\\@]remark", "[\\@]note", "[\\@]notes" },
+          },
+          --  INFO: Below, you can set up your own highlight groups.
+        },
+      })
+      -- NOTE: Replacing original 'vim.lsp.buf.hover' keymap with pretty_hover.
+      vim.keymap.set("n", "K", require("pretty_hover").hover, { desc = "Pretty hover" })
+    end
+  },
   -- SECTION: 1. Setup Tree-sitter (Language Parsing)
   -- PLUGIN: The 'nvim-treesitter' plugin provides better text highlighting, and also serves other core purposes for language support.
   {
@@ -82,7 +157,7 @@ return {
       })
     end
   },
-  -- SECTION: 2. Setting up Auto-Completions.
+ -- SECTION: 2. Setting up Auto-Completions.
   -- PLUGIN:(S)
   -- * The 'luasnip' plugin provides a powerful and extensible snippet engine for Neovim,
   -- allowing users to insert and manage code snippets efficiently using Lua.
@@ -94,6 +169,7 @@ return {
       event = 'InsertEnter',
       dependencies = {
         "L3MON4D3/LuaSnip",
+        "onsails/lspkind.nvim",
       },
       config = function()
         -- nvim-cmp setup
@@ -101,6 +177,27 @@ return {
         -- NOTE: Lazy-loading in VSCode snippets for faster auto-completion.
         require("luasnip.loaders.from_vscode").lazy_load()
         local luasnip = require('luasnip')
+        -- INFO: Custom VSCode Specific highlighting for auto-completion dropdown.
+        vim.api.nvim_set_hl(0, "CMPMenuSel", { bg = "#2c313c", fg = "#ffffff" })
+        vim.api.nvim_set_hl(0, "CMPMenu", { fg = nil, bg = nil })
+        -- gray
+        vim.api.nvim_set_hl(0, 'CmpItemAbbrDeprecated', { bg = nil, strikethrough = true, fg = '#808080' })
+        -- blue
+        vim.api.nvim_set_hl(0, 'CmpItemAbbrMatch', { bg = nil, fg = '#569CD6' })
+        vim.api.nvim_set_hl(0, 'CmpItemAbbrMatchFuzzy', { link = 'CmpIntemAbbrMatch' })
+        -- light blue
+        vim.api.nvim_set_hl(0, 'CmpItemKindVariable', { bg = nil, fg = '#9CDCFE' })
+        vim.api.nvim_set_hl(0, 'CmpItemKindInterface', { link = 'CmpItemKindVariable' })
+        vim.api.nvim_set_hl(0, 'CmpItemKindText', { link = 'CmpItemKindVariable' })
+        -- pink
+        vim.api.nvim_set_hl(0, 'CmpItemKindFunction', { bg = nil, fg = '#C586C0' })
+        vim.api.nvim_set_hl(0, 'CmpItemKindMethod', { link = 'CmpItemKindFunction' })
+        -- front
+        vim.api.nvim_set_hl(0, 'CmpItemKindKeyword', { bg = nil, fg = '#D4D4D4' })
+        vim.api.nvim_set_hl(0, 'CmpItemKindProperty', { link = 'CmpItemKindKeyword' })
+        vim.api.nvim_set_hl(0, 'CmpItemKindUnit', { link = 'CmpItemKindKeyword' })
+        -- Disabling incorrect 'misuse of `cmp.setup()`' warning:
+        ---@diagnostic disable-next-line: redundant-parameter
         cmp.setup({
           snippet = {
             expand = function(args)
@@ -120,6 +217,68 @@ return {
             { name = 'buffer' },
             { name = 'path' },
             { name = 'luasnip' },
+          },
+          window = {
+            completion = {
+              border = "rounded",
+              -- NOTE: We must tell 'nvim-cmp' to use custom highlight groups
+              -- (via 'winhighlight') instead of the default ones (i.e.: Normal, FloatBorder, CursorLine etc...).
+              winhighlight = "Normal:CMPMenu,FloatBorder:CMPMenu,CursorLine:CMPMenuSel",
+              col_offset = -3,
+              side_padding = 0,
+            },
+            documentation = {
+              border = "rounded",
+              winhighlight = "Normal:CMPMenu,FloatBorder:CMPMenu,CursorLine:CMPMenuSel",
+              col_offset = -3,
+              side_padding = 0,
+            },
+          },
+          formatting = {
+            fields = { "kind", "abbr", "menu" },
+            format = function(entry, vim_item)
+              -- Use Visual Studio Code Icons Instead,for styling auto-complete dropdown.
+              if vim.tbl_contains({ 'path' }, entry.source.name) then
+                local icon, hl_group = require('nvim-web-devicons').get_icon(entry:get_completion_item().label)
+                if icon then
+                  vim_item.kind = icon
+                  vim_item.kind_hl_group = hl_group
+                  return vim_item
+                end
+              else
+                local lspkind_ok, _ = pcall(require, "lspkind")
+                -- If not available use your own custom icons.
+                if not lspkind_ok then
+                  -- Define your own kind_icons to use instead.
+                  local kind_icons = {
+                    Text = "",
+                    Method = "",
+                    Function = "",
+                    Constructor = "",
+                    -- etc...
+                  }
+                  -- From kind_icons array
+                  vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind) -- This concatenates the icons with the name of the item kind
+                  -- Source
+                  vim_item.menu = ({
+                    buffer = "[Buffer]",
+                    nvim_lsp = "[LSP]",
+                    luasnip = "[LuaSnip]",
+                    nvim_lua = "[Lua]",
+                    latex_symbols = "[LaTeX]",
+                  })[entry.source.name]
+                  return vim_item
+                  -- If available, use lspkind.
+                else
+                  -- Default to using the lspkind.nvim plugin for styling auto-complete dropdown, if 'path' not present.
+                  local kind = require("lspkind").cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
+                  local strings = vim.split(kind.kind, "%s", { trimempty = true })
+                  kind.kind = " " .. (strings[1] or "") .. " "
+                  kind.menu = "    (" .. (strings[2] or "") .. ")"
+                  return kind
+                end
+              end
+            end
           },
         })
       end,
