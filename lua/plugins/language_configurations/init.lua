@@ -157,7 +157,7 @@ return {
       })
     end
   },
- -- SECTION: 2. Setting up Auto-Completions.
+  -- SECTION: 2. Setting up Auto-Completions.
   -- PLUGIN:(S)
   -- * The 'luasnip' plugin provides a powerful and extensible snippet engine for Neovim,
   -- allowing users to insert and manage code snippets efficiently using Lua.
@@ -364,43 +364,56 @@ return {
 
       -- INFO: Setting up all installed LSPs.
       local mason_lspconfig_test = require("mason-lspconfig")
+      -- TODO: Use this utility module provided by 'nvim-lspconfig' to
+      -- establish root directory markers for proper LSP initialisation.
+      -- (*REQUIRED* for every language)
       for _, server_name in ipairs(mason_lspconfig_test.get_installed_servers()) do
         if server_name == "lua_ls" then
-          vim.lsp.config(server_name, { -- NOTE: Configure server via `vim.lsp.config()` (New in Neovim v0.11).
-            settings = {
-              Lua = {
-                workspace = {
-                  -- WARN: The 'lua_ls' lsp provides *SOME* linting. To allow it to
-                  -- recognise the global 'vim' table / variable, we must pass the neovim
-                  -- runtime library files into it's workspace library setting, via it's setup function.
-                  -- REMEMBER: The 'selene' linter will do most of the linting for lua instead. (Setup below)
-                  library = vim.api.nvim_get_runtime_file("", true)
-                },
-                -- Adjusting "hover over" behaviour for the 'lua_ls' LSP.
-                hover = {
-                  previewFields = 100 -- Expanding amount of rows viewable within module tables.
-                },
-                runtime = {
-                  version = 'LuaJIT',
-                },
-                diagnostics = {
-                  globals = {
-                    'vim',
-                    'require',
+          vim.lsp.config(server_name, -- REMEMBER: Use 'vim.lsp.config' to override nvim-lspconfig's built in configurations.
+            {                         -- NOTE: Configure server via `vim.lsp.config()` (New in Neovim v0.11).
+              settings = {
+                Lua = {
+                  workspace = {
+                    -- WARN: The 'lua_ls' lsp provides *SOME* linting. To allow it to
+                    -- recognise the global 'vim' table / variable, we must pass the neovim
+                    -- runtime library files into it's workspace library setting, via it's setup function.
+                    -- REMEMBER: The 'selene' linter will do most of the linting for lua instead. (Setup below)
+                    library = vim.api.nvim_get_runtime_file("", true)
+                  },
+                  -- Adjusting "hover over" behaviour for the 'lua_ls' LSP.
+                  hover = {
+                    previewFields = 100 -- Expanding amount of rows viewable within module tables.
+                  },
+                  runtime = {
+                    version = 'LuaJIT',
+                  },
+                  diagnostics = {
+                    globals = {
+                      'vim',
+                      'require',
+                    },
                   },
                 },
               },
-            },
-          })
+            })
         else
-          vim.lsp.config(server_name, {}) -- XXX: Just use default settings for all other LSPs.
+          -- IMPORTANT: YOU CANNOT JUST OPEN A FILE LIKE 'nvim test.py',
+          -- THE LANGUAGE SERVER PROTOCOL (LSP) WILL NOT LOCATE THE DIRECTORY
+          -- (i.e.: the root directory) THE FILE YOU'RE OPENING, IS UNDER. SO,
+          -- THE LSP WILL FAIL TO START (i.e: no code formatting, linting, or
+          -- helper popups).
+          -- TODO: Use nvim-lspconfig's included default configurations.
+          -- Default configs can be found here:
+          -- -> :\Users\*your-username*\AppData\Local\nvim-data\lazy\nvim-lspconfig\lsp
+          -- (i.e.:where 'nvim-lspconfig' is installed by the lazy.nvim plugin manager)
+          vim.lsp.enable(server_name)
         end
       end
 
       -- SECTION: 6. Setup Linters & Formatters:
       -- INFO: Some function as both linters and formatters. (eg: markdownlint)
       -- REMEMBER: Linters & formatters ONLY kick into action when you save a buffer. (*Autocommands are used for this*)
-      -- XXX: Linters:
+      -- OOO: Linters:
       -- PLUGIN:(S)
       -- * The 'nvim-lint' plugin, is a lightweight plugin for asynchronous linting in Neovim using external linters, configured per filetype.
       -- * The 'mason-nvim-lint' plugin integrates Mason with the nvim-lint plugin, allowing for automatic installation and
@@ -420,7 +433,7 @@ return {
         ignore_install = {}
       })
 
-      -- XXX: Linters Specific Settings; Customize a linters config via it's 'args' table.
+      -- OOO: Linters Specific Settings; Customize a linters config via it's 'args' table.
       require("lint").linters.selene.args = {
         -- WARN: The 'selene' linter doesn't know about the neovim runtime
         -- global variables like the 'vim' table, but the 'lua_ls' lsp does.
@@ -446,7 +459,7 @@ return {
         end,
       })
 
-      -- XXX: Formatters:
+      -- OOO: Formatters:
       -- PLUGIN:(S)
       -- * The 'conform.nvim' plugin is a lightweight and fast formatting plugin for Neovim that formats
       -- code using external tools, configured per filetype.
@@ -507,7 +520,7 @@ return {
       })
 
       -- INFO: JAVA DEBUG ADAPTER CONFIGURATION:
-      -- WARN: HANDLED BY THE NVIM-JDTLS PLUGIN, WITHIN IT'S CONFIGURATION.
+      -- WARN: HANDLED BY THE NVIM-JDTLS PLUGIN, WITHIN IT'S CONFIGURATION. (BOTTOM OF FILE)
 
       -- INFO: GOLANG DEBUG ADAPTER CONFIGURATION:
       -- PLUGIN: The dap-go plugin configures and integrates Go-specific debugging support for nvim-dap,
@@ -684,7 +697,7 @@ return {
       -- PLUGIN: The 'nvim-dap-ui' plugin provides a user interface for the nvim-dap debugging framework,
       -- offering visual elements like scopes, breakpoints, stacks, and watches within Neovim.
       local dapui = require("dapui")
-      dapui.setup() -- XXX: Initialising UI.
+      dapui.setup() -- OOO: Initialising UI.
       dap.listeners.before.attach.dapui_config = function()
         dapui.open()
       end
@@ -763,7 +776,7 @@ return {
     end,
   },
   -- SECTION: 11. Java (JDTLS) Setup.
-  -- XXX: Java Project Setup: (When working on large projects and/or publishing packages to registries later)
+  -- OOO: Java Project Setup: (When working on large projects and/or publishing packages to registries later)
   -- When using the 'gradle init --type java-application' command to setup a java project, it will generate the
   -- correct 'forward thinking' project structure, providing you give the following appropriate details:
   -- > Build Script: *whichever*

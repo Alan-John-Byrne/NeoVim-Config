@@ -25,10 +25,15 @@
 
 > **PAIN POINTS**: \_<u>A list of mistakes I've made, and how to avoid them.</u>
 >
-> - <u>_'File is too large to open' (mini.files)_</u>: If the file is currently stored
+> - <u>_'LSP won't activate when opening singular code file'</u> (**vim.lsp.config()/nvim-lspconfig/mason-lspconfig**)_:
+>   If you open a single code file (e.g.: a _.py_ or _.js_ or _.ts_ file) with Neovim (i.e.: _nvim_ \<codeFileName>), the LSP for
+>   that particular language **_WILL NOT_** be able to establish the root directory context for that '_project_' (<u>even though it's not
+>   a full project you're worrying about, it's just a single script / code file</u>). You _**MUST**_ open Neovim within the
+>   directory containing that file your concerned about (i.e.: **_JUST_** ' _nvim_ ' ), <u>**_it's a requirement for proper LSP use_**</u>.
+> - <u>_'File is too large to open'</u> (**mini.files**)_: If the file is currently stored
 >   on your OneDrive, please ensure your OneDrive is running and synced so you
 >   actually have the file locally on your machine, to open it.
-> - <u>_'Snacks terminal not opening in the same directory as the current buffer' (snacks.nvim)_</u>: The terminal
+> - <u>_'Snacks terminal not opening in the same directory as the current buffer'</u> (**snacks.nvim**)_: The terminal
 >   provided by the snacks.nvim package (<u>_triggered via the keybind 'CTRL + /'_</u>) will open in the same directory
 >   where you initially entered neovim. I've added a which-key keybind to allow you
 >   set the current directory to the parent directory of the current buffer, use '\<leader> + \\'. Then when you enter
