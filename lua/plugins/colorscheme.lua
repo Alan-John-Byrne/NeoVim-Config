@@ -13,11 +13,9 @@ return {
       -- NOTE: Overriding global highlight-groups to remove
       -- solid background. (Background Opacity taken care of
       -- by *WezTerm*).
-      vim.api.nvim_set_hl(0, 'Normal', { bg = nil })
-      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = nil })
-      vim.api.nvim_set_hl(0, 'SignColumn', { bg = nil })
-      vim.api.nvim_set_hl(0, 'CursorLine', { bg = nil })
-      vim.api.nvim_set_hl(0, 'NormalNC', { bg = nil })
+      vim.api.nvim_set_hl(0, 'Normal', { bg = nil })      -- Removing color for entire Neovim window.
+      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = nil }) -- Removing color for Neovim hover windows.
+      vim.api.nvim_set_hl(0, 'SignColumn', { bg = nil })  -- Removes annoying white box in number bar around icons.
       -- REMEMBER: 'vim.api' is Neovim's API. It's used by plugins,
       -- Lua, and vimscript.
     end
