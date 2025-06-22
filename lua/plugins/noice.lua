@@ -48,6 +48,8 @@ return {
     opts = {
       -- SECTION: Part 2: Route setup for filters.
       -- INFO: Routes check for a particular event using a 'filter', which then invokes a set view.
+      -- WARN: Use only what's necessary in filter. The more specific you get, the more brittle the filter becomes.
+      -- Prefer short, unique identifiers like a function name, filename, or part of the message / error text.
       routes = {
         {                                                -- Suppressing external command outputs.
           filter = { event = "msg_show", find = ":!" },  -- IMPORTANT: Remove broken shell output.
@@ -69,6 +71,13 @@ return {
           filter = { event = "msg_show", any = { { find = "%d+L, %d+B" }, { find = "; after #%d+" }, { find = "; before #%d+" }, }, },
           opts = { skip = true },                        -- Don't do anything with it.
         },
+        {                                                -- Removing annoying forward slash error
+          filter = { event = "notify", find = "cmp/entry.lua", },
+          opts = {                                       -- Don't do anything with it.
+            skip = true,
+          },
+        }
+
       },
       -- SECTION: Part 3: Configuring views.
       -- INFO: We choose how a view is displayed / configured.
