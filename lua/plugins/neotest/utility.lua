@@ -1,13 +1,45 @@
+local neotest = require("neotest")
 local M = {}
+
+-- ADAPTER: NEOTEST HELPER METHODS:
+--- Close Open Summary.
+---@return boolean
+function M.close_neotest_summary()
+  -- NOTE: Every window has an id. For every window, check all of its
+  -- open buffers, and check their names.
+  -- So, in every window:
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    -- 1st: Get the buffer id / number.
+    local buf = vim.api.nvim_win_get_buf(win)
+    -- 2nd: Get the buffer name, using the buffer id ( within that window ).
+    local buf_name = vim.api.nvim_buf_get_name(buf)
+    -- WARN: For certain 'special' buffers, 'nvim_win_get_buf' can sometimes return an empty string.
+    -- So double checking using legacy vim api ('bufname').
+    if buf_name == "" then
+      buf_name = vim.fn.bufname(buf)
+    end
+    -- 3rd: Check if the buffer name is 'Neotest Summary' or if its filetype is 'neotest-summary'.
+    if buf_name:match("Neotest Summary") or vim.bo[buf].filetype == "neotest-summary" then
+      -- 4.1 (final): Close that window containing that buffer.
+      vim.api.nvim_win_close(win, true) -- close window forcefully
+      return true
+    end
+    -- 4.2 (final): If it's not open, just return false.
+    return false
+  end
+end
 
 -- ADAPTER: PLAYWRIGHT HELPER METHODS:
 --- Refresh playwright data.
 ---@return nil
 function M.refresh_playwright()
-  -- 1st: Clear previous data:
+  -- IMPORTANT: Avoids breaking everything, then having to re-open neovim.
+  -- 1st: Close the neotest summary window if it's open.
+  local open = M.close_neotest_summary()
+  -- 2nd: Clear previous data:
   local path = vim.fn.stdpath('data') .. '/neotest-playwright.json'
   os.remove(path)
-  -- 2nd: Refresh the summary: (Algorithm to refresh)
+  -- 3rd: Refresh the summary: (Algorithm to refresh)
   -- Get the current directory where the user entered neovim.
   local current_dir = vim.fn.getcwd()
   -- Get the name of the buffer (the test file) and it's directory.
@@ -22,9 +54,13 @@ function M.refresh_playwright()
   if current_dir ~= buffer_dir then
     vim.cmd("cd " .. current_dir)
   end
-  -- 3nd: Refresh the summary: (Algorithm to refresh)
+  -- 4th (final): Refresh the summary: (Algorithm to refresh)
   vim.cmd("NeotestPlaywrightRefresh")
   print("Summary refreshed!")
+  -- 5th (final): Open back up the neotest summary again, ONLY if it was already open.
+  if (open) then
+    neotest.summary.toggle()
+  end
 end
 
 --- Allow the user to selects browsers to run tests for, then refresh summary tree.
