@@ -18,7 +18,7 @@ return {
       TEST = { icon = "🧪", color = "test", alt = { "TESTING", "PASSED" } },
       ERROR = { icon = "📈", color = "error", alt = { "PERFORMANCE", "FAILED", "OPTIMIZE" } },
       GOAL = { icon = "🥅", color = "goal" },
-      SECTION = { icon = "✨", color = "question", alt = { "QUESTION", "HEADING", "PART" } },
+      SECTION = { icon = "✨", color = "question", alt = { "QUESTION", "HEADING", "PART", "BLOCK" } },
       PLUGIN = { icon = "💫", color = "plugin", alt = { "ANSWER" } },
       WARNING = { icon = "⚠", color = "warning", alt = { "DEFINITION", "DEF", "WARN" } },
       EXAMPLE = { icon = "✍", color = "example", alt = { "EXAMPLES" } },
