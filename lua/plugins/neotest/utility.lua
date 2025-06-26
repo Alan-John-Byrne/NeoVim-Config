@@ -29,17 +29,9 @@ function M.close_neotest_summary()
   end
 end
 
--- ADAPTER: PLAYWRIGHT HELPER METHODS:
---- Refresh playwright data.
+--- Close and Re-open the buffer.
 ---@return nil
-function M.refresh_playwright()
-  -- IMPORTANT: Avoids breaking everything, then having to re-open neovim.
-  -- 1st: Close the neotest summary window if it's open.
-  local open = M.close_neotest_summary()
-  -- 2nd: Clear previous data:
-  local path = vim.fn.stdpath('data') .. '/neotest-playwright.json'
-  os.remove(path)
-  -- 3rd: Refresh the summary: (Algorithm to refresh)
+function M.close_and_reopen_test_buffer()
   -- Get the current directory where the user entered neovim.
   local current_dir = vim.fn.getcwd()
   -- Get the name of the buffer (the test file) and it's directory.
@@ -54,10 +46,23 @@ function M.refresh_playwright()
   if current_dir ~= buffer_dir then
     vim.cmd("cd " .. current_dir)
   end
-  -- 4th (final): Refresh the summary: (Algorithm to refresh)
+end
+
+-- ADAPTER: PLAYWRIGHT HELPER METHODS:
+--- Refresh playwright data.
+---@return nil
+function M.refresh_playwright()
+  -- IMPORTANT: 1st: Close the neotest summary window if it's open.
+  -- Avoids breaking everything, then having to re-open neovim.
+  local open = M.close_neotest_summary()
+  -- 2nd: Clear previous data:
+  local path = vim.fn.stdpath('data') .. '/neotest-playwright.json'
+  os.remove(path)
   vim.cmd("NeotestPlaywrightRefresh")
+  -- 3rd: Close and reopen the test buffer. (Refreshing data)
+  M.close_and_reopen_test_buffer()
   print("Summary refreshed!")
-  -- 5th (final): Open back up the neotest summary again, ONLY if it was already open.
+  -- 4th (final): Open back up the neotest summary again, ONLY if it was already open.
   if (open) then
     neotest.summary.toggle()
   end
@@ -66,27 +71,15 @@ end
 --- Allow the user to selects browsers to run tests for, then refresh summary tree.
 ---@return nil
 function M.select_browsers()
-  -- 4th: Ensure project selection screen shows after confirmation prompt.
+  -- Prompt the user to confirm their project selection. (Refreshing data)
+  vim.ui.input({ prompt = "Press 'Enter' AGAIN to confirm project selection." }, function()
+    M.refresh_playwright()
+    vim.loop.sleep(1000)
+    M.close_and_reopen_test_buffer()
+  end)
+  -- Show confirmation prompt BEFORE selection.
   vim.schedule(function()
     vim.cmd("NeotestPlaywrightProject") -- NOTE: Original broken command.
-  end)
-  -- 1st: Store where the user enters neovim.
-  local current_dir = vim.fn.getcwd()
-  -- 2nd: Get the name (fullpath) of the current buffer and it's directory.
-  local buffer_name = vim.api.nvim_buf_get_name(0)
-  local buffer_dir = vim.fn.fnamemodify(buffer_name, ":h")
-  -- 3rd: Prompt the user to confirm their project selection.
-  vim.ui.input({ prompt = "Press 'Enter' AGAIN to confirm project selection." }, function()
-    -- After pressing 'Enter' again....
-    -- Delete the current buffer (i.e.: The test file the user is currently viewing).
-    vim.api.nvim_buf_delete(0, {})
-    -- Go to the directory where the buffer is and open it again.
-    vim.cmd("cd " .. buffer_dir)
-    vim.cmd("edit " .. buffer_name)
-    -- Go back to where the user originally entered neovim (if not already there).
-    if current_dir ~= buffer_dir then
-      vim.cmd("cd " .. current_dir)
-    end
   end)
 end
 
