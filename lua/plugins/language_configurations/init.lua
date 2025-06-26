@@ -358,7 +358,7 @@ return {
       -- PLUGIN: The 'mason-lspconfig.nvim' plugin bridges mason.nvim and 'nvim-lspconfig' by automatically configuring
       -- and ensuring installation of LSP servers from the Mason package manager, for use with the 'nvim-lspconfig' plugin.
       require("mason-lspconfig").setup({
-        ensure_installed = { "lua_ls", "pyright", "vtsls", "clangd", "bashls" }, -- Auto-install these LSPs
+        ensure_installed = { "lua_ls", "pyright", "ruff", "vtsls", "clangd", "bashls" }, -- Auto-install these LSPs
         automatic_enable = true,
       })
 
@@ -410,11 +410,12 @@ return {
         html = { "htmlhint" },
         lua = { "selene" },
         css = { "stylelint" },
-        bash = { "shellcheck" }
+        bash = { "shellcheck" },
+        python = { "ruff" }
       }
 
       require("mason-nvim-lint").setup({
-        ensure_installed = { "selene", "markdownlint", "htmlhint", "stylelint", "shellcheck" }, -- Auto-install these Linters.
+        ensure_installed = { "selene", "markdownlint", "htmlhint", "stylelint", "shellcheck", "ruff" }, -- Auto-install these Linters.
         automatic_installation = true,
         quiet_mode = false,
         ignore_install = {}
@@ -458,16 +459,18 @@ return {
           lsp_fallback = true,   -- If no seperate formatter is installed, and an LSP takes care of formatting, use that instead.
         },
         formatters_by_ft = {
+          lua = { "luaformatter" },
           markdown = { "prettier" },
           html = { "prettier" },
           css = { "prettier" },
           go = { "goimports" },
-          bash = { "beautysh" }
+          bash = { "beautysh" },
+          python = { "ruff" }
         }
       })
 
       require("mason-conform").setup({
-        ensure_installed = { "prettier", "goimports", "beautysh" }, -- Auto-install these Formatters.
+        ensure_installed = { "prettier", "goimports", "beautysh", "ruff" }, -- Auto-install these Formatters.
         automatic_installation = true,
       })
 
