@@ -1,5 +1,12 @@
---- IMPORTANT: Modules (classes / tables) and their functions use an annotation called 'LuaCats', look it up.
---- Module full of random convenience functions.
+--- IMPORTANT: Modules (classes / tables) and their functions use
+--- an annotation called 'LuaCats', look it up (it's different from
+--- 'EmmyLua'). Module full of random convenience functions.
+-- WARN: LuaCat class and method 'descriptions' do NOT work correctly,
+-- when adding to the global 'vim' module.
+-- DON'T 'MONKEY PATCH' like this -> vim.method_name = function()!!!!
+-- TODO: Do this instead -> vim.custom_module = M (i.e.: 'M' being the name of your module)
+
+-- Custom Utility Module.
 ---@class M
 local M = {}
 
@@ -15,9 +22,9 @@ function M.insert(str1, str2, pos)
 end
 
 --- Returns a table containing all the seperate strings.
----@param str string The string containing the 'split' pattern.
----@param pattern  string  The pattern to split at.
----@return string[] A table of strings
+---@param str     string The string containing the 'split' pattern.
+---@param pattern string  The pattern to split at.
+---@return        string[] A table of strings
 ---@nodiscard
 function M.split(str, pattern)
   local seperated_strings = {}
@@ -27,5 +34,15 @@ function M.split(str, pattern)
   return seperated_strings
 end
 
--- Exporting the module.
-return M
+--- Title
+---@param ms number The amount of time (in milliseconds) you want to pause synchronous execution.
+---@return nil
+function M.sleep(ms)
+  vim.cmd(string.format("sleep %d", ms))
+end
+
+-- NOTE: Exporting the module,
+-- by adding it to the global vim table.
+-- REMEMBER: Prevents having to import
+-- your own utility functionality using 'require'.
+vim.custom = M
