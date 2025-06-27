@@ -34,13 +34,6 @@ function M.split(str, pattern)
   return seperated_strings
 end
 
---- Title
----@param ms number The amount of time (in milliseconds) you want to pause synchronous execution.
----@return nil
-function M.sleep(ms)
-  vim.cmd(string.format("sleep %d", ms))
-end
-
 -- NOTE: Exporting the module,
 -- by adding it to the global vim table.
 -- REMEMBER: Prevents having to import
