@@ -104,12 +104,12 @@ if props then -- If the options are available use them.
     {
       key = "]",
       mods = "CMD|ALT",
-      action = wezterm.action.ActivateTabRelative(-1), -- Move to the right tab.
+      action = wezterm.action.ActivateTabRelative(1), -- Move to the right tab.
     },
     {
       key = "[",
       mods = "CMD|ALT",
-      action = wezterm.action.ActivateTabRelative(1), -- Move to the left tab.
+      action = wezterm.action.ActivateTabRelative(-1), -- Move to the left tab.
     },
     {
       key = "h",
