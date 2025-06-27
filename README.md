@@ -74,6 +74,32 @@
 
 I plan on adding as many useful frameworks as possible.
 
+<u>Passing environment variables to _Node.js_ based neotest-adapters:</u><br>
+When developing a Node.js application within VS code, it's highly likely you would use the 'dotenv'
+package to load in custom environment variables from '.env' files, which would contain sensitive data
+you wouldn't want to track on github. **_THIS WILL NOT WORK IN NEOVIM, USING NEOTEST._**
+
+Instead, you must dynamically populate the 'env' table / option within the adapters configuration.
+Similarly as you would any '.env' file when coding elsewhere. <u>**_See the below example for the 'neotest-playwright' adapter:_**</u>
+
+<img src=".images/neotest-env-variables-file.png" alt="WezTerm Logo" width="700" height="535">
+<img src=".images/neotest-env-variables-population-method.png" alt="WezTerm Logo" width="700" height="250">
+<img src=".images/neotest-env-variables-adapter-config.png" alt="WezTerm Logo" width="700" height="500">
+
+**Why is this?**<br>
+These adapters are external Node.js processes themselves, and they have their own respective '_process.env_'
+runtime environment variables that they have access to.
+
+They populate their own internal 'process.env' via the 'env' option within the adapter
+configuration written in lua (_as shown in the last snippet above_). So, when using and adapter
+to run tests, you are actually starting up a seperate Node.js process (_the adapter standalone script_)
+to do so.
+
+Therefore, changing your own projects 'process.env' file when trying to add environment
+variables, will **NOT** work. The adapter won't be able to see them, during it's own runtime (i.e.: _when it's running tests_),
+because your project Node.js process, and the adapter script's Node.js process, are running within two seperate runtime contexts.
+The adapter almost being a child Node.js process, being run below your own full Node.js application process.
+
 ## Setup:
 
 All can be setup in the following steps:
