@@ -2,82 +2,7 @@
 -- INFO: ALL PLUGINS HERE WORK TOGETHER to provide multiple programming language support including features like
 -- 'hover descriptions', 'debugging support', 'better text highlighting', 'Linting', 'Formatting', and 'Auto-Complete'.
 return {
-  -- SECTION: 0. Providing better hover for LSPs.
-  -- PLUGIN: The 'pretty_hover' plugin provides a replacment to the default LSP hover window (vim.lsp.buf.hover).
-  -- With a customizable, visually enhanced floating window using syntax-based highlighting, wrapping, and optional
-  -- borders—all without modifying global highlight groups or LSP handlers. *Very Handy*
-  {
-    "Fildo7525/pretty_hover",
-    config = function()
-      require("pretty_hover").setup({
-        -- NOTE:If you use nvim 0.11.0 or higher, you can choose whether you want to use the new
-        -- multi-lsp support or not. Otherwise this option is ignored.
-        multi_server = true,
-        border = "rounded",
-        wrap = true,
-        max_width = nil,
-        max_height = nil,
-        toggle = false,
-        -- OOO: Tables grouping the detected strings and using the markdown highlighters.
-        header = {
-          detect = { "[\\@]class" },
-          styler = '###',
-        },
-        line = {
-          detect = { "[\\@]brief" },
-          styler = '**',
-        },
-        listing = {
-          detect = { "[\\@]li" },
-          styler = " - ",
-        },
-        references = {
-          detect = { "[\\@]ref", "[\\@]c", "[\\@]name" },
-          styler = { "**", "`" },
-        },
-        group = {
-          detect = {
-            -- NOTE: ["Group name"] = {"detectors"}
-            ["Parameters"] = { "[\\@]param", "[\\@]*param*" },
-            ["Types"] = { "[\\@]tparam" },
-            ["See"] = { "[\\@]see" },
-            ["Return Value"] = { "[\\@]retval" },
-          },
-          styler = "`",
-        },
-        -- OOO: Tables used for cleaner identification of hover segments.
-        code = {
-          start = { "[\\@]code" },
-          ending = { "[\\@]endcode" },
-        },
-        return_statement = {
-          "[\\@]return",
-          "[\\@]*return*",
-        },
-        -- OOO: Highlight groups used in the hover method. Feel free to define your own highlight group.
-        hl = {
-          error = {
-            color = "#DC2626",
-            detect = { "[\\@]error", "[\\@]bug" },
-            line = false, -- INFO: Flag detecting if the whole line should be highlighted.
-          },
-          warning = {
-            color = "#FBBF24",
-            detect = { "[\\@]warning", "[\\@]thread_safety", "[\\@]throw" },
-            line = false,
-          },
-          info = {
-            color = "#2563EB",
-            detect = { "[\\@]remark", "[\\@]note", "[\\@]notes" },
-          },
-          --  INFO: Below, you can set up your own highlight groups.
-        },
-      })
-      -- NOTE: Replacing original 'vim.lsp.buf.hover' keymap with pretty_hover.
-      vim.keymap.set("n", "K", require("pretty_hover").hover, { desc = "Pretty hover" })
-    end
-  },
-  -- SECTION: 1. Setup Tree-sitter (Language Parsing)
+  -- SECTION: 0. Setup Tree-sitter (Language Parsing)
   -- PLUGIN: The 'nvim-treesitter' plugin provides better text highlighting, and also serves other core purposes for language support.
   {
     "nvim-treesitter/nvim-treesitter",
@@ -157,7 +82,7 @@ return {
       })
     end
   },
-  -- SECTION: 2. Setting up Auto-Completions.
+  -- SECTION: 1. Setting up Auto-Completions.
   -- PLUGIN:(S)
   -- * The 'luasnip' plugin provides a powerful and extensible snippet engine for Neovim,
   -- allowing users to insert and manage code snippets efficiently using Lua.
@@ -304,7 +229,7 @@ return {
       after = 'nvim-cmp',
     },
   },
-  -- SECTION: 3. Setting up the 'nvim-lspconfig' plugin, and all it's associated plugins.
+  -- SECTION: 2. Setting up the 'nvim-lspconfig' plugin, and all it's associated plugins.
   -- PLUGIN: The 'nvim-lspconfig' plugin simplifies the setup and configuration of built-in
   -- Neovim LSP client support by providing pre-defined configurations for a wide range of language servers.
   {
@@ -347,14 +272,14 @@ return {
       require("nvim-treesitter.query_predicates")
     end,
     config = function()
-      -- SECTION: 4. Setup Mason (UI-Based Package Manager),
+      -- SECTION: 3. Setup Mason (UI-Based Package Manager),
       -- PLUGIN: The 'mason.nvim' plugin is a Neovim plugin that provides a unified interface for managing external tools
       -- like LSP servers, DAP servers, linters, and formatters by handling their installation and updates.
       require("mason").setup()
       -- IMPORTANT: Ensure "~/.local/share/nvim/mason/bin" directory is accessible via the PATH. This is how
       -- 'bridge' plugins can access the plugins you install via the Mason UI, setup immediately below.
 
-      -- SECTION: 5. Setup LSPs (Auto-Install + Auto-Config)
+      -- SECTION: 4. Setup LSPs (Auto-Install + Auto-Config)
       -- PLUGIN: The 'mason-lspconfig.nvim' plugin bridges mason.nvim and 'nvim-lspconfig' by automatically configuring
       -- and ensuring installation of LSP servers from the Mason package manager, for use with the 'nvim-lspconfig' plugin.
       require("mason-lspconfig").setup({
@@ -397,7 +322,7 @@ return {
         end
       end
 
-      -- SECTION: 6. Setup Linters & Formatters:
+      -- SECTION: 5. Setup Linters & Formatters:
       -- INFO: Some function as both linters and formatters. (eg: markdownlint)
       -- REMEMBER: Linters & formatters ONLY kick into action when you save a buffer. (*Autocommands are used for this*)
       -- OOO: Linters:
@@ -495,7 +420,7 @@ return {
         end,
       })
 
-      -- SECTION: 7. Setup Debug Adapters (DAP)
+      -- SECTION: 6. Setup Debug Adapters (DAP)
       local language_configuration_utility = require("plugins.language_configurations.utility") -- Helper methods for setup.
       -- PLUGIN:(S)
       -- * The 'nvim-dap' ("dap") plugin enables debugging capabilities in Neovim by providing a client implementation
@@ -683,7 +608,7 @@ return {
         },
       }
 
-      -- SECTION: 8. Setting up the Debug Adapter UI & Listeners for a better debug expierence.
+      -- SECTION: 7. Setting up the Debug Adapter UI & Listeners for a better debug expierence.
       -- PLUGIN: The 'nvim-dap-ui' plugin provides a user interface for the nvim-dap debugging framework,
       -- offering visual elements like scopes, breakpoints, stacks, and watches within Neovim.
       local dapui = require("dapui")
@@ -701,7 +626,7 @@ return {
         dapui.close()
       end
 
-      -- SECTION: 9. Setting nice icons for debug breakpoints, and Dap Virtual Text for nice debugging variable value text notes.
+      -- SECTION: 8. Setting nice icons for debug breakpoints, and Dap Virtual Text for nice debugging variable value text notes.
       -- PLUGIN: The 'nvim-dap-virtual-text' plugin displays variable values and execution context as virtual text inline
       -- with your code during debugging sessions with the 'nvim-dap' plugin.
       vim.fn.sign_define(
@@ -747,7 +672,7 @@ return {
         -- e.g. 80 to position at column 80, see `:h nvim_buf_set_extmark()`
       }
 
-      -- SECTION: 10. Registering 'which-key' keymaps for the Debug Adapter(s), Debug Adapter UI, and Mason Package Manager.
+      -- SECTION: 9. Registering 'which-key' keymaps for the Debug Adapter(s), Debug Adapter UI, and Mason Package Manager.
       -- IMPORTANT: Define keymaps to be registered with 'which-key' using ONLY 'vim.keymap.set'. (ITS THE STANDARD)
       vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "Toggle Breakpoint" })
       vim.keymap.set("n", "<leader>dB", function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end,
@@ -765,7 +690,7 @@ return {
       vim.keymap.set("n", "<leader>cm", "<cmd>Mason<cr>", { desc = "Mason" })
     end,
   },
-  -- SECTION: 11. Java (JDTLS) Setup.
+  -- SECTION: 10. Java (JDTLS) Setup.
   -- OOO: Java Project Setup: (When working on large projects and/or publishing packages to registries later)
   -- When using the 'gradle init --type java-application' command to setup a java project, it will generate the
   -- correct 'forward thinking' project structure, providing you give the following appropriate details:

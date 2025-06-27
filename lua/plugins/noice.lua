@@ -82,7 +82,15 @@ return {
       -- SECTION: Part 3: Configuring views.
       -- INFO: We choose how a view is displayed / configured.
       views = {
-        -- NOTE:Using default settings. (i.e.: Leave empty)
+        hover = {              -- The LSP 'hover' view.
+          border = {
+            style = "rounded", -- or "single", "double", "solid", "shadow"
+            padding = { 0, 1 },
+          },
+          win_options = {
+            winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
+          },
+        },
       },
       -- SECTION: Part 4: Default views.
       -- INFO: If we don't have a matching route, then we use these.
@@ -105,6 +113,10 @@ return {
       -- SECTION: Part 6: Styling LSP events.
       -- INFO:Sometime's LSPs send events and we can control how that information is displayed.
       lsp = {
+        hover = { -- NOTE: Using the 'hover' view form above.
+          enabled = true,
+          view = "hover",
+        },
         progress = {        -- > Show status updates like loading / indexing from an LSP serveer. (e.g.: Loading index.)
           enabled = true,
           view = "mini",    -- Using the 'mini' view from the above views table. NOTE: The 'mini' view is non-instrusive.
@@ -116,9 +128,9 @@ return {
             trigger = true, -- Triggers when you type the first '(', then it will show.
             luasnip = true,
           },
-          view = nil, -- Default Neovim hover window.
+          view = "hover", -- Using the 'hover' view form above.
         },
-        message = {   -- > Handles 'window'/'showMessage' events from LSP servers.
+        message = {       -- > Handles 'window'/'showMessage' events from LSP servers.
           enabled = true,
           view = "notify",
           opts = {},
