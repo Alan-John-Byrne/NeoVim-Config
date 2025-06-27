@@ -10,6 +10,7 @@ return {
       "thenbe/neotest-playwright"
     },
     config = function()
+      local neotest_utility = require("plugins.neotest.utility")
       -- Setting up the neotest suite.
       require('neotest').setup({
         -- OOO: CONSUMERS:
@@ -42,6 +43,8 @@ return {
                   enabled = true
                 },
               },
+              -- INFO: Dynamically loading in env variables to the neotest project.
+              env = neotest_utility.find_node_proj_root_and_load_env_vars(),
             }
           })
           -- ADAPTER: ???:
@@ -50,19 +53,17 @@ return {
       })
       -- NOTE: Neotest Global / Shared Adapter Keybindings:
       local neotest = require('neotest')
-      local neotest_utility = require("plugins.neotest.utility")
       local wk = require("which-key")
       local notify = require("notify")
       wk.add({
         mode = { "n" },
-        { "<leader>tt",  group = "Gobal Test Control" },
-        { "<leader>ttt", function() neotest.run.run() end,                                        desc = "Run nearest test." },
-        { "<leader>ttf", function() neotest.run.run(vim.fn.expand("%")) end,                      desc = 'Run all tests in the current file.' },
-        { "<leader>ttp", function() neotest.output.open({ enter = true, auto_close = true }) end, desc = "Open test output." },
-        { "<leader>tts", function() neotest.summary.toggle() end,                                 desc = "Toggle test summary." },
+        { "<leader>tt", function() neotest.run.run() end,                                        desc = "Run nearest test." },
+        { "<leader>tf", function() neotest.run.run(vim.fn.expand("%")) end,                      desc = 'Run all tests in the current file.' },
+        { "<leader>to", function() neotest.output.open({ enter = true, auto_close = true }) end, desc = "Open test output." },
+        { "<leader>ts", function() neotest.summary.toggle() end,                                 desc = "Toggle test summary." },
         -- IMPORTANT: 'Playwright' and some other testing adapters may not be compatible with nvim-dap.
         {
-          "<leader>ttd",
+          "<leader>td",
           function()
             if not neotest_utility.is_playwright_project() then
               neotest.run.run({ -- NOTE: If it's not a playwright project (i.e.: No 'playwright.config.ts / js is in the root of the npm project')

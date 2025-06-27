@@ -48,6 +48,22 @@ function M.close_and_reopen_test_buffer()
   end
 end
 
+--- Function to find project root (containing node_modules) and load env.lua
+--- REMEMBER: Replaces purpose of 'dotenv' package in Node.js projects (use this instead of 'dotenv').
+---@return table This is the 'env' table config we are returning
+function M.find_node_proj_root_and_load_env_vars()
+  local node_modules_folder = vim.fs.find('node_modules', { upward = true, type = 'directory' })[1] or ''
+  local root = vim.fs.dirname(node_modules_folder)
+  local env_file = root and (root .. '/env.lua')
+  local ok, env = pcall(dofile, env_file or '')
+  -- Checking that we have the env file.
+  if ok and type(env) == 'table' then
+    return env
+  else
+    return {}
+  end
+end
+
 -- ADAPTER: PLAYWRIGHT HELPER METHODS:
 --- Refresh playwright data.
 ---@return nil
@@ -73,8 +89,6 @@ end
 function M.select_browsers()
   -- Prompt the user to confirm their project selection. (Refreshing data)
   vim.ui.input({ prompt = "Press 'Enter' AGAIN to confirm project selection." }, function()
-    M.refresh_playwright()
-    vim.loop.sleep(1000)
     M.close_and_reopen_test_buffer()
   end)
   -- Show confirmation prompt BEFORE selection.
