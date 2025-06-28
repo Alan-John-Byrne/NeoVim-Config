@@ -1,22 +1,13 @@
 # <p align="center">Inspired by the _💤[LazyVim](https://github.com/LazyVim/LazyVim)_ distro.</p>
 
-## **<p align="center">Preview:</p>**
-
-![Vite + React + TS](.images/dashboard.png)
-
-## **<p align="center">The Stack:</p>**
-
-<p align="center">
-    <img src=".images/apple_logo.png" alt="WezTerm Logo" width="100" height="120">
-    <br>
-    <img src=".images/wezterm.png" alt="WezTerm Logo" width="130" height="130">
-    <br>
-    <img src=".images/bash_logo.png" alt="WezTerm Logo" width="300" height="130">
-    <br>
-    <img src=".images/neovim_logo.png" alt="NeoVim Logo" width="100" height="130">
-    <br>
-    <img src=".images/lazy_logo.png" alt="LazyVim Logo" width="100" height="70">
-</p>
+| The Stack                                                                                                                       |
+| ------------------------------------------------------------------------------------------------------------------------------- |
+| <p align="center"><img src=".images/apple_logo.png" alt="WezTerm Logo" width="100" height="120"></p>                            |
+| <p align="center"><img src=".images/wezterm.png" alt="WezTerm Logo" width="120" height="130"></p>                               |
+| <p align="center"><img src=".images/bash_logo.png" alt="WezTerm Logo" width="250" height="120"></p>                             |
+| <p align="center"><img src=".images/neovim_logo.png" alt="WezTerm Logo" width="100" height="130"></p>                           |
+| <p align="center"><img src=".images/lazy_logo.png" alt="WezTerm Logo" width="130" height="130"></p>                             |
+| <p align="center">**Preview**</p><p align="center"><img src=".images/dashboard.png" alt="Preview" width="800" height="400"></p> |
 
 > **NOTE:** This is a custom configuration project meant to mimick typical IDEs, using Bash/WezTerm. It's a work
 > in progress. _I'm hoping to cover Unix system settings at some point._
@@ -35,21 +26,19 @@
 >   the snacks terminal, it'll open in the same directory as the current buffer, without having to first exit and re-enter
 >   neovim in that desired directory.
 
-## Use Cases:
+| Use Cases                                                                                           |
+| --------------------------------------------------------------------------------------------------- |
+| **Work on Projects (eg: _React + Ts /w Vite_)**: ( _More frameworks & libraries can be supported_ ) |
+| <img src=".images/vite_reactts_project.jpg" alt="WezTerm Logo" width="780" height="420">            |
+| **Debug Software w/ Nvim-Dap:**                                                                     |
+| <img src=".images/debugging.jpg" alt="WezTerm Logo" width="780" height="420">                       |
+| **Use Polyglot Development w/ WezTerm Multiplexing:**                                               |
+| <img src=".images/multiplex.jpg" alt="WezTerm Logo" width="780" height="420">                       |
+| **Unit Testing**: ( _Multiple Frameworks supported_ )                                               |
+| **Study Algorithms w/ WezTerm Multiplexing**: (_Image Previewer included_)                          |
+| <img src=".images/study_algos.jpg" alt="WezTerm Logo" width="780" height="420">                     |
 
-- **Work on Projects (eg: _React + Ts /w Vite_)**: ( _More frameworks & libraries can be supported_ )
-  ![Vite + React + TS](.images/vite_reactts_project.jpg)
-
-- **Study Algorithms w/ WezTerm Multiplexing**: (_Image Previewer included_)
-  ![Studying Kandane's Algorithm](.images/study_algos.jpg)
-
-  > **NOTE:** Image previewing ONLY WORKS in terminals that support the necessary image protocols, such as WezTerm, Kitty, or other compatible terminal emulators. This will **NOT** work in BASh or basic terminal emulators that lack support for those protocols.
-
-- **Debug Software w/ Nvim-Dap:**
-  ![Debugging Code](.images/debugging.jpg)
-- **Use Polyglot Development w/ WezTerm Multiplexing:**
-  ![WezTerm Multiplexing](.images/multiplex.jpg)
-- **Unit Testing**: ( _Multiple Frameworks supported_ )
+> **NOTE:** Image previewing ONLY WORKS in terminals that support the necessary image protocols, such as WezTerm, Kitty, or other compatible terminal emulators. This will **NOT** work in BASh or basic terminal emulators that lack support for those protocols.
 
 ## Language Feature Support:
 
@@ -102,7 +91,7 @@ variables, will **NOT** work. The adapter won't be able to see them, during it's
 because your project Node.js process, and the adapter script's Node.js process, are running within two seperate runtime contexts.
 The adapter almost being a child Node.js process, being run below your own full Node.js application process.
 
-## Setup:
+### Setup:
 
 All can be setup in the following steps:
 
@@ -118,7 +107,7 @@ All can be setup in the following steps:
 
 You can have multiple programming languages supported within Neovim. However, in order for these languages to work, there are a few pre-requisites
 that need to be in place prior to utilisation. Following is a table of environment variables that must be set to the correct values
-(_paths to particular pieces of software_) in accordance to the intended plugins specifications. The plugins themselves dictate
+(_ paths to particular pieces of software _) in accordance to the intended plugins specifications. The plugins themselves dictate
 what versions of these software components are depended on in order to work correctly. So, in case of any updates to these plugin specs,
 please read them again in case of any changes being made to these dependencies.
 
@@ -146,7 +135,7 @@ using the WezTerm Multiplexer (MUX), it will NOT be able to see the variables yo
 
 #### _Correctly setting WEZTERM_CONFIG_FILE on macOS:_
 
-We must use a '**_LaunchAgent_**' via the '_launchd_' / _Launch Daemon_ binary.
+We must use a '**_LaunchAgent_**' via the '_launchd_' / _ Launch Daemon _ binary.
 
 Within the '_~/Library/LaunchAgent_' directory, create a '_plist_' / property list file.
 Name it something meaningful, using reverse DNS notation (e.g.: '_com.user.wezterm.env.plist_'), with the extension '.plist'
@@ -173,26 +162,26 @@ exposed to the OS. Either via a bash profile, or the global environment variable
 Plugins will then be able to access and utilise these programs within neovim, allowing them to function as intended. Why do I suggest exposing them via
 a profile instead of global table? To keep your global environment variables table tidy, as it should only be used for programs that are required system wide.
 
-| Binary                   | Description                                                                                                                 | Why?                                                                                                                                                                                                                                                                                           |
-| ------------------------ | --------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `nvim`                   | Neovim                                                                                                                      | _This project is based around this lightweight text editor._                                                                                                                                                                                                                                   |
-| eg: `clangd`, `codelldb` | Neovim's Mason Plugin Manager, plugins.                                                                                     | Required to be 'findable' by other plugins mentioned within this config.                                                                                                                                                                                                                       |
-| `py`                     | Python Launcher.                                                                                                            | Program that uses the latest version of python installed on your system.                                                                                                                                                                                                                       |
-| eg: `pip`                | 'Scripts' directory of every python version you have installed on your system.                                              | These directories contain the corresponding modules required by that specific version of python. _And that version of python could be a dependency of another part of the system._                                                                                                             |
-| `lua5.1 & luarocks`      | Lua V5.1 interpreter, and it's package manager.                                                                             | Most compatible version of the lua interpreter for neovim plugin build processes, along with it's package manager, luarocks.                                                                                                                                                                   |
-| `java`                   | Java JDK installation ($JAVA_HOME).                                                                                         | Java Develpment Kit (JDK) containing the The Java compiler for compiling java code to an intermediaery language (IL) / byte code, and then the Java Virtual Machine (JVM) for running that byte code (your java program).                                                                      |
-| `gradle`                 | Gradle build tool.                                                                                                          | Gradle Build System for automating the creation, compilation, and packaging of Java projects using a **_compatible_** version of the JDK.                                                                                                                                                      |
-| `node`                   | Node.js runtime                                                                                                             | The Node.js Runtime allows for thecution of JavaScript code outside of a browser. It utilises Google Chrome's V8 engine for this. It's required for JavaScript & TypeScript-based Neovim plugin support.                                                                                       |
-| `npm`                    | Node.js' package manager                                                                                                    | Handles package management for JavaScript/TypeScript dependencies. Required for building and installing _some_ Neovim plugins.                                                                                                                                                                 |
-| eg: `tsc`, `npx`         | Global 'node_modules' directory.                                                                                            | Required for accessing global node modules, such as 'tsc', a transpiler for converting TypeScript to JavaScript code. Or, 'npx' the node package runner which cancute Node.js packages without globally installing them (used by certain Neovim plugins that rely on temporary packagecution). |
-| `dotnet`                 | .NET SDK CLI tool.                                                                                                          | Allows for creating, building, testing and publishing .NET applications. Required for C# language support.                                                                                                                                                                                     |
-| `OmniSharp`              | .NET LSP.                                                                                                                   | Required for C# support.                                                                                                                                                                                                                                                                       |
-| `g++`                    | GNU C++ compiler.                                                                                                           | Required for compiling C++ code.                                                                                                                                                                                                                                                               |
-| `cargo & rustc`          | Rust's Build System / Package Manager & the Rust Compiler.                                                                  | Required for rust language support and for building rust based plugins and compiling treesitter language grammars.                                                                                                                                                                             |
-| `lldb`                   | C++ Debugger.                                                                                                               | Required by 'nvim-dap' plugin within neovim for debugging C++ code.                                                                                                                                                                                                                            |
-| `cmake`                  | CMake cross platform 'Meta' build system generator. It makes build ('instruction') files for other build systems to follow. | Required for managing the build process in a compiler-independent manner, when building complex C & C++ projects.                                                                                                                                                                              |
-| `ninja`                  | Ninja build system for C++ projects.                                                                                        | Required by CMake for building C++ projects, and for supporting the when using the 'clangd' LSP by providing 'compile_commands.json' files.                                                                                                                                                    |
-| `go & delve`             | Golang & Go 'Delve' Debug Adapter.                                                                                          | Required for go support and debugging golang code using 'nvim-dap'.                                                                                                                                                                                                                            |
+| Binary                     | Description                                                                                                                 | Why?                                                                                                                                                                                                                                                                                           |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `nvim`                     | Neovim                                                                                                                      | _This project is based around this lightweight text editor._                                                                                                                                                                                                                                   |
+| eg: `clangd`, `codelldb  ` | Neovim's Mason Plugin Manager, plugins.                                                                                     | Required to be 'findable' by other plugins mentioned within this config.                                                                                                                                                                                                                       |
+| `py`                       | Python Launcher.                                                                                                            | Program that uses the latest version of python installed on your system.                                                                                                                                                                                                                       |
+| eg: `pip`                  | 'Scripts' directory of every python version you have installed on your system.                                              | These directories contain the corresponding modules required by that specific version of python. _And that version of python could be a dependency of another part of the system._                                                                                                             |
+| `lua5.1 & luarocks`        | Lua V5.1 interpreter, and it's package manager.                                                                             | Most compatible version of the lua interpreter for neovim plugin build processes, along with it's package manager, luarocks.                                                                                                                                                                   |
+| `java`                     | Java JDK installation ($JAVA_HOME).                                                                                         | Java Develpment Kit (JDK) containing the The Java compiler for compiling java code to an intermediaery language (IL) / byte code, and then the Java Virtual Machine (JVM) for running that byte code (your java program).                                                                      |
+| `gradle`                   | Gradle build tool.                                                                                                          | Gradle Build System for automating the creation, compilation, and packaging of Java projects using a **_compatible_** version of the JDK.                                                                                                                                                      |
+| `node`                     | Node.js runtime                                                                                                             | The Node.js Runtime allows for thecution of JavaScript code outside of a browser. It utilises Google Chrome's V8 engine for this. It's required for JavaScript & TypeScript-based Neovim plugin support.                                                                                       |
+| `npm`                      | Node.js' package manager                                                                                                    | Handles package management for JavaScript/TypeScript dependencies. Required for building and installing _some_ Neovim plugins.                                                                                                                                                                 |
+| eg: `tsc`, `npx`           | Global 'node_modules' directory.                                                                                            | Required for accessing global node modules, such as 'tsc', a transpiler for converting TypeScript to JavaScript code. Or, 'npx' the node package runner which cancute Node.js packages without globally installing them (used by certain Neovim plugins that rely on temporary packagecution). |
+| `dotnet`                   | .NET SDK CLI tool.                                                                                                          | Allows for creating, building, testing and publishing .NET applications. Required for C# language support.                                                                                                                                                                                     |
+| `OmniSharp`                | .NET LSP.                                                                                                                   | Required for C# support.                                                                                                                                                                                                                                                                       |
+| `g++`                      | GNU C++ compiler.                                                                                                           | Required for compiling C++ code.                                                                                                                                                                                                                                                               |
+| `cargo & rustc`            | Rust's Build System / Package Manager & the Rust Compiler.                                                                  | Required for rust language support and for building rust based plugins and compiling treesitter language grammars.                                                                                                                                                                             |
+| `lldb`                     | C++ Debugger.                                                                                                               | Required by 'nvim-dap' plugin within neovim for debugging C++ code.                                                                                                                                                                                                                            |
+| `cmake`                    | CMake cross platform 'Meta' build system generator. It makes build ('instruction') files for other build systems to follow. | Required for managing the build process in a compiler-independent manner, when building complex C & C++ projects.                                                                                                                                                                              |
+| `ninja`                    | Ninja build system for C++ projects.                                                                                        | Required by CMake for building C++ projects, and for supporting the when using the 'clangd' LSP by providing 'compile_commands.json' files.                                                                                                                                                    |
+| `go & delve`               | Golang & Go 'Delve' Debug Adapter.                                                                                          | Required for go support and debugging golang code using 'nvim-dap'.                                                                                                                                                                                                                            |
 
 ### **Luarocks modules / rocks ( _packages/libraries_ ) support:**
 
