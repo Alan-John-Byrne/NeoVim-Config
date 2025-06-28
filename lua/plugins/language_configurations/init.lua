@@ -361,6 +361,7 @@ return {
         "MD026",
         "MD049",
         "MD033",
+        "MD029",
       } -- NOTE: Please find full set of rules available for 'markdownlint' at:
       --   https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint
 
