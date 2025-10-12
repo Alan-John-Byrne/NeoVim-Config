@@ -2,6 +2,9 @@
 -- INFO: ALL PLUGINS HERE WORK TOGETHER to provide multiple programming language support including features like
 -- 'hover descriptions', 'debugging support', 'better text highlighting', 'Linting', 'Formatting', and 'Auto-Complete'.
 return {
+
+
+
   -- SECTION: 0. Setup Tree-sitter (Language Parsing)
   -- PLUGIN: The 'nvim-treesitter' plugin provides better text highlighting, and also serves other core purposes for language support.
   {
@@ -20,8 +23,16 @@ return {
     },
     opts_extend = { "ensure_installed" },
     config = function()
-      -- NOTE: Adding support for 'plist' files to just be parsed as XML, by treesitter.
+      -- NOTE: Here you can configure different filetypes by extension and name so that treesitter parses
+      -- them correctly for highlighting (done by treesitter itself) and linting + formatting (handled by
+      -- the 'nvim-lint' and 'conform.nvim' plugins configured below, respectively).
       vim.filetype.add({
+        -- OOO: Making Jenkinsfile(s) open using the groovy installed linters and formatters.
+        filename = {
+          ["Jenkinsfile"] = "groovy",
+        },
+        -- OOO: Adding support for 'plist' files to just be parsed as XML,
+        -- by treesitter.
         extension = {
           plist = "xml",
         },
@@ -82,6 +93,9 @@ return {
       })
     end
   },
+
+
+
   -- SECTION: 1. Setting up Auto-Completions.
   -- PLUGIN:(S)
   -- * The 'luasnip' plugin provides a powerful and extensible snippet engine for Neovim,
@@ -229,6 +243,9 @@ return {
       after = 'nvim-cmp',
     },
   },
+
+
+
   -- SECTION: 2. Setting up the 'nvim-lspconfig' plugin, and all it's associated plugins.
   -- PLUGIN: The 'nvim-lspconfig' plugin simplifies the setup and configuration of built-in
   -- Neovim LSP client support by providing pre-defined configurations for a wide range of language servers.
@@ -279,6 +296,8 @@ return {
       -- IMPORTANT: Ensure "~/.local/share/nvim/mason/bin" directory is accessible via the PATH. This is how
       -- 'bridge' plugins can access the plugins you install via the Mason UI, setup immediately below.
 
+
+
       -- SECTION: 4. Setup LSPs (Auto-Install + Auto-Config)
       -- PLUGIN: The 'mason-lspconfig.nvim' plugin bridges mason.nvim and 'nvim-lspconfig' by automatically configuring
       -- and ensuring installation of LSP servers from the Mason package manager, for use with the 'nvim-lspconfig' plugin.
@@ -290,6 +309,7 @@ return {
       -- INFO: Setting up all installed LSPs.
       local mason_lspconfig_test = require("mason-lspconfig")
       for _, server_name in ipairs(mason_lspconfig_test.get_installed_servers()) do
+        -- OOO: Lua_ls LSP setup:
         if server_name == "lua_ls" then
           vim.lsp.config(server_name, { -- NOTE: Configure server via `vim.lsp.config()` (New in Neovim v0.11).
             settings = {
@@ -317,10 +337,13 @@ return {
               },
             },
           })
+          -- OOO: Just use default settings for all other LSPs.
         else
-          vim.lsp.config(server_name, {}) -- OOO: Just use default settings for all other LSPs.
+          vim.lsp.config(server_name, {})
         end
       end
+
+
 
       -- SECTION: 5. Setup Linters & Formatters:
       -- INFO: Some function as both linters and formatters. (eg: markdownlint)
@@ -336,7 +359,7 @@ return {
         lua = { "selene" },
         css = { "stylelint" },
         bash = { "shellcheck" },
-        python = { "ruff" }
+        python = { "ruff" },
       }
 
       require("mason-nvim-lint").setup({
@@ -345,6 +368,10 @@ return {
         quiet_mode = false,
         ignore_install = {}
       })
+
+      -- IMPORTANT: The 'npm-groovy-lint' linter/formatter requires a more verbose setup. (Auto-command Required)
+      -- WARN: Only works as a formatter, the linter is broken.
+      require("plugins.language_configurations.utility").npm_groovy_lint_setup()
 
       -- OOO: Linters Specific Settings; Customize a linters config via it's 'args' table.
       require("lint").linters.selene.args = {
@@ -391,8 +418,9 @@ return {
           css = { "prettier" },
           go = { "goimports" },
           bash = { "beautysh" },
-          python = { "ruff" }
-        }
+          python = { "ruff" },
+          groovy = { "npm-groovy-lint" }
+        },
       })
 
       require("mason-conform").setup({
@@ -420,6 +448,8 @@ return {
           end
         end,
       })
+
+
 
       -- SECTION: 6. Setup Debug Adapters (DAP)
       local language_configuration_utility = require("plugins.language_configurations.utility") -- Helper methods for setup.
@@ -609,6 +639,8 @@ return {
         },
       }
 
+
+
       -- SECTION: 7. Setting up the Debug Adapter UI & Listeners for a better debug expierence.
       -- PLUGIN: The 'nvim-dap-ui' plugin provides a user interface for the nvim-dap debugging framework,
       -- offering visual elements like scopes, breakpoints, stacks, and watches within Neovim.
@@ -626,6 +658,8 @@ return {
       dap.listeners.before.event_exited.dapui_config = function()
         dapui.close()
       end
+
+
 
       -- SECTION: 8. Setting nice icons for debug breakpoints, and Dap Virtual Text for nice debugging variable value text notes.
       -- PLUGIN: The 'nvim-dap-virtual-text' plugin displays variable values and execution context as virtual text inline
@@ -673,6 +707,8 @@ return {
         -- e.g. 80 to position at column 80, see `:h nvim_buf_set_extmark()`
       }
 
+
+
       -- SECTION: 9. Registering 'which-key' keymaps for the Debug Adapter(s), Debug Adapter UI, and Mason Package Manager.
       -- IMPORTANT: Define keymaps to be registered with 'which-key' using ONLY 'vim.keymap.set'. (ITS THE STANDARD)
       vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "Toggle Breakpoint" })
@@ -691,6 +727,9 @@ return {
       vim.keymap.set("n", "<leader>cm", "<cmd>Mason<cr>", { desc = "Mason" })
     end,
   },
+
+
+
   -- SECTION: 10. Java (JDTLS) Setup.
   -- OOO: Java Project Setup: (When working on large projects and/or publishing packages to registries later)
   -- When using the 'gradle init --type java-application' command to setup a java project, it will generate the
@@ -724,10 +763,13 @@ return {
   -- (You CAN'T use 'JdtRestart' because the 'nvim-jdtls' isn't loaded yet in this case. As it's having trouble loading)
   -- PLUGIN: 'nvim-jdtls.nvim' extends the capabilities of the built-in LSP support in Neovim, to support Java.
   -- TODO: Requirements:
-  -- > JAVASE 21.*.* (set as both the default binary and as 'JAVA_HOME')
-  -- > java-debug 0.53.1 from "https://github.com/microsoft/java-debug"
-  -- > gradle-7.3.3 from "https://gradle.org/releases/"
-  -- IMPORTANT: Requirments must be installed manually, not via the mason package manager!
+  -- > JAVASE 21.*.* (set as 'JAVA_HOME')
+  -- > 'eclipse.jdt.ls' 1.51.0 from "https://github.com/eclipse-jdtls/eclipse.jdt.ls"
+  -- > 'java-debug' 0.53.2 from "https://github.com/microsoft/java-debug"
+  -- > Compatible Maven or Gradle build tools.
+  -- REMEMBER: Both 'eclipse.jdt.ls' and 'java-debug' versions *MUST* be compatible with one another, and should
+  -- preferably be built from source, so both contain the latest fixes and commits. *This prevents issues*.
+  -- IMPORTANT: Requirments must be installed manually, *NOT* via the mason package manager! Those plugins are not compatible.
   {
     "mfussenegger/nvim-jdtls",
     enabled = true,
@@ -735,15 +777,16 @@ return {
       "mfussenegger/nvim-dap",
     },
     config = function()
-      -- TODO: Setting the workspace directory used by JDTLS, for all projects (this is standard).
-      -- WARN: The workspace meta-data directory must be in the root directory, above all project files.
-      local base_path = "~/coding/javadev/"
-      local workspace_dir_name = ".workspace"
-      local workspace_dir_path = base_path .. workspace_dir_name
       -- TODO: Listening for a 'BufEnter' event when going into a java file.
       vim.api.nvim_create_autocmd("BufEnter", {
         pattern = "*.java",
         callback = function()
+          -- TODO: Setting a unique workspace directory for each project to be used by JDTLS (this is standard).
+          -- WARN: The workspace meta-data directory must be in the root directory, above all project files.
+          local base_path = vim.fn.expand("~/coding/javadev/")
+          local project_root_path = vim.fs.root(0, { 'pom.xml', '.git', '.mvn', 'mvnw', 'gradlew', 'build.gradle' })
+          local workspace_dir_name = vim.fn.fnamemodify(project_root_path, ':t') .. "_workspace"
+          local workspace_dir_path = base_path .. "workspaces/" .. workspace_dir_name
           -- NOTE: Creating the configuration for the LSP.
           local config = {
             -- The command that starts the language server
@@ -751,7 +794,7 @@ return {
             cmd = {
 
               -- IMPORTANT:💀 Must be set to the specifics of your machine.
-              "Java", -- or '/path/to/java17_or_newer/bin/java' depends on if the `java.exe` (java runtime) is in your $PATH env variables.
+              "java", -- or '/path/to/java17_or_newer/bin/java' depends on if the `java.exe` (java runtime) is in your $PATH env variables.
 
               -- INFO: Options specified in the documentation:
               "-Declipse.application=org.eclipse.jdt.ls.core.id1", -- Specifying the Eclipse app ID to run (the JDT Language Server).
@@ -766,17 +809,19 @@ return {
 
               -- IMPORTANT:💀 Must be set to the specifics of your machine. (Manual Installation required - MASON NOT COMPATIBLE)
               "-jar",
-              base_path .. ".setup_config/jdtls/plugins/org.eclipse.equinox.launcher_1.6.900.v20240613-2009.jar",
+              base_path ..
+              ".setup_config/jdtls/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository/plugins/org.eclipse.equinox.launcher_1.7.0.v20250519-0528.jar",
               -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^                                            ^^^^^^^^^^^^^^^^^^
               -- Must point to the                                                      Change this to
               -- eclipse.jdt.ls installation                                            the actual version
 
               -- IMPORTANT:💀 Must be set to the specifics of your machine. (Manual Installation required - MASON NOT COMPATIBLE)
               "-configuration",
-              base_path .. ".setup_config/jdtls/config_mac",
+              base_path .. ".setup_config/jdtls/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository/config_mac",
               -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^      ^^^^^^^^^^
               -- Must point to the                Change to one of `linux`, `win` or `mac`
               -- eclipse.jdt.ls installation      Depending on your system.
+              --
 
               -- IMPORTANT:💀 Must be set to the specifics of your machine.
               -- See `data directory configuration` section in the README
@@ -789,31 +834,39 @@ return {
             --
             -- vim.fs.root requires Neovim v0.10+.
             -- If you're using an earlier version, use: require('jdtls.setup').find_root({'.git', 'mvnw', 'gradlew'}),
-            root_dir = vim.fs.root(0, { '.git', 'mvnw', 'gradlew', 'pom.xml', 'build.gradle' }),
+            root_dir = project_root_path,
 
             -- Here you can configure eclipse.jdt.ls specific settings
             -- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
             -- for a list of options
             settings = {
               java = {
+                -- OOO: This is the default version of java used on the system.
+                home = "/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home",
                 configuration = {
                   -- WARN: See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request And search for `interface RuntimeOption`
                   -- NOTE: The `name` is NOT arbitrary, but must match one of the elements from `enum ExecutionEnvironment` in the link above
-                  runtimes = {            -- IMPORTANT: Even if nvim-jdtls requires the Java 21 JDK to be set as 'JAVA_HOME' we can still use the plugin for projects built in other versions.
+                  -- IMPORTANT: Even if nvim-jdtls requires the Java 21 JDK to be set as 'JAVA_HOME' we can still use the plugin for projects built in other versions.
+                  -- REMEMBER: The 'archetype' / template used for generating the project scaffolding using Maven, determines the version of the JDK used in that project.
+                  runtimes = {
                     {
-                      name = "JavaSE_21", -- Create Java 21 Projects.
-                      path = "/opt/homebrew/opt/openjdk@21",
+                      name = "JavaSE-17",
+                      path = "/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home",
+                    },
+                    {
+                      name = "JavaSE-21",
+                      path = "/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home",
                     },
                   },
                 },
                 format = { -- IMPORTANT: Eclipse LSP format settings file. Allows for the altering of the default formatter provided by the eclipse formatter.
                   settings = {
-                    url = base_path .. ".setup_config\\eclipse-java-google-style.xml",
+                    url = base_path .. ".setup_config/eclipse-java-google-style.xml",
                   },
                 },
               },
             },
-            -- REMEMBER:
+            -- INFO:
             -- Language server `initializationOptions`:
             -- You need to extend the `bundles` with paths to jar files if you want to
             -- use additional eclipse.jdt.ls plugins. See https://github.com/mfussenegger/nvim-jdtls#java-debug-installation.
@@ -822,12 +875,12 @@ return {
               bundles = {    -- IMPORTANT: If using nvim-jdtls, you MUST CLONE THE REPO of the java-debug plugin manually via git, and paste it's path here.
                 vim.fn.glob( -- WARN: If you move the java-debug folder (the one containing the plugin you just cloned), YOU CAN'T. Clone into that new folder, and rebuild.
                   base_path ..
-                  ".setup_config\\java-debug\\com.microsoft.java.debug.plugin\\target\\com.microsoft.java.debug.plugin-0.53.1.jar",
-                  true
+                  ".setup_config/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-0.53.2.jar"
                 ),
               },
             },
           }
+          -- print(config.root_dir)
           -- NOTE: Requiring the LSP and attaching it to the java buffer, using the configuration.
           local jdtls = require("jdtls")
           jdtls.start_or_attach(config)
