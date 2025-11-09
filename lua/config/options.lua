@@ -2,7 +2,7 @@
 -- INFO: Neovim V0.11 disables LSP virtual text by default. MUST ENABLE IT.
 vim.diagnostic.config({ virtual_text = true })
 -- SECTION: PART 1: Some pre-config and API brief.
--- XXX: The API:
+-- OOO: The API:
 -- The overall API is complex, where the global vim table actually exposes three main portions that are used together,
 -- they are:
 -- > The 'Vim API' - accessed via the 'vim.cmd()' method and the 'vim.fn' (builtin-functions) sub-table. Provides compatibility with legacy Vim functions but uses 0-based indexing.

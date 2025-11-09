@@ -1,14 +1,7 @@
--- INFO: Keymaps are automatically loaded on the VeryLazy event.
+-- INFO: Keymaps are automatically loaded on the 'VeryLazy' lazy.nvim event.
 vim.ui.select = nil -- Reset to default
 
--- XXX: Convenience save and quit all.
-vim.keymap.set("n", "<leader>q", ":wqall<CR>", { desc = "Save and Quit All" })
-
--- XXX: Set the current working directory to the buffer's directory, and Print the current working directory.
-vim.keymap.set("n", "<leader>\\", ":cd %:p:h<CR>", { desc = "Set to cwd.", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>P", ":pwd<CR>", { desc = "Print cwd.", noremap = true, silent = true })
-
--- XXX: Highlight on yank (copy).
+-- OOO: Highlight on yank (copy).
 local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()
@@ -18,37 +11,27 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   pattern = "*",
 })
 
--- XXX: Visual-Block Mode select & replace.
+-- OOO: Visual-Block Mode select & replace.
 vim.api.nvim_set_keymap("x", "<leader>v", ":s/\\%V", { noremap = true, silent = false })
 
+-- SECTION: Keymaps:
+-- TODO: Using a pointer to make life easier when making keymaps.
 local map = vim.keymap.set
 
--- better up/down
+-- OOO: Convenience save and quit all.
+map("n", "<leader>q", ":wqall<CR>", { desc = "Save and Quit All" })
+
+-- OOO: Set the current working directory to the buffer's directory, and Print the current working directory.
+map("n", "<leader>\\", ":cd %:p:h<CR>", { desc = "Set to cwd.", noremap = true, silent = true })
+map("n", "<leader>P", ":pwd<CR>", { desc = "Print cwd.", noremap = true, silent = true })
+
+-- OOO: Better up/down
 map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
 map({ "n", "x" }, "<Down>", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
 map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
 map({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
 
--- Move to window using the <ctrl> hjkl keys (Normal Mode)
-map("n", "@h", "<C-w>h", { desc = "Go to Left Window", remap = true })
-map("n", "@j", "<C-w>j", { desc = "Go to Lower Window", remap = true })
-map("n", "@k", "<C-w>k", { desc = "Go to Upper Window", remap = true })
-map("n", "@l", "<C-w>l", { desc = "Go to Right Window", remap = true })
---
--- Move to window using the <ctrl> hjkl keys (Terminal Mode)
-map("t", "@h", [[<C-\><C-N><C-w>h]], { desc = "Go to Left Window in Terminal", remap = true })
-map("t", "@j", [[<C-\><C-N><C-w>j]], { desc = "Go to Lower Window in Terminal", remap = true })
-map("t", "@k", [[<C-\><C-N><C-w>k]], { desc = "Go to Upper Window in Terminal", remap = true })
-map("t", "@l", [[<C-\><C-N><C-w>l]], { desc = "Go to Right Window in Terminal", remap = true })
--- INFO: "<Esc>[1;*" maps to an escape key press (hold down) followed by either 'h', 'j', 'k', 'l'
-
--- Resize window vertically using <CMD> arrow keys.(Normal Mode & Terminal Mode)
-map({ "n", "t" }, "&k", "<cmd>resize +2<cr>", { desc = "Increase Window Width" })
-map({ "n", "t" }, "&j", "<cmd>resize -2<cr>", { desc = "Decrease Window Width" })
-
--- NOTE: '@?' and '&?' keys are mapped via WezTerm.
-
--- Move Lines
+-- OOO: Move Lines
 map("n", "<A-j>", "<cmd>execute 'move .+' . v:count1<cr>==", { desc = "Move Down" })
 map("n", "<A-k>", "<cmd>execute 'move .-' . (v:count1 + 1)<cr>==", { desc = "Move Up" })
 map("i", "<A-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move Down" })
@@ -56,7 +39,7 @@ map("i", "<A-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move Up" })
 map("v", "<A-j>", ":<C-u>execute \"'<,'>move '>+\" . v:count1<cr>gv=gv", { desc = "Move Down" })
 map("v", "<A-k>", ":<C-u>execute \"'<,'>move '<-\" . (v:count1 + 1)<cr>gv=gv", { desc = "Move Up" })
 
--- buffers
+-- OOO: Buffers
 map("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
 map("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next Buffer" })
 map("n", "[b", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
@@ -66,7 +49,7 @@ map("n", "<leader>`", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
 map("n", "<leader>bD", "<cmd>:bd<cr>", { desc = "Delete Buffer and Window" })
 map("n", "<leader>bo", "<cmd>%bd|e#|bd#<cr>", { desc = "Close Other Buffers" })
 
--- Clear search and stop snippet on escape
+-- OOO: Clear search and stop snippet on escape
 map({ "i", "n", "s" }, "<esc>", function()
   vim.cmd("noh")
   if vim.snippet then
@@ -75,16 +58,11 @@ map({ "i", "n", "s" }, "<esc>", function()
   return "<esc>"
 end, { expr = true, desc = "Escape and Clear hlsearch" })
 
--- Clear search, diff update and redraw
--- taken from runtime/lua/_editor.lua
-map(
-  "n",
-  "<leader>ur",
-  "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
-  { desc = "Redraw / Clear hlsearch / Diff Update" }
-)
+-- OOO: Clear search, diff update and redraw taken from runtime/lua/_editor.lua
+map("n", "<leader>ur", "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
+  { desc = "Redraw / Clear hlsearch / Diff Update" })
 
--- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
+-- OOO: https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
 map("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "Next Search Result" })
 map("x", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next Search Result" })
 map("o", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next Search Result" })
@@ -92,26 +70,26 @@ map("n", "N", "'nN'[v:searchforward].'zv'", { expr = true, desc = "Prev Search R
 map("x", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev Search Result" })
 map("o", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev Search Result" })
 
--- Add undo break-points
+-- OOO: Add undo break-points
 map("i", ",", ",<c-g>u")
 map("i", ".", ".<c-g>u")
 map("i", ";", ";<c-g>u")
 
--- save file
+-- OOO: Save File
 map({ "i", "x", "n", "s" }, "@s", "<cmd>w<cr><esc>", { desc = "Save File" })
 
--- better indenting
+-- OOO: Better Indenting
 map("v", "<", "<gv")
 map("v", ">", ">gv")
 
--- commenting
+-- OOO: Commenting
 map("n", "gco", "o<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add Comment Below" })
 map("n", "gcO", "O<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add Comment Above" })
 
--- lazy
+-- OOO: Lazy
 map("n", "<leader>l", "<cmd>Lazy<cr>", { desc = "Lazy" })
 
--- new file
+-- OOO: new file
 map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
 
 map("n", "<leader>xl", "<cmd>lopen<cr>", { desc = "Location List" })
@@ -120,7 +98,7 @@ map("n", "<leader>xq", "<cmd>copen<cr>", { desc = "Quickfix List" })
 map("n", "[q", vim.cmd.cprev, { desc = "Previous Quickfix" })
 map("n", "]q", vim.cmd.cnext, { desc = "Next Quickfix" })
 
--- Formatting
+-- OOO: Formatting
 map({ "n", "v" }, "<leader>cf", function()
   local bufnr = vim.api.nvim_get_current_buf()
   local clients = vim.lsp.buf_get_clients(bufnr)
@@ -137,7 +115,7 @@ map({ "n", "v" }, "<leader>cf", function()
   end
 end, { desc = "Format" })
 
--- Diagnostics
+-- OOO: Diagnostics
 local diagnostic_goto = function(next, severity)
   local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
   severity = severity and vim.diagnostic.severity[severity] or nil
@@ -153,16 +131,12 @@ map("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
 map("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Next Warning" })
 map("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
 
--- Terminal Mappings
-map("t", "<C-/>", "<cmd>close<cr>", { desc = "Hide Terminal" })
-map("t", "<c-_>", "<cmd>close<cr>", { desc = "which_key_ignore" })
-
--- Window Mappings
+-- OOO: Window Mappings
 map("n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true })
 map("n", "<leader>|", "<C-W>v", { desc = "Split Window Right", remap = true })
 map("n", "<leader>wd", "<C-W>c", { desc = "Delete Window", remap = true })
 
--- Tabs Mappings
+-- OOO: Tabs Mappings
 map("n", "<leader><tab>l", "<cmd>tablast<cr>", { desc = "Last Tab" })
 map("n", "<leader><tab>o", "<cmd>tabonly<cr>", { desc = "Close Other Tabs" })
 map("n", "<leader><tab>f", "<cmd>tabfirst<cr>", { desc = "First Tab" })
@@ -171,7 +145,8 @@ map("n", "<leader><tab>]", "<cmd>tabnext<cr>", { desc = "Next Tab" })
 map("n", "<leader><tab>d", "<cmd>tabclose<cr>", { desc = "Close Tab" })
 map("n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
 
--- Native snippets.  WARN: Only needed on < 0.11, as 0.11 creates these by default.
+-- OOO: Native snippets.
+-- WARN: Only needed on < 0.11, as 0.11 creates these by default.
 if vim.fn.has("nvim-0.11") == 0 then
   map("s", "<Tab>", function()
     return vim.snippet.active({ direction = 1 }) and "<cmd>lua vim.snippet.jump(1)<cr>" or "<Tab>"
@@ -180,3 +155,36 @@ if vim.fn.has("nvim-0.11") == 0 then
     return vim.snippet.active({ direction = -1 }) and "<cmd>lua vim.snippet.jump(-1)<cr>" or "<S-Tab>"
   end, { expr = true, desc = "Jump Previous" })
 end
+
+-- SECTION: Terminal Mode related mappings:
+
+-- OOO: Showing and hiding the terminal.
+map("t", "<C-/>", "<cmd>close<cr>", { desc = "Hide Terminal" })
+map("t", "<C-_>", "<cmd>close<cr>", { desc = "which_key_ignore" })
+
+-- OOO: Navigation between terminal and buffer windows.
+-- INFO: These commands allow the developer to move to and from a regular
+-- window to a terminal window and vice-versa.
+-- IMPORTANT: The '@?' key bindings here are related to Wezterm Signals
+-- configured within '.wezterm.lua'
+-- NOTE: Normal Mode:
+map("n", "@h", "<C-w>h", { desc = "Go to Left Window", remap = true })
+map("n", "@j", "<C-w>j", { desc = "Go to Lower Window", remap = true })
+map("n", "@k", "<C-w>k", { desc = "Go to Upper Window", remap = true })
+map("n", "@l", "<C-w>l", { desc = "Go to Right Window", remap = true })
+-- NOTE: Terminal Mode:
+map("t", "@h", [[<C-\><C-N><C-w>h]], { desc = "Go to Left Window in Terminal", remap = true })
+map("t", "@j", [[<C-\><C-N><C-w>j]], { desc = "Go to Lower Window in Terminal", remap = true })
+map("t", "@k", [[<C-\><C-N><C-w>k]], { desc = "Go to Upper Window in Terminal", remap = true })
+map("t", "@l", [[<C-\><C-N><C-w>l]], { desc = "Go to Right Window in Terminal", remap = true })
+
+-- OOO:: Resize NeoVim window (regular buffer, or terminal) vertically using <CMD> jk keys.
+-- IMPORTANT: The '&?' key bindings here are related to Wezterm Signals
+-- configured within '.wezterm.lua'
+-- INFO: These commands must be OPPOSITE depending on the mode.
+-- NOTE:  Normal Mode:
+map("n", "&k", "<cmd>resize -2<cr>", { desc = "Decrease Buffer Window Height" })
+map("n", "&j", "<cmd>resize +2<cr>", { desc = "Increase Buffer Window Height" })
+-- NOTE:  Terminal Mode:
+map("t", "&k", "<cmd>resize +2<cr>", { desc = "Increase Terminal Window Height" })
+map("t", "&j", "<cmd>resize -2<cr>", { desc = "Decrease Terminal Window Height" })

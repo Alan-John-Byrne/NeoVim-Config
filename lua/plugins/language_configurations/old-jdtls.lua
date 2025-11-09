@@ -1,4 +1,6 @@
-if true then return {} end -- IMPORTANT: ALWAYS RETURNING NOTHING! THESE ARE DOCS!
+-- IMPORTANT: ALWAYS RETURNING NOTHING! THESE ARE DOCS!
+-- NOTE: This is an example of how the nvim-jdtls lsp would be configured prior to neovim v0.11
+if true then return {} end
 return {
   "mfussenegger/nvim-jdtls",
   enabled = true,

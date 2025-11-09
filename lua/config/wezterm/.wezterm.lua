@@ -186,19 +186,34 @@ if props then -- If the options are available use them.
         window:set_config_overrides(overrides)
       end),
     },
-    -- INFO: macOS remappings for the CMD key. ('\x1b' means 'Esc' key.) -- Good for neovim remaps.
-    -- NOTE: These are sent to Neovim, where we can interpret them as input for a command / keymap binding.
-    { key = "h", mods = "CMD",     action = wezterm.action.SendString("@h") },
-    { key = "j", mods = "CMD",     action = wezterm.action.SendString("@j") },
-    { key = "k", mods = "CMD",     action = wezterm.action.SendString("@k") },
-    { key = "l", mods = "CMD",     action = wezterm.action.SendString("@l") },
-    { key = "k", mods = "CMD|ALT", action = wezterm.action.SendString("&k") },
-    { key = "j", mods = "CMD|ALT", action = wezterm.action.SendString("&j") },
-    -- Keybind for saving using CMD on mac:
-    { key = "s", mods = "CMD",     action = wezterm.action.SendString("@s") },
+
+    -- SECTION: macOS remappings for the CMD key. (Required when working on Mac)
+    -- OOO: Keybind for saving using 'CMD':
+    { key = "s", mods = "CMD",      action = wezterm.action.SendString("@s") },
+
+    -- OOO: Navigation Signals to go between Neovim panes:
+    -- (Refer to -> keymaps.lua 'Terminal Mode related mappings' SECTION)
+    -- WARN: The below 'Signals' are specifically used when in the Neovim terminal window.
+    -- REMEMBER: A 'pane' ONLY exists in Wezterm, NOT NeoVim, & a 'window' / 'buffer window'
+    -- ONLY exists in Neovim, NOT Wezterm. You move between panes in wezterm,
+    -- and windows in Neovim.
+    -- NOTE: These 'Signals' are sent to Neovim, where it can interpret them as
+    -- input for a keymap binding. (Refer to -> keymaps.lua)
+    -- IMPORTANT: The 'mods' here must ONLY be 'CMD'. Using 'CMD|ALT' or 'CMD|CTRL' would
+    -- clash with other the wezterm / neovim related key bindings.
+    { key = "j", mods = "CMD",      action = wezterm.action.SendString("@j") },
+    { key = "k", mods = "CMD",      action = wezterm.action.SendString("@k") },
+    { key = "l", mods = "CMD",      action = wezterm.action.SendString("@l") },
+    { key = "h", mods = "CMD",      action = wezterm.action.SendString("@h") },
+
+    -- OOO: Terminal Window resizing signals to be sent to NeoVim keymappings.
+    -- IMPORTANT: The 'mods' here must be 'CMD|CTRL', because using 'CMD|ALT' would
+    -- clash with the wezterm key bindings to switch between wezterm panes.
+    { key = "k", mods = "CMD|CTRL", action = wezterm.action.SendString("&k") },
+    { key = "j", mods = "CMD|CTRL", action = wezterm.action.SendString("&j") },
   }
 end
 
 -- IMPORTANT: Finally, return the built configuration to WezTerm.
--- WARN: This is *NOT* accessible via Neovim as a Module. It's not included within it's runtime.
+-- WARN: This is *NOT* accessible via Neovim as a Module. It's not included within Neovim's runtime.
 return config
