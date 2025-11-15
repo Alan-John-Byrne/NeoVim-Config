@@ -15,7 +15,7 @@ return {
       NOTE = { icon = "✏", color = "note", alt = {} }, -- Empty 'alt' table because of error.
       TODO = { icon = "🧠", color = "todo", alt = { "REMEMBER" } },
       INFO = { icon = "ℹ️", color = "info" },
-      TEST = { icon = "🧪", color = "test", alt = { "TESTING", "PASSED" } },
+      LSP = { icon = "🧪", color = "test", alt = { "TEST", "TESTING", "PASSED" } },
       ERROR = { icon = "📈", color = "error", alt = { "PERFORMANCE", "FAILED", "OPTIMIZE" } },
       GOAL = { icon = "🥅", color = "goal" },
       SECTION = { icon = "✨", color = "question", alt = { "QUESTION", "HEADING", "PART", "BLOCK", "CONFIGURATION" } },
@@ -40,7 +40,7 @@ return {
       -- NOTE:
       -- TODO:
       -- INFO:
-      -- TEST:
+      -- LSP:
       -- ERROR:
       -- GOAL:
       -- QUESTION:

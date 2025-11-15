@@ -1,6 +1,7 @@
 -- PLUGIN: The 'flash.nvim' plugin provides jump forward and backward functionality within the buffer.
 return {
   "folke/flash.nvim",
+  enabled = true,
   event = "VeryLazy",
   vscode = true,
   ---@type Flash.Config

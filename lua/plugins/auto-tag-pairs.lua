@@ -3,6 +3,7 @@
 -- * The 'nvim-ts-autotag' plugin provides automatic closing and renaming of HTML, XML, and JSX tags using nvim-treesitter.
 return {
   "windwp/nvim-autopairs",
+  enabled = true,
   event = "InsertEnter",
   dependencies = {
     "windwp/nvim-ts-autotag"

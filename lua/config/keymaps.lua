@@ -12,7 +12,9 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 -- OOO: Visual-Block Mode select & replace.
-vim.api.nvim_set_keymap("x", "<leader>v", ":s/\\%V", { noremap = true, silent = false })
+-- NOTE: This keymap only becomes available after making a selection.
+-- REMEMBER: 'x' mode means 'Visual' mode.
+vim.api.nvim_set_keymap("x", "<leader>v", ":s/\\%V", { desc = "Select-Block", noremap = true, silent = false })
 
 -- SECTION: Keymaps:
 -- TODO: Using a pointer to make life easier when making keymaps.

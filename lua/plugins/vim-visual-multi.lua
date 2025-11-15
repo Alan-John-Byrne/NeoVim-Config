@@ -1,9 +1,9 @@
 --  PLUGIN: The 'vim-visual-multi' plugin allows easy use of multiple cursors.
 return {
   "mg979/vim-visual-multi", -- Originally a 'vim' plugin.
+  enabled = true,
   branch = "master",
   event = "VeryLazy",
-  enabled = true, -- TESTING
   init = function()
     -- NOTE: Clearing current mappings:
     vim.g.VM_default_mappings = 0

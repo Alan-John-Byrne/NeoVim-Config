@@ -2,7 +2,7 @@ return {
   -- PLUGIN: The 'mini.files' plugin provides an alternative directory navigation tool to NeoTree and others.
   {
     "echasnovski/mini.files",
-    enabled = true, -- TESTING
+    enabled = true,
     keys = {
       {
         "<leader>e",

@@ -1,6 +1,7 @@
 -- PLUGIN: The 'bufferline.nvim' plugin provides tabular functionality at the top of every buffer for switching between buffers.
 return {
   "akinsho/bufferline.nvim",
+  enabled = true,
   event = "VeryLazy",
   init = function()
     -- WARN: For 'true color support' (when the plugin [the bufferline]

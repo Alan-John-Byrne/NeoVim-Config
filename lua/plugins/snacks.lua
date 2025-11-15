@@ -3,6 +3,7 @@
 -- enhance usability without adding bloat.
 return {
   "folke/snacks.nvim",
+  enabled = true,
   lazy = false,
   ---@type snacks.Config
   keys = {

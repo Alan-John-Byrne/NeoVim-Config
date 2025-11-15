@@ -3,7 +3,7 @@ return {
   -- SECTION: Part 0: Pre-configuring nvim-notofy setup.
   {
     "rcarriga/nvim-notify",
-    enabled = true, -- TESTING
+    enabled = true,
     config = function()
       require("notify").setup({
         background_colour = "#ffffff",
@@ -13,37 +13,10 @@ return {
   -- SECTION: Part 1: Setting up Noice pre-requisites.
   {
     "folke/noice.nvim",
-    enabled = true, -- TESTING
-    dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify" },
+    enabled = true,
+    dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify", "nvim-telescope/telescope.nvim" },
     init = function()
       vim.opt.lazyredraw = false
-      -- OOO: Defining a custom command to capture and display shell output:
-      vim.api.nvim_create_user_command('S', function(opts)
-        local command = opts.args
-        local output_lines = {}
-        vim.fn.jobstart({ "bash", "-c", command }, {
-          stdout_buffered = true,
-          on_stdout = function(_, data)
-            if data then -- INFO: 'data' is a table consiting of the entire output.
-              for _, line in ipairs(data) do
-                table.insert(output_lines, line)
-              end
-              -- Send to noice-friendly `vim.notify` once fully captured
-              vim.notify(table.concat(output_lines, "\n"), vim.log.levels.INFO, {
-                title = "<< Shell Command Output >>",
-              })
-            end
-          end,
-        })
-      end, { nargs = '+' })
-      -- OOO: Add an autocommand to detect :! commands and show a warning
-      vim.api.nvim_create_autocmd("ShellCmdPost", {
-        pattern = "*",
-        callback = function()
-          vim.notify("Warning: Use :S instead of :! for shell commands.", vim.log.levels.WARN,
-            { title = "!! Shell Command Warning !!" })
-        end,
-      })
     end,
     opts = {
       -- SECTION: Part 2: Route setup for filters.
