@@ -42,24 +42,27 @@
 
 ## Language Feature Support:
 
-| Language   | Debugging | LSP Support | TreeSitter Highlights | Linting  | Format On Save | Auto-Complete |
-| ---------- | --------- | ----------- | --------------------- | -------- | -------------- | ------------- |
-| MarkDown   | &#x274C;  | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      |
-| Python     | &#x2611;  | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      |
-| Lua        | Limited   | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      |
-| Java       | &#x2611;  | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      |
-| Golang     | &#x2611;  | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      |
-| JavaScript | &#x2611;  | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      |
-| TypeScript | &#x2611;  | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      |
-| C#         | &#x2611;  | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      |
-| C++        | &#x2611;  | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      |
+| Language   | Debugging    | LSP Support | TreeSitter Highlights | Linting  | Format On Save | Auto-Complete |
+| ---------- | ------------ | ----------- | --------------------- | -------- | -------------- | ------------- |
+| MarkDown   | &#x274C;     | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      |
+| Python     | &#x2611;     | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      |
+| Robot      | (_Untested_) | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      |
+| Lua        | Limited      | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      |
+| Java       | &#x2611;     | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      |
+| Golang     | &#x2611;     | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      |
+| JavaScript | &#x2611;     | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      |
+| TypeScript | &#x2611;     | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      |
+| C#         | &#x2611;     | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      |
+| C++        | &#x2611;     | &#x2611;    | &#x2611;              | &#x2611; | &#x2611;       | &#x2611;      |
+
+> **Note**: 'Robot' is considered a proprietary language, explicitly used for automation testing. It still requires an LSP for proper support. There is **_no_** '_neotest_' adapter available.
 
 ## Testing Framework Support: (_via neotest_)
 
 | Framework  | Adapter Support |
 | ---------- | --------------- |
 | Playwright | &#x2611;        |
-| Jest       | &#x274C;        |
+| Jest       | Coming Soon     |
 
 I plan on adding as many useful frameworks as possible.
 

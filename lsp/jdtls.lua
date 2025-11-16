@@ -18,6 +18,7 @@ local project_root_path = vim.fs.root(0, { 'pom.xml', '.git', '.mvn', 'mvnw', 'g
 local workspace_dir_name = vim.fn.fnamemodify(project_root_path, ':t') .. "_workspace"
 local workspace_dir_path = base_path .. "workspaces/" .. workspace_dir_name
 
+-- LSP:
 -- CONFIGURATION: JDTLS LSP CONFIGURATION.
 local configuration = {
   -- name = 'jdtls',
