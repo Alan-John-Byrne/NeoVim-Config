@@ -18,10 +18,10 @@ return {
       LSP = { icon = "🧪", color = "test", alt = { "TEST", "TESTING", "PASSED" } },
       ERROR = { icon = "📈", color = "error", alt = { "PERFORMANCE", "FAILED", "OPTIMIZE" } },
       GOAL = { icon = "🥅", color = "goal" },
-      SECTION = { icon = "✨", color = "question", alt = { "QUESTION", "HEADING", "PART", "BLOCK", "CONFIGURATION" } },
+      SECTION = { icon = "✨", color = "question", alt = { "QUESTION", "HEADING", "BLOCK", "CONFIGURATION" } },
       PLUGIN = { icon = "💫", color = "plugin", alt = { "ANSWER", "EXTENSION" } },
       WARNING = { icon = "⚠", color = "warning", alt = { "DEFINITION", "DEF", "WARN" } },
-      EXAMPLE = { icon = "✍", color = "example", alt = { "EXAMPLES" } },
+      EXAMPLE = { icon = "✍", color = "example", alt = { "EXAMPLES", "PART" } },
       OOO = { icon = "❗", color = "check", alt = { "CHECK", "ADAPTER", "CONSUMER" } },
     },
     colors = {

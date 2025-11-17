@@ -20,7 +20,7 @@ local workspace_dir_path = base_path .. "workspaces/" .. workspace_dir_name
 
 -- LSP:
 -- CONFIGURATION: JDTLS LSP CONFIGURATION.
-local configuration = {
+local jdtls_configuration = {
   -- name = 'jdtls',
   -- The command that starts the language server
   -- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
@@ -150,4 +150,4 @@ local configuration = {
 }
 
 -- OOO: Applying custom configuration.
-vim.lsp.config('jdtls', configuration)
+vim.lsp.config('jdtls', jdtls_configuration)

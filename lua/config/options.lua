@@ -32,8 +32,9 @@ vim.g.maplocalleader = "\\"
 -- starts up. Add any additional options here:
 local opt = vim.opt
 -- INFO: 'opt.shell' points to the bash executable.
-opt.shell = "/bin/bash -il" -- Adding the bash login state
-opt.shellcmdflag = ""
+opt.shell = "/bin/bash" -- currently required as just '/bin/bash' for 'venv-selector.nvim' to function properly.
+opt.shellcmdflag = "-c" -- currently required as just '-c' for 'venv-selector.nvim' to function properly.
+opt.shellquote = ""
 opt.shellxquote = ""
 opt.autowrite = true -- Enable auto write
 -- only set clipboard if not in ssh, to make sure the OSC 52

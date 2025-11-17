@@ -1,4 +1,4 @@
--- OOO: PROGRAMMING LANGUAGE CONFIGURATIONS:
+-- OOO: PROGRAMMING LANGUAGE CONFIGS:
 -- INFO: ALL PLUGINS HERE WORK TOGETHER to provide multiple programming language support including features like
 -- 'hover descriptions', 'debugging support', 'better text highlighting', 'Linting', 'Formatting', and 'Auto-Complete'.
 return {
@@ -8,7 +8,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     event = "VeryLazy",
     dependencies = {
-      -- NOTE: Provides better text object highlighting,and provides many text
+      -- PERFORMANCE: Provides better text object highlighting,and provides many text
       -- object selection tools making life a lot easier and more convenient.
       "nvim-treesitter/nvim-treesitter-textobjects",
     },
@@ -20,7 +20,7 @@ return {
     },
     opts_extend = { "ensure_installed" },
     config = function()
-      -- NOTE: Here you can configure different filetypes by extension and name so that treesitter parses
+      -- TODO: Here you can configure different filetypes by extension and name so that treesitter parses
       -- them correctly for highlighting (done by treesitter itself) and linting + formatting (handled by
       -- the 'nvim-lint' and 'conform.nvim' plugins configured below, respectively).
       vim.filetype.add({
@@ -28,13 +28,13 @@ return {
         filename = {
           ["Jenkinsfile"] = "groovy",
         },
-        -- OOO: Adding support for 'plist' files to just be parsed as XML,
-        -- by treesitter.
+        -- OOO: Adding support for 'plist' files to just be parsed as XML, by treesitter.
+        -- WARN: Required for macOS setups.
         extension = {
           plist = "xml",
         },
       })
-      -- Setting up various highlight configurations depending on filetype.
+      -- OOO: Setting up various highlight configurations depending on filetype:
       local treesitter = require("nvim-treesitter.configs")
       treesitter.setup({
         highlight = { enable = true },
@@ -64,6 +64,7 @@ return {
           "vimdoc",
           "xml",
           "yaml",
+          "robot"
         },
         incremental_selection = {
           enable = true,
@@ -110,7 +111,7 @@ return {
       config = function()
         -- nvim-cmp setup
         local cmp = require('cmp')
-        -- NOTE: Lazy-loading in VSCode snippets for faster auto-completion.
+        -- PERFORMANCE: Lazy-loading in VSCode snippets for faster auto-completion.
         require("luasnip.loaders.from_vscode").lazy_load()
         local luasnip = require('luasnip')
         -- INFO: Custom VSCode Specific highlighting for auto-completion dropdown.
@@ -157,8 +158,8 @@ return {
           window = {
             completion = {
               border = "rounded",
-              -- NOTE: We must tell 'nvim-cmp' to use custom highlight groups
-              -- (via 'winhighlight') instead of the default ones (i.e.: Normal, FloatBorder, CursorLine etc...).
+              -- PERFORMANCE: We must tell 'nvim-cmp' to use custom highlight groups
+              -- (via 'winhighlight') instead of the *default* ones (i.e.: Normal, FloatBorder, CursorLine etc...).
               winhighlight = "Normal:CMPMenu,FloatBorder:CMPMenu,CursorLine:CMPMenuSel",
               col_offset = -3,
               side_padding = 0,
@@ -173,7 +174,7 @@ return {
           formatting = {
             fields = { "kind", "abbr", "menu" },
             format = function(entry, vim_item)
-              -- Use Visual Studio Code Icons Instead,for styling auto-complete dropdown.
+              -- PERFORMANCE: Use Visual Studio Code Icons Instead, for styling auto-complete dropdown.
               if vim.tbl_contains({ 'path' }, entry.source.name) then
                 local icon, hl_group = require('nvim-web-devicons').get_icon(entry:get_completion_item().label)
                 if icon then
@@ -247,12 +248,12 @@ return {
   -- PLUGIN: The 'nvim-lspconfig' plugin simplifies the setup and configuration of built-in
   -- Neovim LSP client support by providing pre-defined configurations for a wide range of language servers.
   {
-    "neovim/nvim-lspconfig", -- Handles LSP configuration.
-    event = "VeryLazy",      -- NOTE: 'VeryLazy' only loads the plugin when needed.
-    -- IMPORTANT: 'VeryLazy' allows package managers (e.g.: lazy.nvim, Mason, etc...) to load the plugin ahead of time,
+    "neovim/nvim-lspconfig", -- NOTE: Handles LSP configurations. *This has been mostly replaced in Neovim v0.11 with the 'vim.lsp.config/enable' apis. But, is still used.
+    event = "VeryLazy",      -- INFO: 'VeryLazy' only loads the plugin when needed.
+    -- PERFORMANCE: 'VeryLazy' allows package managers (e.g.: lazy.nvim, Mason, etc...) to load the plugin ahead of time,
     -- so we can request them later within another plugins config functions. Otherwise we get errors saying a plugin 'doesn't
     -- exist', cause we create a race condition saying we need it to load the plugin before even it's package manager has a chance to load.
-    enabled = true, -- TESTING
+    enabled = true,
     dependencies = {
       -- TODO: Add Package / Plugin Management:
       "williamboman/mason.nvim",           -- Mason (LSP, DAP, Linters, Formatters).
@@ -271,17 +272,24 @@ return {
       "rcarriga/nvim-dap-ui",   -- Debugging UI for nvim-dap.
 
       -- TODO: Setup Other Vital Plugins:
-      "hrsh7th/nvim-cmp",                  -- nvim-cmp (Auto-Completion). INFO: Provides auto-completion support for many programming and markup languages.
+      "hrsh7th/nvim-cmp",                  -- nvim-cmp (Auto-Completion).Provides auto-completion support for many programming and markup languages.
       "theHamsta/nvim-dap-virtual-text",   -- Provides nice variable text when debugging.
       "jbyuki/one-small-step-for-vimkind", -- Debug adapter for 'lua' not provided by Mason package manager!
       "leoluz/nvim-dap-go",                -- Debug adapter for 'go' / 'golang' not provided by Mason package manager!
+
+      -- LSP: Java (JDTLS)
+      -- CONFIGURATION: Plugins Required:
+      -- PLUGIN:(S) 'nvim-jdtls.nvim' extends the capabilities of the built-in LSP support in Neovim, to support Java (which includs debugging).
+      -- NOTE: Enabling the pre-configured '~/.config/nvim/lsp/jdtls.lua' configuration, and attaching it to Java buffers.
+      { 'mfussenegger/nvim-jdtls', enabled = true, dependencies = { 'mfussenegger/nvim-dap' }, }
+
     },
     init = function(plugin)
       -- PERFORMANCE: Add nvim-treesitter queries to the rtp and it's custom query predicates early.
       -- This is needed because a bunch of plugins no longer `require("nvim-treesitter")`, which
-      -- no longer triggers the **nvim-treesitter** module to be loaded in time.
-      -- Luckily, the only things that those plugins need are the custom queries, which we make available
-      -- during startup.
+      -- no longer triggers the **nvim-treesitter** module to be loaded in time. Luckily, the only
+      -- things that those plugins need are the custom queries, which we make available
+      -- *immediately* during startup.
       require("lazy.core.loader").add_to_rtp(plugin)
       require("nvim-treesitter.query_predicates")
     end,
@@ -293,9 +301,12 @@ return {
       -- IMPORTANT: Ensure "~/.local/share/nvim/mason/bin" directory is accessible via the PATH. This is how
       -- 'bridge' plugins can access the plugins you install via the Mason UI, setup immediately below.
 
+      -- SECTION: 4. Setup LSPs Handled *Externally* from Mason, using the new Neovim v0.11 'vim.lsp.config/enable' apis.
+      -- INFO: These configurations can be found here -> "~/.config/nvim/lsp".
+      vim.lsp.enable('robotcode')
+      vim.lsp.enable('jdtls')
 
-
-      -- SECTION: 4. Setup LSPs (Auto-Install + Auto-Config)
+      -- SECTION: 5. Setup LSPs (Auto-Install + Auto-Config) - Handled by Mason automatically.
       -- PLUGIN: The 'mason-lspconfig.nvim' plugin bridges mason.nvim and 'nvim-lspconfig' by automatically configuring
       -- and ensuring installation of LSP servers from the Mason package manager, for use with the 'nvim-lspconfig' plugin.
       require("mason-lspconfig").setup({
@@ -303,7 +314,7 @@ return {
         automatic_enable = true,
       })
 
-      -- INFO: Setting up all installed LSPs.
+      -- OOO: Setting up all installed LSPs.
       local mason_lspconfig_test = require("mason-lspconfig")
       for _, server_name in ipairs(mason_lspconfig_test.get_installed_servers()) do
         -- OOO: Lua_ls LSP setup:
@@ -338,11 +349,11 @@ return {
         else
           vim.lsp.config(server_name, {})
         end
+        -- TODO: You must activate the lsp.
+        vim.lsp.enable(server_name)
       end
 
-
-
-      -- SECTION: 5. Setup Linters & Formatters:
+      -- SECTION: 6. Setup Linters & Formatters:
       -- INFO: Some function as both linters and formatters. (eg: markdownlint)
       -- REMEMBER: Linters & formatters ONLY kick into action when you save a buffer. (*Autocommands are used for this*)
       -- OOO: Linters:
@@ -448,7 +459,7 @@ return {
 
 
 
-      -- SECTION: 6. Setup Debug Adapters (DAP)
+      -- SECTION: 7. Setup Debug Adapters (DAP)
       local language_configuration_utility = require("plugins.language_configurations.utility") -- Helper methods for setup.
       -- PLUGIN:(S)
       -- * The 'nvim-dap' ("dap") plugin enables debugging capabilities in Neovim by providing a client implementation
@@ -462,15 +473,15 @@ return {
         automatic_installation = true,
       })
 
-      -- INFO: JAVA DEBUG ADAPTER CONFIGURATION:
-      -- WARN: HANDLED BY THE NVIM-JDTLS PLUGIN, WITHIN IT'S CONFIGURATION.
+      -- INFO: JAVA DEBUG ADAPTER CONFIG:
+      -- WARN: HANDLED BY THE NVIM-JDTLS PLUGIN, WITHIN IT'S CONFIG.
 
-      -- INFO: GOLANG DEBUG ADAPTER CONFIGURATION:
+      -- INFO: GOLANG DEBUG ADAPTER CONFIG:
       -- PLUGIN: The dap-go plugin configures and integrates Go-specific debugging support for nvim-dap,
       -- simplifying setup and usage of the Delve debugger within Neovim.
       require("dap-go").setup() -- NOTE: Comes bundled with a working adapter configuration.
 
-      -- INFO: LUA DEBUG ADAPTER CONFIGURATION:
+      -- INFO: LUA DEBUG ADAPTER CONFIG:
       -- IMPORTANT: DOES NOT SUPPORT PRINT TO DEBUG REPL WINDOW. USE 'Locals' WINDOW FOR SEEING EVALUATED VALUES OF VARIABLES.
       dap.adapters.nlua = function(callback, conf)
         local adapter = {
@@ -499,7 +510,7 @@ return {
         },
       }
 
-      -- INFO: C++ DEBUG ADAPTER CONFIGURATION:
+      -- INFO: C++ DEBUG ADAPTER CONFIG:
       -- IMPORTANT: MUST DO "g++ -g -o main *yourcppfile*.cpp" when building project. (If only compiling and debugging a single file.)
       -- WARN: The '-g' flag is *SUPER IMPORTANT*. It provides the symbols for the debugger. '-o' will output an executable called 'main.exe'.
       -- REMEMBER: The 'Ninja' build tools MUST be installed on your system, and entered into your system environment variables.
@@ -576,7 +587,7 @@ return {
         },
       }
 
-      -- INFO: Python DEBUG ADAPTER CONFIGURATION:
+      -- INFO: Python DEBUG ADAPTER CONFIG:
       local debugpy_path = language_configuration_utility.get_mason_package_path("debugpy")
       dap.adapters.python = {
         type = "executable",
@@ -599,7 +610,7 @@ return {
         },
       }
 
-      -- INFO: JavaScript & TypeScript DEBUG ADAPTER CONFIGURATION:
+      -- INFO: JavaScript & TypeScript DEBUG ADAPTER CONFIG:
       local vscode_javascript_debug_path = language_configuration_utility.get_mason_package_path(
         "js-debug-adapter") -- NOTE: Also know as "vscode-javascript-debug".
       dap.adapters["pwa-node"] = {
@@ -638,7 +649,7 @@ return {
 
 
 
-      -- SECTION: 7. Setting up the Debug Adapter UI & Listeners for a better debug expierence.
+      -- SECTION: 8. Setting up the Debug Adapter UI & Listeners for a better debug expierence.
       -- PLUGIN: The 'nvim-dap-ui' plugin provides a user interface for the nvim-dap debugging framework,
       -- offering visual elements like scopes, breakpoints, stacks, and watches within Neovim.
       local dapui = require("dapui")
@@ -658,7 +669,7 @@ return {
 
 
 
-      -- SECTION: 8. Setting nice icons for debug breakpoints, and Dap Virtual Text for nice debugging variable value text notes.
+      -- SECTION: 9. Setting nice icons for debug breakpoints, and Dap Virtual Text for nice debugging variable value text notes.
       -- PLUGIN: The 'nvim-dap-virtual-text' plugin displays variable values and execution context as virtual text inline
       -- with your code during debugging sessions with the 'nvim-dap' plugin.
       vim.fn.sign_define(
@@ -706,7 +717,7 @@ return {
 
 
 
-      -- SECTION: 9. Registering 'which-key' keymaps for the Debug Adapter(s), Debug Adapter UI, and Mason Package Manager.
+      -- SECTION: 10. Registering 'which-key' keymaps for the Debug Adapter(s), Debug Adapter UI, and Mason Package Manager.
       -- IMPORTANT: Define keymaps to be registered with 'which-key' using ONLY 'vim.keymap.set'. (ITS THE STANDARD)
       vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "Toggle Breakpoint" })
       vim.keymap.set("n", "<leader>dB", function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end,
@@ -723,19 +734,5 @@ return {
       vim.keymap.set("n", "<leader>de", dapui.eval, { desc = "Evaluate Expression" })
       vim.keymap.set("n", "<leader>cm", "<cmd>Mason<cr>", { desc = "Mason" })
     end,
-  },
-
-
-
-  -- SECTION: 10. Java (JDTLS) Setup.
-  -- PLUGIN: 'nvim-jdtls.nvim' extends the capabilities of the built-in LSP support in Neovim, to support Java.
-  {
-    'mfussenegger/nvim-jdtls',
-    dependencies = { 'mfussenegger/nvim-dap' },
-    enabled = true,
-    config = function()
-      -- NOTE: Enabling the pre-configured '~/.config/nvim/lsp/jdtls.lua' configuraiton, and attaching it to java buffers.
-      vim.lsp.enable('jdtls')
-    end
   },
 }
