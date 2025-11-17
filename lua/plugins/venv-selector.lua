@@ -7,7 +7,7 @@ return {
     { "nvim-telescope/telescope.nvim", branch = "0.1.x", dependencies = { "nvim-lua/plenary.nvim" } },
   },
   keys = {
-    { "<leader>vp", "<cmd>VenvSelect<cr>", desc = "Python Env Select" },
+    { "<leader>v", "<cmd>VenvSelect<cr>", desc = "Python Env Select" },
   },
   opts = {
     search = {

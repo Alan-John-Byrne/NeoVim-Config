@@ -14,7 +14,7 @@ return {
   {
     "folke/noice.nvim",
     enabled = true,
-    dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify", "nvim-telescope/telescope.nvim" },
+    dependencies = { "MunifTanjim/nui.nvim", "linux-cultist/venv-selector.nvim", "rcarriga/nvim-notify", "nvim-telescope/telescope.nvim" }, -- NOTE: 'venv-selector.nvim' must be loaded first.
     init = function()
       vim.opt.lazyredraw = false
     end,
