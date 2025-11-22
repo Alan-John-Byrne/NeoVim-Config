@@ -337,7 +337,14 @@ return {
                   -- recognise the global 'vim' table / variable, we must pass the neovim
                   -- runtime library files into it's workspace library setting, via it's setup function.
                   -- REMEMBER: The 'selene' linter will do most of the linting for lua instead. (Setup below)
-                  library = vim.api.nvim_get_runtime_file("", true)
+                  library = {
+                    vim.api.nvim_get_runtime_file("", true),
+                    -- IMPORTANT: This is a requirement. It allows the language server to see all the contents of 3rd party libraries you go onto add.
+                    vim.env.VIMRUNTIME .. "/lua",
+                    -- INFO: Including 3rd party libraries used by default in Neovim, so the lua_ls language server recognises them.
+                    "${3rd}/luv/library", -- NOTE: This '${3rd}/<library-name>/library' is recognised by the lua_ls language server. Add to the list below if linter ever shows 'unrecognised' warnings.
+                  },
+                  checkThirdParty = false
                 },
                 -- Adjusting "hover over" behaviour for the 'lua_ls' LSP.
                 hover = {
@@ -351,6 +358,12 @@ return {
                     'vim',
                     'require',
                   },
+                },
+                telemetry = {
+                  enable = false
+                },
+                completion = {
+                  callSnippet = "Replace",
                 },
               },
             },
