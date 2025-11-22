@@ -7,7 +7,8 @@ return {
     { "nvim-telescope/telescope.nvim", branch = "0.1.x", dependencies = { "nvim-lua/plenary.nvim" } },
   },
   keys = {
-    { "<leader>v", "<cmd>VenvSelect<cr>", desc = "Python Env Select" },
+    { "<leader>vv", "<cmd>VenvSelect<cr>",                                                                                                                            desc = "Python Env Select" },
+    { "<leader>vi", "<cmd>lua local v=require('venv-selector').venv(); print(v and ('Virtual Environment in Use: ' .. v) or 'No virtual environment selected.')<CR>", desc = "Virtual Environment Used" },
   },
   opts = {
     search = {

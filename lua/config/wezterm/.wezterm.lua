@@ -33,6 +33,9 @@ local wezterm = require('wezterm') -- NOTE: Pull in the WezTerm API.
 -- NOTE: Refer to the configuration options here -> https://wezterm.org/config/keys.html,
 -- and the Lua Reference (API) here -> https://wezterm.org/config/lua/general.html.
 local config = wezterm.config_builder()
+config.set_environment_variables = {
+  WEZTERM_CONFIG_FILE = "/.config/nvim/lua/config/wezterm/.wezterm.lua"
+}
 
 -- SECTION: STEP 2: Apply config preferences: (Some taken from 'props.json' file)
 if props then -- If the options are available use them.

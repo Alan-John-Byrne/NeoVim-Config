@@ -16,6 +16,7 @@ return {
         mode = { "n", "v" },
         { "<leader><tab>", group = "tabs" },
         { "<leader>c", group = "code" },
+        { "<leader>m", group = "HTML/Markdown Preview" },
         { "<leader>d", group = "debug" },
         { "<leader>dp", group = "profiler" },
         { "<leader>f", group = "file/find" },
