@@ -310,7 +310,17 @@ return {
       -- PLUGIN: The 'mason-lspconfig.nvim' plugin bridges mason.nvim and 'nvim-lspconfig' by automatically configuring
       -- and ensuring installation of LSP servers from the Mason package manager, for use with the 'nvim-lspconfig' plugin.
       require("mason-lspconfig").setup({
-        ensure_installed = { "lua_ls", "pyright", "ruff", "vtsls", "clangd", "bashls" }, -- Auto-install these LSPs
+        ensure_installed = {
+          "bashls",
+          "clangd",
+          "jsonls",
+          "lua_ls",
+          "omnisharp",
+          "powershell_es",
+          "pyright",
+          "ruff",
+          "vtsls"
+        }, -- Auto-install these LSPs
         automatic_enable = true,
       })
 
@@ -362,16 +372,23 @@ return {
       -- * The 'mason-nvim-lint' plugin integrates Mason with the nvim-lint plugin, allowing for automatic installation and
       -- management of linters used by nvim-lint.
       require("lint").linters_by_ft = { -- Hook these Linters into Neovim.
-        markdown = { "markdownlint" },
         html = { "htmlhint" },
-        lua = { "selene" },
-        css = { "stylelint" },
-        bash = { "shellcheck" },
+        markdown = { "markdownlint" },
         python = { "ruff" },
+        lua = { "selene" },
+        bash = { "shellcheck" },
+        css = { "stylelint" },
       }
 
       require("mason-nvim-lint").setup({
-        ensure_installed = { "selene", "markdownlint", "htmlhint", "stylelint", "shellcheck", "ruff" }, -- Auto-install these Linters.
+        ensure_installed = {
+          "htmlhint",
+          "markdownlint",
+          "ruff",
+          "selene",
+          "shellcheck",
+          "stylelint"
+        },
         automatic_installation = true,
         quiet_mode = false,
         ignore_install = {}
@@ -397,6 +414,7 @@ return {
         "MD049",
         "MD033",
         "MD029",
+        "MD028"
       } -- NOTE: Please find full set of rules available for 'markdownlint' at:
       --   https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint
 
@@ -432,7 +450,14 @@ return {
       })
 
       require("mason-conform").setup({
-        ensure_installed = { "prettier", "goimports", "beautysh", "ruff" }, -- Auto-install these Formatters.
+        ensure_installed = {
+          "luaformatter",
+          "prettier",
+          "goimports",
+          "beautysh",
+          "ruff",
+          "npm-groovy-lint"
+        },
         automatic_installation = true,
       })
 
