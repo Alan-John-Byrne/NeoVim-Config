@@ -23,7 +23,7 @@ return {
     },
     keys = {
       { "<leader>ms", "<cmd>LivePreview start<CR>", mode = { "n" }, desc = "Start Browser Previewer" },
-      { "<leader>mS", "<cmd>LivePreview stop<CR>",  mode = { "n" }, desc = "Stop Browser Previewer" },
+      { "<leader>mS", "<cmd>LivePreview close<CR>", mode = { "n" }, desc = "Stop Browser Previewer" },
     },
   }
 }
