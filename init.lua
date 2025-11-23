@@ -1,33 +1,55 @@
 -- INFO:(MAC) These lines extend NeoVim's Lua runtime path (rtp = `package.path` and `package.cpath`) to include
--- the LuaRocks tree located at `~/.config/nvim/lua/luarock-modules` directory (yes, we located this within
--- Neovim's configuration file structure). This directory is now the default location (tree root) that plugins
--- will be installed to (configured via `~/.config/luarocks/config.lua`) via the 'luarocks' package manager.
-
--- INFO:(Windows) These lines extend NeoVim's Lua runtime path (rtp = `package.path`) to include
--- the LuaRocks tree located at `%USERPROFILE%\AppData\Local\nvim\lua\luarock-modules` directory (yes, we located
--- this within Neovim's configuration file structure). This directory is now the default location (tree root)
--- that plugins will be installed to (configured via `%USERPROFILE%\AppData\Roaming\luarocks\config.lua`) via
--- the 'luarocks' package manager.
-
+-- the LuaRocks tree located at:
+-- > macOS: `~/.config/nvim/lua/luarock-modules`
+-- > Windows: `%USERPROFILE%\AppData\Local\nvim\lua\luarock-modules`
+-- Yes, we located this directory within Neovim's configuration file structure. This directory now serves as the
+-- default location (tree root) that plugins will be installed to. The 'tree root' being configured via:
+-- > macOS: `~/.config/luarocks/config.lua`
+-- > Windows: `%USERPROFILE%\AppData\Roaming\luarocks\config.lua`
 -- Lua packages are installed here using the `--tree` parameter. This allows Neovim to locate and load Lua modules
 -- (packages / libraries) installed via the LuaRocks package manager.
 -- NOTE: This shared directory can also be added to other Lua environments (like WezTerm - which it has
 -- been added to) so that both programs can reuse the same Lua packages installed via LuaRocks.
 -- IMPORTANT: These lines must be evaluated *before* any `require` statements for external Lua modules.
+-- SECTION: STEP 0: NeoVim Specific Runtime Environment Setup.
+-- TODO: Extend WezTerm's Lua runtime path (rtp = `package.path` [ and also `package.cpath` in the case of using macOS ]) to include...
+-- the LuaRocks-managed `luarock-modules` directory used by Neovim (also included within Neovims own rtp).
+-- This directory is now the default location (tree root) that plugins will be installed to (configured via
+-- `~/.config/luarocks/config.lua`) via the 'luarocks' package manager. Lua packages are installed here using
+-- the `--tree`. So, instead of WezTerms own configuration. It's like Neovim sharing lua packages it uses, with
+-- WezTerm. This is where WezTerm will load external libraries from. Therefore, both programs read from the same
+-- place for external custom lua packages, during their own runtimes.
+if io.open(os.getenv("HOME") .. "/.config/nvim/lua/config/wezterm/utility.lua", "r") then
+  -- OOO: macOS:
+  local home = os.getenv("HOME")
+  local luarocks_modules = home .. "/.config/nvim/lua/luarock-modules"
+  -- PART: 1: Adding luarocks 'Lua' modules.
+  package.path = package.path ..
+      ";" ..
+      luarocks_modules .. "/share/lua/5.4/?.lua" .. ";" .. luarocks_modules .. "/share/lua/5.4/?/init.lua"
+  -- PART: 2: Adding luarocks 'C' modules.
+  package.cpath = package.cpath .. ";" .. luarocks_modules .. "/lib/lua/5.4/?.so"
+elseif io.open(os.getenv("USERPROFILE") .. "/AppData/Local/nvim/lua/config/wezterm/utility.lua", "r") then
+  -- OOO: Windows:
+  local user_profile = os.getenv("USERPROFILE")
+  local luarocks_modules = user_profile .. "/AppData/Local/nvim/lua/luarock-modules"
+  -- PART: 1: Adding luarocks 'Lua' modules.
+  package.path = package.path ..
+      ";" ..
+      luarocks_modules .. "/share/lua/5.1/?.lua" .. ";" .. luarocks_modules .. "/share/lua/5.1/?/?.lua"
+  -- NOTE: Windows does not require 'C' modules.
+end
+-- IMPORTANT: The above steps *MUST* lines must be evaluated *BEFORE* any `require` statements for external Lua modules.
+-- REMEMBER: The '.wezterm.lua' config file is a static lua script loaded only by the WezTerm program's
+-- process during startup (or reloaded on a manual config reload). It is *NOT* a module and
+-- cannot be 'required' by other programs like Neovim. The WezTerm and Neovim applications run
+-- as their own completely separate processes and do not share memory or state — there is no
+-- Inter-Process Communication (IPC). Therefore, changes to WezTerm must be done in its own
+-- environment and reloaded explicitly.
+-- WARN: Any nvim configuration modules (lua modules that you've written within your nvim config) containing any 'vim' related module calls, will result in errors.
+-- As stated, WezTerm & NeoVim don't share the same runtime.
 
---MAC
-local lua_rocks_nvim_wezterm_path = os.getenv("HOME") .. "/.config/nvim/lua/luarock-modules"
-package.path = package.path ..
-    ";" ..
-    lua_rocks_nvim_wezterm_path .. "/share/lua/5.4/?.lua;" .. lua_rocks_nvim_wezterm_path .. "/share/lua/5.4/?/init.lua"
-package.cpath = package.cpath .. ";" .. lua_rocks_nvim_wezterm_path .. "/lib/lua/5.4/?.so"
-
---Windows
-local lua_rocks_nvim_wezterm_path = os.getenv("USERPROFILE") .. "/AppData/Local/nvim/lua/luarock-modules"
-package.path = package.path ..
-    ";" .. lua_rocks_nvim_wezterm_path .. "/share/lua/5.1/?.lua" ..
-    ";" .. lua_rocks_nvim_wezterm_path .. "/share/lua/5.1/?/?.lua"
-
+-- SECTION: STEP 1: Loading essential NeoVim configuration files.
 -- TODO: This section initializes essential configurations for the Neovim setup,
 -- enhancing the workflow for productivity with various plugins.
 require("config.options")    -- Customizes Neovim settings for a better user experience.

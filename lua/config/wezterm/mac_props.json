@@ -6,18 +6,24 @@
   "colors": {
     "foreground": "#ffffff"
   },
-  "default_prog": ["bash", "--login", "-i"],
-  "default_prog": [ "pwsh" ],
+  "default_prog": [
+    "bash",
+    "--login",
+    "-i"
+  ],
   "adjust_window_size_when_changing_font_size": false,
   "launch_menu": [
     {
-      "args": ["top"]
+      "args": [
+        "top"
+      ]
     },
     {
       "label": "bash",
-      "args": ["bash", "-NoLogo"]
-      "label": "PowerShell",
-      "args": ["pwsh", "-NoLogo"]
+      "args": [
+        "bash",
+        "-NoLogo"
+      ]
     }
   ],
   "enable_scroll_bar": true,

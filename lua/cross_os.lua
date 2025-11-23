@@ -3,9 +3,9 @@
 ---@class M
 local M = {}
 
-function M.os_detect()
+function M.detect_os()
   local os_type = vim.uv.os_uname()
-  return os_type
+  return os_type.sysname
 end
 
 return M

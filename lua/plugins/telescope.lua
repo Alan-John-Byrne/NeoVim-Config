@@ -5,13 +5,15 @@ return {
     -- INFO: 'fzf' is a fast, terminal-based fuzzy finder written in Go, usable both in and outside Neovim.
     'nvim-telescope/telescope-fzf-native.nvim', -- Telescope extension that uses fzf's native algorithm for faster sorting
     enabled = true,
-   --MAC 
-    build = 'make',
-    cond = vim.fn.executable("make") == 1 -- NOTE: Ensures 'make' is available to build the native C extension
---WINDOWS
-    build = 'mingw32-make',
-    cond = vim.fn.executable("mingw32-make.exe") ==
-        1 -- NOTE: Ensures 'make' is available to build the native C extension
+    build = require("cross_os").detect_os() == "Darwin" and "make" or "mingw32-make",
+    cond = function() -- NOTE: Ensures 'make' is available to build the native C extension
+      local cross_os = require("cross_os")
+      if cross_os.detect_os() == "Darwin" then
+        return vim.fn.executable("make") == 1
+      else
+        return vim.fn.executable("mingw32-make.exe") == 1
+      end
+    end,
   },
   -- PLUGIN: The 'telescope.nvim' plugin, is a Lua-based fuzzy finder plugin built for Neovim, offering an extensible, UI-rich experience.
   {
