@@ -1,17 +1,33 @@
--- INFO: These lines extend NeoVim's Lua runtime path (rtp = `package.path` and `package.cpath`) to include
+-- INFO:(MAC) These lines extend NeoVim's Lua runtime path (rtp = `package.path` and `package.cpath`) to include
 -- the LuaRocks tree located at `~/.config/nvim/lua/luarock-modules` directory (yes, we located this within
 -- Neovim's configuration file structure). This directory is now the default location (tree root) that plugins
 -- will be installed to (configured via `~/.config/luarocks/config.lua`) via the 'luarocks' package manager.
+
+-- INFO:(Windows) These lines extend NeoVim's Lua runtime path (rtp = `package.path`) to include
+-- the LuaRocks tree located at `%USERPROFILE%\AppData\Local\nvim\lua\luarock-modules` directory (yes, we located
+-- this within Neovim's configuration file structure). This directory is now the default location (tree root)
+-- that plugins will be installed to (configured via `%USERPROFILE%\AppData\Roaming\luarocks\config.lua`) via
+-- the 'luarocks' package manager.
+
 -- Lua packages are installed here using the `--tree` parameter. This allows Neovim to locate and load Lua modules
 -- (packages / libraries) installed via the LuaRocks package manager.
 -- NOTE: This shared directory can also be added to other Lua environments (like WezTerm - which it has
 -- been added to) so that both programs can reuse the same Lua packages installed via LuaRocks.
 -- IMPORTANT: These lines must be evaluated *before* any `require` statements for external Lua modules.
+
+--MAC
 local lua_rocks_nvim_wezterm_path = os.getenv("HOME") .. "/.config/nvim/lua/luarock-modules"
 package.path = package.path ..
     ";" ..
     lua_rocks_nvim_wezterm_path .. "/share/lua/5.4/?.lua;" .. lua_rocks_nvim_wezterm_path .. "/share/lua/5.4/?/init.lua"
 package.cpath = package.cpath .. ";" .. lua_rocks_nvim_wezterm_path .. "/lib/lua/5.4/?.so"
+
+--Windows
+local lua_rocks_nvim_wezterm_path = os.getenv("USERPROFILE") .. "/AppData/Local/nvim/lua/luarock-modules"
+package.path = package.path ..
+    ";" .. lua_rocks_nvim_wezterm_path .. "/share/lua/5.1/?.lua" ..
+    ";" .. lua_rocks_nvim_wezterm_path .. "/share/lua/5.1/?/?.lua"
+
 -- TODO: This section initializes essential configurations for the Neovim setup,
 -- enhancing the workflow for productivity with various plugins.
 require("config.options")    -- Customizes Neovim settings for a better user experience.

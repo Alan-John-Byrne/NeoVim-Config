@@ -1,8 +1,12 @@
 -- PLUGIN: The "neotest" plugin allows for testing via a number of different test frameworks.
 return {
+  -- NOTE: Telescope fuzzy finder is a dependency of neotest.
+  {
+    'nvim-telescope/telescope.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+  },
   { -- INFO: GLOBAL NEOTEST CONFIGURATION.
     "nvim-neotest/neotest",
-    enabled = false,
     dependencies = {
       "nvim-neotest/nvim-nio",
       "nvim-lua/plenary.nvim",

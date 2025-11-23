@@ -1,7 +1,14 @@
--- INFO: Keymaps are automatically loaded on the 'VeryLazy' lazy.nvim event.
+-- INFO: Keymaps are automatically loaded on the VeryLazy event.
 vim.ui.select = nil -- Reset to default
 
--- OOO: Highlight on yank (copy).
+-- XXX: Convenience save and quit all.
+vim.keymap.set("n", "<leader>q", ":wqall<CR>", { desc = "Save and Quit All" })
+
+-- XXX: Set the current working directory to the buffer's directory, and Print the current working directory.
+vim.keymap.set("n", "<leader>\\", ":cd %:p:h<CR>", { desc = "Set to cwd.", noremap = true, silent = true })
+vim.keymap.set("n", "<leader>P", ":pwd<CR>", { desc = "Print cwd.", noremap = true, silent = true })
+
+-- XXX: Highlight on yank (copy).
 local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()
@@ -33,7 +40,25 @@ map({ "n", "x" }, "<Down>", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr =
 map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
 map({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
 
--- OOO: Move Lines
+-- Move to window using the <ctrl> hjkl keys (Normal Mode)
+map("n", "<C-h>", "<C-w>h", { desc = "Go to Left Window", remap = true })
+map("n", "<C-j>", "<C-w>j", { desc = "Go to Lower Window", remap = true })
+map("n", "<C-k>", "<C-w>k", { desc = "Go to Upper Window", remap = true })
+map("n", "<C-l>", "<C-w>l", { desc = "Go to Right Window", remap = true })
+--
+-- Move to window using the <ctrl> hjkl keys (Terminal Mode)
+map("t", "<C-h>", [[<C-\><C-N><C-w>h]], { desc = "Go to Left Window in Terminal", remap = true })
+map("t", "<C-j>", [[<C-\><C-N><C-w>j]], { desc = "Go to Lower Window in Terminal", remap = true })
+map("t", "<C-k>", [[<C-\><C-N><C-w>k]], { desc = "Go to Upper Window in Terminal", remap = true })
+map("t", "<C-l>", [[<C-\><C-N><C-w>l]], { desc = "Go to Right Window in Terminal", remap = true })
+-- INFO: "<Esc>[1;*" maps to an escape key press (hold down) followed by either 'h', 'j', 'k', 'l'
+
+-- Resize window vertically using <CMD> arrow keys. (Terminal Mode Only)
+map("t", "<M-k>", "<cmd>resize +2<cr>", { desc = "Increase Window Height" })
+map("t", "<M-j>", "<cmd>resize -2<cr>", { desc = "Decrease Window Height" })
+-- NOTE: M = Alt (on windows machines).
+
+-- Move Lines
 map("n", "<A-j>", "<cmd>execute 'move .+' . v:count1<cr>==", { desc = "Move Down" })
 map("n", "<A-k>", "<cmd>execute 'move .-' . (v:count1 + 1)<cr>==", { desc = "Move Up" })
 map("i", "<A-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move Down" })

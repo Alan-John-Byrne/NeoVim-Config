@@ -31,10 +31,16 @@ vim.g.maplocalleader = "\\"
 -- NOTE: Options are automatically loaded before the 'lazy.nvim' package manager
 -- starts up. Add any additional options here:
 local opt = vim.opt
+--MAC
 -- INFO: 'opt.shell' points to the bash executable.
 opt.shell = "/bin/bash" -- currently required as just '/bin/bash' for 'venv-selector.nvim' to function properly.
 opt.shellcmdflag = "-c" -- currently required as just '-c' for 'venv-selector.nvim' to function properly.
 opt.shellquote = ""
+--WINDOWS
+-- INFO: 'opt.shell' points to the PowerShell7 executable,
+-- available through your set environment variables, in your ".ps1" profile.
+opt.shell = "pwsh" -- Adding the PowerShell profile terminal configuration:
+opt.shellcmdflag = "-nologo -noprofile -ExecutionPolicy RemoteSigned -command"
 opt.shellxquote = ""
 opt.autowrite = true -- Enable auto write
 -- only set clipboard if not in ssh, to make sure the OSC 52

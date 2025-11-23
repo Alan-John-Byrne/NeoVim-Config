@@ -1,8 +1,83 @@
--- OOO: PROGRAMMING LANGUAGE CONFIGS:
+-- OOO: PROGRAMMING LANGUAGE CONFIGURATIONS:
 -- INFO: ALL PLUGINS HERE WORK TOGETHER to provide multiple programming language support including features like
 -- 'hover descriptions', 'debugging support', 'better text highlighting', 'Linting', 'Formatting', and 'Auto-Complete'.
 return {
-  -- SECTION: 0. Setup Tree-sitter (Language Parsing)
+  -- SECTION: 0. Providing better hover for LSPs.
+  -- PLUGIN: The 'pretty_hover' plugin provides a replacment to the default LSP hover window (vim.lsp.buf.hover).
+  -- With a customizable, visually enhanced floating window using syntax-based highlighting, wrapping, and optional
+  -- borders—all without modifying global highlight groups or LSP handlers. *Very Handy*
+  {
+    "Fildo7525/pretty_hover",
+    config = function()
+      require("pretty_hover").setup({
+        -- NOTE:If you use nvim 0.11.0 or higher, you can choose whether you want to use the new
+        -- multi-lsp support or not. Otherwise this option is ignored.
+        multi_server = true,
+        border = "rounded",
+        wrap = true,
+        max_width = nil,
+        max_height = nil,
+        toggle = false,
+        -- OOO: Tables grouping the detected strings and using the markdown highlighters.
+        header = {
+          detect = { "[\\@]class" },
+          styler = '###',
+        },
+        line = {
+          detect = { "[\\@]brief" },
+          styler = '**',
+        },
+        listing = {
+          detect = { "[\\@]li" },
+          styler = " - ",
+        },
+        references = {
+          detect = { "[\\@]ref", "[\\@]c", "[\\@]name" },
+          styler = { "**", "`" },
+        },
+        group = {
+          detect = {
+            -- NOTE: ["Group name"] = {"detectors"}
+            ["Parameters"] = { "[\\@]param", "[\\@]*param*" },
+            ["Types"] = { "[\\@]tparam" },
+            ["See"] = { "[\\@]see" },
+            ["Return Value"] = { "[\\@]retval" },
+          },
+          styler = "`",
+        },
+        -- OOO: Tables used for cleaner identification of hover segments.
+        code = {
+          start = { "[\\@]code" },
+          ending = { "[\\@]endcode" },
+        },
+        return_statement = {
+          "[\\@]return",
+          "[\\@]*return*",
+        },
+        -- OOO: Highlight groups used in the hover method. Feel free to define your own highlight group.
+        hl = {
+          error = {
+            color = "#DC2626",
+            detect = { "[\\@]error", "[\\@]bug" },
+            line = false, -- INFO: Flag detecting if the whole line should be highlighted.
+          },
+          warning = {
+            color = "#FBBF24",
+            detect = { "[\\@]warning", "[\\@]thread_safety", "[\\@]throw" },
+            line = false,
+          },
+          info = {
+            color = "#2563EB",
+            detect = { "[\\@]remark", "[\\@]note", "[\\@]notes" },
+          },
+          --  INFO: Below, you can set up your own highlight groups.
+        },
+      })
+      -- NOTE: Replacing original 'vim.lsp.buf.hover' keymap with pretty_hover.
+      vim.keymap.set("n", "K", require("pretty_hover").hover, { desc = "Pretty hover" })
+    end
+  },
+  -- SECTION: 1. Setup Tree-sitter (Language Parsing)
   -- PLUGIN: The 'nvim-treesitter' plugin provides better text highlighting, and also serves other core purposes for language support.
   {
     "nvim-treesitter/nvim-treesitter",
@@ -91,10 +166,7 @@ return {
       })
     end
   },
-
-
-
-  -- SECTION: 1. Setting up Auto-Completions.
+  -- SECTION: 2. Setting up Auto-Completions.
   -- PLUGIN:(S)
   -- * The 'luasnip' plugin provides a powerful and extensible snippet engine for Neovim,
   -- allowing users to insert and manage code snippets efficiently using Lua.
@@ -244,7 +316,7 @@ return {
 
 
 
-  -- SECTION: 2. Setting up the 'nvim-lspconfig' plugin, and all it's associated plugins.
+  -- SECTION: 3. Setting up the 'nvim-lspconfig' plugin, and all it's associated plugins.
   -- PLUGIN: The 'nvim-lspconfig' plugin simplifies the setup and configuration of built-in
   -- Neovim LSP client support by providing pre-defined configurations for a wide range of language servers.
   {
@@ -294,19 +366,19 @@ return {
       require("nvim-treesitter.query_predicates")
     end,
     config = function()
-      -- SECTION: 3. Setup Mason (UI-Based Package Manager),
+      -- SECTION: 4. Setup Mason (UI-Based Package Manager),
       -- PLUGIN: The 'mason.nvim' plugin is a Neovim plugin that provides a unified interface for managing external tools
       -- like LSP servers, DAP servers, linters, and formatters by handling their installation and updates.
       require("mason").setup()
       -- IMPORTANT: Ensure "~/.local/share/nvim/mason/bin" directory is accessible via the PATH. This is how
       -- 'bridge' plugins can access the plugins you install via the Mason UI, setup immediately below.
 
-      -- SECTION: 4. Setup LSPs Handled *Externally* from Mason, using the new Neovim v0.11 'vim.lsp.config/enable' apis.
+      -- SECTION: 5. Setup LSPs Handled *Externally* from Mason, using the new Neovim v0.11 'vim.lsp.config/enable' apis.
       -- INFO: These configurations can be found here -> "~/.config/nvim/lsp".
       vim.lsp.enable('robotcode')
       vim.lsp.enable('jdtls')
 
-      -- SECTION: 5. Setup LSPs (Auto-Install + Auto-Config) - Handled by Mason automatically.
+      -- SECTION: 6. Setup LSPs (Auto-Install + Auto-Config) - Handled by Mason automatically.
       -- PLUGIN: The 'mason-lspconfig.nvim' plugin bridges mason.nvim and 'nvim-lspconfig' by automatically configuring
       -- and ensuring installation of LSP servers from the Mason package manager, for use with the 'nvim-lspconfig' plugin.
       require("mason-lspconfig").setup({
@@ -376,7 +448,7 @@ return {
         vim.lsp.enable(server_name)
       end
 
-      -- SECTION: 6. Setup Linters & Formatters:
+      -- SECTION: 7. Setup Linters & Formatters:
       -- INFO: Some function as both linters and formatters. (eg: markdownlint)
       -- REMEMBER: Linters & formatters ONLY kick into action when you save a buffer. (*Autocommands are used for this*)
       -- OOO: Linters:

@@ -1,13 +1,15 @@
 -- Open the Debug menu using 'CTRL+SHIFT L'.
 -- SECTION: STEP 0: Environment Setup - Loading configuration (prop) options.
--- INFO: Extend WezTerm's Lua runtime path (rtp = `package.path` and `package.cpath`) to include
+-- INFO:(MAC) Extend WezTerm's Lua runtime path (rtp = `package.path` and `package.cpath`) to include...
+-- INFO:(WINDOWS) Extend WezTerm's Lua runtime path (rtp = `package.path`) to include...
 -- the LuaRocks-managed `luarock-modules` directory used by Neovim (also included within Neovims own rtp).
 -- This directory is now the default location (tree root) that plugins will be installed to (configured via
 -- `~/.config/luarocks/config.lua`) via the 'luarocks' package manager. Lua packages are installed here using
 -- the `--tree`. So, instead of WezTerms own configuration. It's like Neovim sharing lua packages it uses, with
 -- WezTerm. This is where WezTerm will load external libraries from. Therefore, both programs read from the same
 -- place for external custom lua packages, during their own runtimes.
--- IMPORTANT: These lines must be evaluated *before* any `require` statements for external Lua modules.
+
+-- IMPORTANT: (MAC)These lines must be evaluated *before* any `require` statements for external Lua modules.
 local luarocks_nvim_wezterm_path = os.getenv("HOME") .. "/.config/nvim/lua/luarock-modules"
 package.path = package.path ..
     ";" ..
@@ -22,6 +24,21 @@ package.cpath = package.cpath .. ";" .. luarocks_nvim_wezterm_path .. "/lib/lua/
 -- environment and reloaded explicitly.
 -- NOTE: Adding utility module to prevent clutter. (Stored within the Neovim config files)
 local nvim_wezterm_utility_path = os.getenv("HOME") .. "/.config/nvim/lua/config/wezterm/utility.lua"
+
+-- IMPORTANT: (WINDOWS)These lines must be evaluated *BEFORE* any `require` statements for external Lua modules.
+local lua_rocks_nvim_wezterm_path = os.getenv("USERPROFILE") .. "/AppData/Local/nvim/lua/luarock-modules"
+package.path = package.path ..
+    ";" .. lua_rocks_nvim_wezterm_path .. "/share/lua/5.1/?.lua" ..
+    ";" .. lua_rocks_nvim_wezterm_path .. "/share/lua/5.1/?/?.lua"
+-- REMEMBER: The '.wezterm.lua' config file is a static lua script loaded only by the
+-- WezTerm program's process, during startup (or a manual config reload). It is *NOT* a module and
+-- cannot be 'required' by other programs like Neovim. The WezTerm and Neovim applications run
+-- as their own completely separate processes and do not share memory or state — there is no
+-- Inter-Process Communication (IPC). Therefore, changes to WezTerm must be done in its own
+-- environment and reloaded explicitly.
+-- NOTE: Adding utility module to prevent clutter (stored within the Neovim config files).
+local nvim_wezterm_utility_path = os.getenv("USERPROFILE") .. "/AppData/Local/nvim/lua/config/wezterm/utility.lua"
+
 package.path = package.path .. ";" .. nvim_wezterm_utility_path
 local props = require("utility").load_wezterm_config_props()
 
@@ -33,9 +50,6 @@ local wezterm = require('wezterm') -- NOTE: Pull in the WezTerm API.
 -- NOTE: Refer to the configuration options here -> https://wezterm.org/config/keys.html,
 -- and the Lua Reference (API) here -> https://wezterm.org/config/lua/general.html.
 local config = wezterm.config_builder()
-config.set_environment_variables = {
-  WEZTERM_CONFIG_FILE = "/.config/nvim/lua/config/wezterm/.wezterm.lua"
-}
 
 -- SECTION: STEP 2: Apply config preferences: (Some taken from 'props.json' file)
 if props then -- If the options are available use them.
@@ -53,11 +67,10 @@ if props then -- If the options are available use them.
   -- NOTE: Right click any tab in the top bar to display the 'launch_menu'.
   -- The 'launch_menu' shows you the current processes / tabs running.
   config.launch_menu = props.launch_menu
+  config.default_prog = props.default_prog
   config.window_background_opacity = props.window_background_opacity
   config.macos_window_background_blur = props.macos_window_background_blur
   config.font_size = props.font_size
-  -- INFO: Must be an interative shell login.
-  config.default_prog = props.default_prog
 
   -- SECTION: STEP 3: Setting keybindings.
   -- INFO: 'Option' maps to 'ALT' on MAC.
@@ -81,30 +94,46 @@ if props then -- If the options are available use them.
     },
     {
       key = "L",
+      --MAC
       mods = "CMD",
+      --WINDOWS
+      mods = "CTRL",
       action = wezterm.action.ShowDebugOverlay -- Used for checking Wezterm Debug output.
     },
     {
       key = "-",
+      --MAC
       mods = "CMD",
+      --WINDOWS
+      mods = "CTRL",
       action = wezterm.action.DecreaseFontSize, -- Decrease Font Size.
     },
     {
       key = "=",
+      --MAC
       mods = "CMD",
+      --WINDOWS
+      mods = "CTRL",
       action = wezterm.action.IncreaseFontSize, -- Increase Font Size.
     },
     {
       key = "t",
+      --MAC
       mods = "CMD|ALT",
+      --WINDOWS
+      mods = "CTRL|ALT",
       action = wezterm.action.SpawnTab("DefaultDomain"), -- Create a new tab.
     },
     {
       key = "a",
+      --MAC
       mods = "CMD",
+      --WINDOWS
+      mods = "ALT",
       action = wezterm.action.CloseCurrentTab({ confirm = true }), -- Close the current tab.
     },
     {
+      --MAC
       key = "]",
       mods = "CMD|ALT",
       action = wezterm.action.ActivateTabRelative(1), -- Move to the right tab.
@@ -113,6 +142,14 @@ if props then -- If the options are available use them.
       key = "[",
       mods = "CMD|ALT",
       action = wezterm.action.ActivateTabRelative(-1), -- Move to the left tab.
+      --WINDOWS
+      mods = "CTRL|ALT",
+      action = wezterm.action.ActivateTabRelative(-1), -- Move to the right tab.
+    },
+    {
+      key = "[",
+      mods = "CTRL|ALT",
+      action = wezterm.action.ActivateTabRelative(1), -- Move to the left tab.
     },
     {
       key = "h",
@@ -126,52 +163,82 @@ if props then -- If the options are available use them.
     },
     {
       key = "h",
+      --MAC
       mods = "CMD|ALT",
+      --WINDOWS
+      mods = "CTRL|ALT",
       action = wezterm.action.ActivatePaneDirection("Left") -- Move to the left Pane.
     },
     {
       key = "l",
+      --MAC
       mods = "CMD|ALT",
+      --WINDOWS
+      mods = "CTRL|ALT",
       action = wezterm.action.ActivatePaneDirection("Right") -- Move to the right Pane.
     },
     {
       key = "j",
+      --MAC
       mods = "CMD|ALT",
+      --WINDOWS
+      mods = "CTRL|ALT",
       action = wezterm.action.ActivatePaneDirection("Down") -- Move to the Pane below.
     },
     {
       key = "k",
+      --MAC
       mods = "CMD|ALT",
+      --WINDOWS
+      mods = "CTRL|ALT",
       action = wezterm.action.ActivatePaneDirection("Up") -- Move to the Pane above.
     },
     {
       key = "i",
+      --MAC
       mods = "CMD|ALT",
+      --WINDOWS
+      mods = "CTRL|ALT",
       action = wezterm.action.TogglePaneZoomState -- Temporarily set the pane to fill the entire window.
     },
     {
       key = "LeftArrow",
+      --MAC
       mods = "CMD|ALT",
+      --WINDOWS
+      mods = "CTRL|ALT",
       action = wezterm.action.AdjustPaneSize({ "Left", 3 }) -- Adjust Pane to the Left.
     },
     {
       key = "RightArrow",
+      --MAC
       mods = "CMD|ALT",
+      --WINDOWS
+      mods = "CTRL|ALT",
       action = wezterm.action.AdjustPaneSize({ "Right", 3 }) -- Adjust Pane to the Right.
     },
     {
       key = "DownArrow",
+      --MAC
       mods = "CMD|ALT",
+      --WINDOWS
+      mods = "CTRL|ALT",
       action = wezterm.action.AdjustPaneSize({ "Down", 3 }) -- Adjust Pane Downward.
     },
     {
       key = "UpArrow",
+      --MAC
       mods = "CMD|ALT",
+      --WINDOWS
+      mods = "CTRL|ALT",
       action = wezterm.action.AdjustPaneSize({ "Up", 4 }) -- Adjust Pane Upward.
     },
     {
       key = 'o',
+      --MAC
       mods = 'CMD',
+      --WINDOWS
+      mods = 'ALT',
       action = wezterm.action_callback(function(window, _) -- Increase opacity
         local overrides = window:get_config_overrides() or {}
         local current_opacity = overrides.window_background_opacity or config.window_background_opacity
@@ -181,7 +248,10 @@ if props then -- If the options are available use them.
     },
     {
       key = 'i',
+      --MAC
       mods = 'CMD',
+      --WINDOWS
+      mods = 'ALT',
       action = wezterm.action_callback(function(window, _) -- Decrease opacity
         local overrides = window:get_config_overrides() or {}
         local current_opacity = overrides.window_background_opacity or config.window_background_opacity
@@ -190,6 +260,7 @@ if props then -- If the options are available use them.
       end),
     },
 
+      --MAC
     -- SECTION: macOS remappings for the CMD key. (Required when working on Mac)
     -- OOO: Keybind for saving using 'CMD':
     { key = "s", mods = "CMD",      action = wezterm.action.SendString("@s") },
