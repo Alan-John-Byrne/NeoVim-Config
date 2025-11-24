@@ -105,8 +105,10 @@ The adapter almost functions like a "_child_" `Node.js` process. It being ran be
 | <p align="center"><img src=".images/lazy_logo.png" alt="Lazy Logo" width="130" height="130"></p>                                |
 | <p align="center">**Preview**</p><p align="center"><img src=".images/dashboard.png" alt="Preview" width="800" height="400"></p> |
 
-> [!NOTE]
-> This is a custom configuration project meant to mimick typical IDEs, using `Bash`/`WezTerm`. It's a work in progress. _I'm hoping to cover Unix system settings at some point._
+<div style="padding:1rem 1rem; border:1px solid #88C9DB;  border-radius:1rem; margin:1rem 0;">
+<strong style="color: #88C9DB">&#9432; Note:</strong><br>  
+ This is a custom configuration project meant to mimick typical IDEs, using `Bash`/`WezTerm`. It's a work in progress. _I'm hoping to cover Unix system settings at some point.
+</div>
 
 All can be setup in the following steps:
 
@@ -114,8 +116,11 @@ All can be setup in the following steps:
 2. Clone or fork this repository to make it your own, into your '`~/Users/<your-username>/.config/`' directory. (\*Overwrite the 'nvim' directory if it exists already after following step **1**)
 3. Install the following software and configure the following environment variables _exactly_ as shown in order to complete the setup.
 
-> [!TIP]
-> This setup does require some knowledge of bash profiles for correctly setting environment variables.
+<div style="padding:1rem 1rem; border:1px solid #C6F637;  border-radius:1rem; margin:1rem 0;">
+<img src=".images/light-bulb.png" style="width: 1rem; height: 1.2rem;" alt="report">
+<strong style="color: #C6F637"> Tip:</strong><br>  
+ This setup does require some knowledge of bash profiles for correctly setting environment variables.
+</div>
 
 ### Environment variables (Profile Specific):
 
@@ -133,8 +138,10 @@ please read them again in case of any changes being made to these dependencies.
 | `CMAKE_BUILD_TYPE`              | Specifies build type for CMake (e.g., Debug/Release).     | Change this between '_Debug_' or '_Release_' depending on whether or not you want to include debug symbols for debugging using `nvim-dap` in `C++` projects.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | `CMAKE_BUILD_GENERATOR`         | Specifies the generator to be used for the build process. | Ninja is one build generator that is compatible with neovim.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 
-> [!NOTE]
-> '**CMAKE_BUILD_GENERATOR**' should only be specified within any '_`CMakeLists.txt`_' files you have within your `C++` projects. In case you're using other IDEs like Visual Studio too.
+<div style="padding:1rem 1rem; border:1px solid #88C9DB;  border-radius:1rem; margin:1rem 0;">
+<strong style="color: #88C9DB">&#9432; Note:</strong><br>  
+ 'CMAKE_BUILD_GENERATOR' should only be specified within any 'CMakeLists.txt' files you have within your 'C++' projects. In case you're using other IDEs like Visual Studio too.
+</div>
 
 ### Global environment variables:
 
@@ -159,8 +166,10 @@ processes launched by _`launchd`_ in the caller's context. Meaning when an appli
 _`Finder`_ or _`launchd`_, no shell is involved, but that variable's value is picked up by **ALL** applications
 including graphical applications started via the `Dock` or `Spotlight`.
 
-> [!WARNING]
-> This assumes that you are using the `bash shell` and **NOT** the `z shell`.
+<div style="padding:1rem 1rem; border:1px solid #A3711A;  border-radius:1rem; margin:1rem 0;">
+<strong style="color: #A3711A">&#9888; Warning:</strong><br>
+ This assumes that you are using the 'bash shell' and NOT the 'z shell'.
+</div>
 
 It's important to realize that these changes are not preserved across login sessions - if you want them to last
 you require a mechanism for re-setting them every session.
@@ -188,28 +197,33 @@ Name it something meaningful, using reverse DNS notation:
 com.user.wezterm.env.plist
 ```
 
-> [!NOTE]
-> We use the `.plist` extension.
+<div style="padding:1rem 1rem; border:1px solid #88C9DB;  border-radius:1rem; margin:1rem 0;">
+<strong style="color: #88C9DB">&#9432; Note:</strong><br>  
+ We use the `.plist` extension.
+</div>
 
 Then, we populate it with the following:
 
 | <img src=".images/Setting WEZTERM_CONFIG_FILE.png" alt="``WezTerm`` Logo" width="780" height="320"> |
 | --------------------------------------------------------------------------------------------------- |
 
-> [!CAUTION]
-> It's important that these variables are set correctly so `WezTerm` can see it's configuration
-> and use any custom preferences you've set within your `.wezterm.lua` config file.
+<div style="padding:1rem 1rem; border:1px solid #D43535;  border-radius:1rem; margin:1rem 0;">
+<img src=".images/stop.png" style="width: 1rem; height: 1rem;" alt="report">
+<strong style="color: #D43535"> Caution:</strong><br>
+ It's important that these variables are set correctly so 'WezTerm' can see it's configuration
+ and use any custom preferences you've set within your '.wezterm.lua' config file.
+</div>
 
 This is a property list containing instructions for _`launchd`_ (**macOS's service manager**). It defines a '_LaunchAgent_' that sets a persistent
 environment variable for the user's session using the _`launchctl setenv`_ command.
 
-> [!NOTE]
-> An agent like this runs when the user logs in, allowing the variable to be globally available to any GUI application launched during the session. So, after setting and saving this `.plist` agent file, you **MUST APPLY** it by:
->
-> - **_1st_**: Logging out of your system.
-> - **_2nd_**: Logging back into your system.
->
-> Only then will you see the configuration file be picked up by the `WezTerm` Terminal Emulator.
+<div style="padding:1rem 1rem; border:1px solid #88C9DB;  border-radius:1rem; margin:1rem 0;">
+<strong style="color: #88C9DB">&#9432; Note:</strong><br>  
+An agent like this runs when the user logs in, allowing the variable to be globally available to any GUI application launched during the session. So, after setting and saving this `.plist` agent file, you **MUST APPLY** it by:
+- 1st: Logging out of your system.
+- 2nd: Logging back into your system.
+Only then will you see the configuration file be picked up by the `WezTerm` Terminal Emulator.
+</div>
 
 ### **Luarocks modules / rocks (_packages/libraries_) support:**
 
@@ -236,8 +250,10 @@ _Steps to configure:_
 | <img src=".images/luarocks_config.png" alt="``WezTerm`` Logo" width="850" height="300"> |
 | --------------------------------------------------------------------------------------- |
 
-> [!NOTE]
-> This path should be later added to the `runtimepath` (_`rtp`_) for both your Neovim and `WezTerm` application instances, so both can look into this directory to be able to `require` modules installed via luarocks.
+<div style="padding:1rem 1rem; border:1px solid #88C9DB;  border-radius:1rem; margin:1rem 0;">
+<strong style="color: #88C9DB">&#9432; Note:</strong><br>  
+ This path should be later added to the `runtimepath` (_`rtp`_) for both your Neovim and `WezTerm` application instances, so both can look into this directory to be able to `require` modules installed via luarocks.
+</div>
 
 5. Point the luarocks package manager to it's intended configuration file, by setting the `$LUAROCKS_CONFIG` environment variable within either your `.bash_profile` or `.bashrc`:
 
@@ -246,8 +262,10 @@ _Steps to configure:_
 
 That's it, you should now be able to require modules both within a Neovim or `WezTerm` application runtime context.
 
-> [!WARNING]
-> When using the `luarocks install` command, you **MUST** use the `--tree` parameter to specify the name of the root you wish to access, in order to install the plugin there. '`system`' is the default and is considered system wide, and is handled by homebrew.
+<div style="padding:1rem 1rem; border:1px solid #A3711A;  border-radius:1rem; margin:1rem 0;">
+<strong style="color: #A3711A">&#9888; Warning:</strong><br>
+ When using the 'luarocks install' command, you MUST use the '--tree' parameter to specify the name of the root you wish to access, in order to install the plugin there. 'system' is the default and is considered system wide, and is handled by homebrew.
+</div>
 
 ### **Binaries to add to _`$PATH`_:**
 
@@ -292,23 +310,30 @@ a profile instead of global table? To keep your global environment variables tab
 | <p align="center"><img src=".images/lazy_logo.png" alt="``WezTerm`` Logo" width="100" height="70"></p>                          |
 | <p align="center">**Preview**</p><p align="center"><img src=".images/dashboard.png" alt="Preview" width="800" height="400"></p> |
 
-> [!NOTE]
-> This is a custom configuration project meant to mimick typical IDEs, using `PowerShell7` & `WezTerm`.
+<div style="padding:1rem 1rem; border:1px solid #88C9DB;  border-radius:1rem; margin:1rem 0;">
+<strong style="color: #88C9DB">&#9432; Note:</strong><br>  
+ This is a custom configuration project meant to mimick typical IDEs, using 'PowerShell7' & 'WezTerm'.
+</div>
 
 All can be setup in the following steps:
 
 1. Use a windows package manager of your choice (_i.e.: `winget` or `chocolatey`_) to install NeoVim onto your system.
 2. Clone or fork this repository to make it your own, into your _`C:\Users\<your-username>\AppData\Local`_ directory.
 
-   > [!Tip]
-   > Overwrite the `nvim` directory if it exists already after following step **\*1**.\*
+<div style="padding:1rem 1rem; border:1px solid #C6F637;  border-radius:1rem; margin:1rem 0;">
+<img src=".images/light-bulb.png" style="width: 1rem; height: 1.2rem;" alt="report">
+<strong style="color: #C6F637"> Tip:</strong><br>  
+    Overwrite the 'nvim' directory if it exists already after following step 1.
+</div>
 
-3. Install the following software, and configure the following environment variables _exactly_ as is to complete the setup.
+3. Install the following software, and configure the following environment variables exactly as is to complete the setup.
 
-> [!NOTE]
-> This setup does require some knowledge of powershell profiles for correctly setting environment variables
-> (_used during open powershell sessions_), _**OR**_ \_you could just set them within the global environment table
-> on windows.
+<div style="padding:1rem 1rem; border:1px solid #88C9DB;  border-radius:1rem; margin:1rem 0;">
+<strong style="color: #88C9DB">&#9432; Note:</strong><br>  
+ This setup does require some knowledge of powershell profiles for correctly setting environment variables
+ (used during open powershell sessions), OR you could just set them within the global environment table
+ on windows.
+</div>
 
 ### Environment variables (_Profile Specific_):
 
@@ -326,8 +351,10 @@ please read them again in case of any changes being made to these dependencies.
 | `$env:CMAKE_BUILD_TYPE`              | Specifies build type for CMake (e.g., Debug/Release).     | Change this between 'Debug' or 'Release' depending on whether or not you want to include debug symbols for debugging using `nvim-dap` in `C++` projects.    |
 | `$env:CMAKE_BUILD_GENERATOR`         | Specifies the generator to be used for the build process. | Ninja is one build generator that is compatible with neovim.                                                                                                |
 
-> [!NOTE]
-> '**CMAKE_BUILD_GENERATOR**' should only be specified within any '_`CMakeLists.txt`_' files you have within your `C++` projects. In case you're using other IDEs like Visual Studio too.
+<div style="padding:1rem 1rem; border:1px solid #88C9DB;  border-radius:1rem; margin:1rem 0;">
+<strong style="color: #88C9DB">&#9432; Note:</strong><br>  
+ 'CMAKE_BUILD_GENERATOR' should only be specified within any 'CMakeLists.txt' files you have within your 'C++' projects. In case you're using other IDEs like Visual Studio too.
+</div>
 
 ### Global environment variables:
 
@@ -339,9 +366,11 @@ using the `WezTerm` Multiplexer (**MUX**), it will NOT be able to see the variab
 | `$env:WEZTERM_CONFIG_FILE` | Path to `.wezterm.lua` config file (seperate to `$PATH`). | The `wezterm.exe` process must be able to access its configuration file before it initializes. Since `WezTerm` is responsible for launching the shell or terminal program specified in `config.default_prog` and `config.launch_menu`, the configuration needs to be available globally. Not just within a shell profile like `profile.ps1`. If the `$WEZTERM_CONFIG_FILE` variable is only set in a shell profile, it won't be recognised when `WezTerm` starts, as the shell itself hasn't been launched yet. |
 | `path\to\pwsh.exe`         | Path to `pwsh.exe` (included in `$PATH`).                 | Required for `WezTerm` terminal emulator to properly execute `PowerShell 7` commands and scripts.                                                                                                                                                                                                                                                                                                                                                                                                               |
 
-> [!NOTE]
-> It's important that these variables are set correctly and in the right way so `WezTerm`
-> can see it's configuration and use any custom preferences you've set within your `.wezterm.lua` config file.
+<div style="padding:1rem 1rem; border:1px solid #88C9DB;  border-radius:1rem; margin:1rem 0;">
+<strong style="color: #88C9DB">&#9432; Note:</strong><br>  
+ It's important that these variables are set correctly and in the right way so 'WezTerm'
+ can see it's configuration and use any custom preferences you've set within your '.wezterm.lua' config file.
+</div>
 
 ### **Luarocks modules / rocks (_packages/libraries_) support:**
 
@@ -361,10 +390,12 @@ _**Steps to configure:**_
 
 1. Download the lua package via chocolatey (_this will **ALSO** include luarocks_).
 
-   > [!Note]
-   > Chocolatey installs a windows compatible version of lua (v5.1), and luarocks.
-   > A `luarocks` folder will be created within the `ProgramData` directory in your `C:\` drive.
-   > LuaRocks uses this directory as part of it's runtime configuration.
+<div style="padding:1rem 1rem; border:1px solid #88C9DB;  border-radius:1rem; margin:1rem 0;">
+<strong style="color: #88C9DB">&#9432; Note:</strong><br>  
+ Chocolatey installs a windows compatible version of lua (v5.1), and luarocks.
+ A 'luarocks' folder will be created within the 'ProgramData' directory in your 'C:\' drive.
+ LuaRocks uses this directory as part of it's runtime configuration.
+</div>
 
 2. Create a file called `config.lua` file within that `luarocks` directory.
 3. Type the following snippet into that `config.lua` file:
@@ -373,8 +404,10 @@ _**Steps to configure:**_
 <img src=".images/luarocks_config.png" alt="luarocks configuration" width="850" height="260">
 </p>
 
-> [!Note]
-> This path should be later added to the `runtimepath` (_`rtp`_) for both your Neovim and `WezTerm` application instances, so both can look into this directory to be able to '_require_' modules installed via luarocks.
+<div style="padding:1rem 1rem; border:1px solid #88C9DB;  border-radius:1rem; margin:1rem 0;">
+<strong style="color: #88C9DB">&#9432; Note:</strong><br>  
+ This path should be later added to the 'runtimepath' ('rtp') for both your Neovim and 'WezTerm' application instances, so both can look into this directory to be able to 'require' modules installed via luarocks.
+</div>
 
 4. Point the `luarocks` package manager to it's intended configuration file, by setting the `$env:LUAROCKS_CONFIG` environment variable within your `powershell` profile.
 
@@ -384,8 +417,10 @@ _**Steps to configure:**_
 
 That's it, you should now be able to require modules both within a Neovim or `WezTerm` application runtime context.
 
-> [!NOTE]
-> When using the `luarocks install` command, you **MUST** use the `--tree` parameter to specify the name of the root you wish to access, in order to install the plugin there. `system` is the default, and is considered '_system-wide_', and is handled by `chocolatey`.
+<div style="padding:1rem 1rem; border:1px solid #88C9DB;  border-radius:1rem; margin:1rem 0;">
+<strong style="color: #88C9DB">&#9432; Note:</strong><br>  
+When using the 'luarocks install' command, you MUST use the '--tree' parameter to specify the name of the root you wish to access, in order to install the plugin there. 'system' is the default, and is considered 'system-wide', and is handled by 'chocolatey'.
+</div>
 
 ### **Executables to add to "_$PATH_":**
 
