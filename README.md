@@ -105,10 +105,7 @@ The adapter almost functions like a "_child_" `Node.js` process. It being ran be
 | <p align="center"><img src=".images/lazy_logo.png" alt="Lazy Logo" width="130" height="130"></p>                                |
 | <p align="center">**Preview**</p><p align="center"><img src=".images/dashboard.png" alt="Preview" width="800" height="400"></p> |
 
-<div style="padding:1rem 1rem; border:1px solid #88C9DB;  border-radius:1rem; margin:1rem 0;">
-<strong style="color: #88C9DB">&#9432; Note:</strong><br>  
- This is a custom configuration project meant to mimick typical IDEs, using `Bash`/`WezTerm`. It's a work in progress. _I'm hoping to cover Unix system settings at some point.
-</div>
+<img src=".images/info.png" style="width: 1.25rem; height: 1.25rem;" alt="info"> _Note_: This is a custom configuration project meant to mimick typical IDEs, using `Bash`/`WezTerm`. It's a work in progress. I'm hoping to cover Unix system settings at some point.
 
 All can be setup in the following steps:
 
@@ -116,11 +113,7 @@ All can be setup in the following steps:
 2. Clone or fork this repository to make it your own, into your '`~/Users/<your-username>/.config/`' directory. (\*Overwrite the 'nvim' directory if it exists already after following step **1**)
 3. Install the following software and configure the following environment variables _exactly_ as shown in order to complete the setup.
 
-<div style="padding:1rem 1rem; border:1px solid #C6F637;  border-radius:1rem; margin:1rem 0;">
-<img src=".images/light-bulb.png" style="width: 1rem; height: 1.2rem;" alt="report">
-<strong style="color: #C6F637"> Tip:</strong><br>  
- This setup does require some knowledge of bash profiles for correctly setting environment variables.
-</div>
+<img src=".images/light-bulb.png" style="width: 1rem; height: 1.2rem;" alt="report"> _Tip_: This setup does require some knowledge of bash profiles for correctly setting environment variables.
 
 ### Environment variables (Profile Specific):
 
@@ -132,16 +125,13 @@ please read them again in case of any changes being made to these dependencies.
 
 | Variable                        | Description                                               | Why?                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | ------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `JAVA_HOME`                     | Path to Java installation directory.                      | Java 21 required as '_JAVA_HOME_' for **nvim-jdtls** (_the native eclipse LSP for Java_) to function. This variable points to the `Java 21 JDK` itself, providing your **_compatible_** Java projects with hover documentation and linting.<br><br> **&#9432;** Whilst the actual '_nvim-jdtls_' LSP requires _`Java 21 JDK`_ to be set in the _`$JAVA_HOME`_ environment variable, at either the global system or shell session specific level. The build version and build type (_i.e.: the type of build system used to compile your projects code_) of your Java projects (_may that be Maven or Gradle_) will dictate the maximum version of the java runtime, supported by the LSP. Otherwise, this LSP will **NOT** work correctly. <br> <br>_See below compatibility list for details_: <br> -> **`Maven 3.9.X`**: `Java 8` to `Java 17 LTS`. <br> -> **`Maven 4.X`**: `Java 17+`.<br> -> **`Gradle`**: `Java 17` to `Java 25`                  |
+| `JAVA_HOME`                     | Path to Java installation directory.                      | Java 21 required as '_JAVA_HOME_' for **nvim-jdtls** (_the native eclipse LSP for Java_) to function. This variable points to the `Java 21 JDK` itself, providing your **_compatible_** Java projects with hover documentation and linting.<br><br> **&#9432;** Whilst the actual '_nvim-jdtls_' LSP requires _`Java 21 JDK`_ to be set in the _`$JAVA_HOME`_ environment variable, at either the global system or shell session specific level. The build version and build type (_i.e.: the type of build system used to compile your projects code_) of your Java projects (_may that be `Maven` or `Gradle`_) will dictate the maximum version of the java runtime, supported by the LSP. Otherwise, this LSP will **NOT** work correctly. <br> <br>_See below compatibility list for details_: <br> -> **`Maven 3.9.X`**: `Java 8` to `Java 17 LTS`. <br> -> **`Maven 4.X`**: `Java 17+`.<br> -> **`Gradle`**: `Java 17` to `Java 25`              |
 | `DOTNET_ROOT`                   | .NET SDK root directory.                                  | The '_.NET6.0 SDK / Runtime_' is required for the OmniSharp LSP to be supported in NeoVim. <br><br> You must set _`$DOTNET_ROOT`_ within your _`~/.bash_profile/`_, so the Omnisharp LSP (within NeoVim - _you install via the Mason Package manager_) can access and use the appropriate runtime (`.Net6.0`), so it can work properly. <br><br> Mason-installed binaries only need to be available in Neovim's _`$PATH`_ environment variable (_not runtimepath_) so that Neovim can locate and execute them (_i.e.: the Omnisharp LSP_). Once launched, these binaries may rely on external dependencies — such as the `.NET 6.0` runtime in OmniSharp’s case — which must be discoverable via environment variables (_i.e.: `$DOTNET_ROOT`_).<br><br> This LSP supports projects written in more up-to-date SDK versions, which can be installed via this tap using homebrew: <br><br> _https:\/\/github.com\/isen-ng\/homebrew-dotnet-sdk-versions_ |
 | `CMAKE_EXPORT_COMPILE_COMMANDS` | Specifies default CMake generator.                        | We need to tell the 'Ninja' generator to create instructions for the 'clangd' LSP. It details how `C++` projects are structured.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | `CMAKE_BUILD_TYPE`              | Specifies build type for CMake (e.g., Debug/Release).     | Change this between '_Debug_' or '_Release_' depending on whether or not you want to include debug symbols for debugging using `nvim-dap` in `C++` projects.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | `CMAKE_BUILD_GENERATOR`         | Specifies the generator to be used for the build process. | Ninja is one build generator that is compatible with neovim.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 
-<div style="padding:1rem 1rem; border:1px solid #88C9DB;  border-radius:1rem; margin:1rem 0;">
-<strong style="color: #88C9DB">&#9432; Note:</strong><br>  
- 'CMAKE_BUILD_GENERATOR' should only be specified within any 'CMakeLists.txt' files you have within your 'C++' projects. In case you're using other IDEs like Visual Studio too.
-</div>
+<img src=".images/info.png" style="width: 1.25rem; height: 1.25rem;" alt="info"> _Note_: `CMAKE_BUILD_GENERATOR` should only be specified within any `CMakeLists.txt` files you have within your `C++` projects. In case you're using other IDEs like Visual Studio too.
 
 ### Global environment variables:
 
@@ -166,10 +156,7 @@ processes launched by _`launchd`_ in the caller's context. Meaning when an appli
 _`Finder`_ or _`launchd`_, no shell is involved, but that variable's value is picked up by **ALL** applications
 including graphical applications started via the `Dock` or `Spotlight`.
 
-<div style="padding:1rem 1rem; border:1px solid #A3711A;  border-radius:1rem; margin:1rem 0;">
-<strong style="color: #A3711A">&#9888; Warning:</strong><br>
- This assumes that you are using the 'bash shell' and NOT the 'z shell'.
-</div>
+<img src=".images/alert.png" style="width: 1.25rem; height: 1rem;" alt="warning"> _Warning_: This assumes that you are using the 'bash shell' and NOT the 'z shell'.
 
 It's important to realize that these changes are not preserved across login sessions - if you want them to last
 you require a mechanism for re-setting them every session.
@@ -197,33 +184,24 @@ Name it something meaningful, using reverse DNS notation:
 com.user.wezterm.env.plist
 ```
 
-<div style="padding:1rem 1rem; border:1px solid #88C9DB;  border-radius:1rem; margin:1rem 0;">
-<strong style="color: #88C9DB">&#9432; Note:</strong><br>  
- We use the `.plist` extension.
-</div>
+<img src=".images/info.png" style="width: 1.25rem; height: 1.25rem;" alt="info"> _Note_: We use the `.plist` extension.
 
 Then, we populate it with the following:
 
 | <img src=".images/Setting WEZTERM_CONFIG_FILE.png" alt="``WezTerm`` Logo" width="780" height="320"> |
 | --------------------------------------------------------------------------------------------------- |
 
-<div style="padding:1rem 1rem; border:1px solid #D43535;  border-radius:1rem; margin:1rem 0;">
-<img src=".images/stop.png" style="width: 1rem; height: 1rem;" alt="report">
-<strong style="color: #D43535"> Caution:</strong><br>
- It's important that these variables are set correctly so 'WezTerm' can see it's configuration
- and use any custom preferences you've set within your '.wezterm.lua' config file.
-</div>
+<img src=".images/stop.png" style="width: 1.25rem; height: 1.25rem;" alt="stop"> _Caution_: It's important that these variables are set correctly so 'WezTerm' can see it's configuration and use any custom preferences you've set within your '.wezterm.lua' config file.
 
 This is a property list containing instructions for _`launchd`_ (**macOS's service manager**). It defines a '_LaunchAgent_' that sets a persistent
 environment variable for the user's session using the _`launchctl setenv`_ command.
 
-<div style="padding:1rem 1rem; border:1px solid #88C9DB;  border-radius:1rem; margin:1rem 0;">
-<strong style="color: #88C9DB">&#9432; Note:</strong><br>  
-An agent like this runs when the user logs in, allowing the variable to be globally available to any GUI application launched during the session. So, after setting and saving this `.plist` agent file, you **MUST APPLY** it by:
-- 1st: Logging out of your system.
-- 2nd: Logging back into your system.
+<img src=".images/info.png" style="width: 1.25rem; height: 1.25rem;" alt="info"> _Note_: An agent like this runs when the user logs in, allowing the variable to be globally available to any GUI application launched during the session. So, after setting and saving this `.plist` agent file, you **MUST APPLY** it by:
+
+1. Logging out of your system.
+2. Logging back into your system.
+
 Only then will you see the configuration file be picked up by the `WezTerm` Terminal Emulator.
-</div>
 
 ### **Luarocks modules / rocks (_packages/libraries_) support:**
 
@@ -250,22 +228,14 @@ _Steps to configure:_
 | <img src=".images/luarocks_config.png" alt="``WezTerm`` Logo" width="850" height="300"> |
 | --------------------------------------------------------------------------------------- |
 
-<div style="padding:1rem 1rem; border:1px solid #88C9DB;  border-radius:1rem; margin:1rem 0;">
-<strong style="color: #88C9DB">&#9432; Note:</strong><br>  
- This path should be later added to the `runtimepath` (_`rtp`_) for both your Neovim and `WezTerm` application instances, so both can look into this directory to be able to `require` modules installed via luarocks.
-</div>
-
-5. Point the luarocks package manager to it's intended configuration file, by setting the `$LUAROCKS_CONFIG` environment variable within either your `.bash_profile` or `.bashrc`:
+<img src=".images/info.png" style="width: 1.25rem; height: 1.25rem;" alt="info"> _Note_: This path should be later added to the `runtimepath` (_`rtp`_) for both your Neovim and `WezTerm` application instances, so both can look into this directory to be able to `require` modules installed via luarocks. 5. Point the luarocks package manager to it's intended configuration file, by setting the `$LUAROCKS_CONFIG` environment variable within either your `.bash_profile` or `.bashrc`:
 
 | <img src=".images/luarocks_env_var.png" alt="``WezTerm`` Logo" width="850" height="75"> |
 | --------------------------------------------------------------------------------------- |
 
 That's it, you should now be able to require modules both within a Neovim or `WezTerm` application runtime context.
 
-<div style="padding:1rem 1rem; border:1px solid #A3711A;  border-radius:1rem; margin:1rem 0;">
-<strong style="color: #A3711A">&#9888; Warning:</strong><br>
- When using the 'luarocks install' command, you MUST use the '--tree' parameter to specify the name of the root you wish to access, in order to install the plugin there. 'system' is the default and is considered system wide, and is handled by homebrew.
-</div>
+<img src=".images/alert.png" style="width: 1.25rem; height: 1rem;" alt="warning"> _Warning_: When using the 'luarocks install' command, you MUST use the '--tree' parameter to specify the name of the root you wish to access, in order to install the plugin there. 'system' is the default and is considered system wide, and is handled by homebrew.
 
 ### **Binaries to add to _`$PATH`_:**
 
@@ -288,7 +258,7 @@ a profile instead of global table? To keep your global environment variables tab
 | eg: `tsc`, `npx`           | Global `node_modules` directory.                                                                                                | Required for accessing global node modules, such as `tsc`, a transpiler for converting `TypeScript` to `JavaScript` code. Or, `npx` the node package runner which can execute `Node.js` packages without globally installing them (_used by certain Neovim plugins that rely on temporary package execution_). |
 | `dotnet`                   | .NET SDK CLI tool.                                                                                                              | Allows for creating, building, testing and publishing `.NET` applications. Required for `C#` language support.                                                                                                                                                                                                 |
 | `g++`                      | GNU `C++` compiler.                                                                                                             | Required for compiling `C++` code.                                                                                                                                                                                                                                                                             |
-| `cargo & rustc`            | Rust's Build System / Package Manager & the Rust Compiler.                                                                      | Required for rust language support and for building rust based plugins and compiling treesitter language grammars.                                                                                                                                                                                             |
+| `cargo & rustc`            | `Rust`'s Build System / Package Manager & the Rust Compiler.                                                                    | Required for `rust` language support and for building `rust` based plugins and compiling treesitter language grammars.                                                                                                                                                                                         |
 | `lldb`                     | `C++` Debugger.                                                                                                                 | Required by `nvim-dap` plugin within neovim for debugging `C++` code.                                                                                                                                                                                                                                          |
 | `cmake`                    | CMake cross platform '_Meta_' build system generator. It makes `build` / `instruction` files for other build systems to follow. | Required for managing the build process in a compiler-independent manner, when building complex `C` & `C++` projects.                                                                                                                                                                                          |
 | `ninja`                    | Ninja build system for `C++` projects.                                                                                          | Required by `CMake` for building `C++` projects, and for supporting the when using the `clangd` LSP by providing `compile_commands.json` files.                                                                                                                                                                |
@@ -310,30 +280,16 @@ a profile instead of global table? To keep your global environment variables tab
 | <p align="center"><img src=".images/lazy_logo.png" alt="``WezTerm`` Logo" width="100" height="70"></p>                          |
 | <p align="center">**Preview**</p><p align="center"><img src=".images/dashboard.png" alt="Preview" width="800" height="400"></p> |
 
-<div style="padding:1rem 1rem; border:1px solid #88C9DB;  border-radius:1rem; margin:1rem 0;">
-<strong style="color: #88C9DB">&#9432; Note:</strong><br>  
- This is a custom configuration project meant to mimick typical IDEs, using 'PowerShell7' & 'WezTerm'.
-</div>
-
-All can be setup in the following steps:
+<img src=".images/info.png" style="width: 1.25rem; height: 1.25rem;" alt="info"> _Note_: This is a custom configuration project meant to mimick typical IDEs, using 'PowerShell7' & 'WezTerm'. All can be setup in the following steps:
 
 1. Use a windows package manager of your choice (_i.e.: `winget` or `chocolatey`_) to install NeoVim onto your system.
 2. Clone or fork this repository to make it your own, into your _`C:\Users\<your-username>\AppData\Local`_ directory.
 
-<div style="padding:1rem 1rem; border:1px solid #C6F637;  border-radius:1rem; margin:1rem 0;">
-<img src=".images/light-bulb.png" style="width: 1rem; height: 1.2rem;" alt="report">
-<strong style="color: #C6F637"> Tip:</strong><br>  
-    Overwrite the 'nvim' directory if it exists already after following step 1.
-</div>
+<img src=".images/light-bulb.png" style="width: 1rem; height: 1.2rem;" alt="report"> _Tip_: Overwrite the 'nvim' directory if it exists already after following step **1**.
 
 3. Install the following software, and configure the following environment variables exactly as is to complete the setup.
 
-<div style="padding:1rem 1rem; border:1px solid #88C9DB;  border-radius:1rem; margin:1rem 0;">
-<strong style="color: #88C9DB">&#9432; Note:</strong><br>  
- This setup does require some knowledge of powershell profiles for correctly setting environment variables
- (used during open powershell sessions), OR you could just set them within the global environment table
- on windows.
-</div>
+<img src=".images/info.png" style="width: 1.25rem; height: 1.25rem;" alt="info"> _Note_: This setup does require some knowledge of powershell profiles for correctly setting environment variables (used during open powershell sessions), OR you could just set them within the global environment table on windows.
 
 ### Environment variables (_Profile Specific_):
 
@@ -351,10 +307,7 @@ please read them again in case of any changes being made to these dependencies.
 | `$env:CMAKE_BUILD_TYPE`              | Specifies build type for CMake (e.g., Debug/Release).     | Change this between 'Debug' or 'Release' depending on whether or not you want to include debug symbols for debugging using `nvim-dap` in `C++` projects.    |
 | `$env:CMAKE_BUILD_GENERATOR`         | Specifies the generator to be used for the build process. | Ninja is one build generator that is compatible with neovim.                                                                                                |
 
-<div style="padding:1rem 1rem; border:1px solid #88C9DB;  border-radius:1rem; margin:1rem 0;">
-<strong style="color: #88C9DB">&#9432; Note:</strong><br>  
- 'CMAKE_BUILD_GENERATOR' should only be specified within any 'CMakeLists.txt' files you have within your 'C++' projects. In case you're using other IDEs like Visual Studio too.
-</div>
+<img src=".images/info.png" style="width: 1.25rem; height: 1.25rem;" alt="info"> _Note_: `CMAKE_BUILD_GENERATOR` should only be specified within any `CMakeLists.txt` files you have within your `C++` projects. In case you're using other IDEs like Visual Studio too.
 
 ### Global environment variables:
 
@@ -366,11 +319,7 @@ using the `WezTerm` Multiplexer (**MUX**), it will NOT be able to see the variab
 | `$env:WEZTERM_CONFIG_FILE` | Path to `.wezterm.lua` config file (seperate to `$PATH`). | The `wezterm.exe` process must be able to access its configuration file before it initializes. Since `WezTerm` is responsible for launching the shell or terminal program specified in `config.default_prog` and `config.launch_menu`, the configuration needs to be available globally. Not just within a shell profile like `profile.ps1`. If the `$WEZTERM_CONFIG_FILE` variable is only set in a shell profile, it won't be recognised when `WezTerm` starts, as the shell itself hasn't been launched yet. |
 | `path\to\pwsh.exe`         | Path to `pwsh.exe` (included in `$PATH`).                 | Required for `WezTerm` terminal emulator to properly execute `PowerShell 7` commands and scripts.                                                                                                                                                                                                                                                                                                                                                                                                               |
 
-<div style="padding:1rem 1rem; border:1px solid #88C9DB;  border-radius:1rem; margin:1rem 0;">
-<strong style="color: #88C9DB">&#9432; Note:</strong><br>  
- It's important that these variables are set correctly and in the right way so 'WezTerm'
- can see it's configuration and use any custom preferences you've set within your '.wezterm.lua' config file.
-</div>
+<img src=".images/info.png" style="width: 1.25rem; height: 1.25rem;" alt="info"> _Note_: It's important that these variables are set correctly and in the right way so `WezTerm` can see it's configuration and use any custom preferences you've set within your `.wezterm.lua` config file.
 
 ### **Luarocks modules / rocks (_packages/libraries_) support:**
 
@@ -390,12 +339,7 @@ _**Steps to configure:**_
 
 1. Download the lua package via chocolatey (_this will **ALSO** include luarocks_).
 
-<div style="padding:1rem 1rem; border:1px solid #88C9DB;  border-radius:1rem; margin:1rem 0;">
-<strong style="color: #88C9DB">&#9432; Note:</strong><br>  
- Chocolatey installs a windows compatible version of lua (v5.1), and luarocks.
- A 'luarocks' folder will be created within the 'ProgramData' directory in your 'C:\' drive.
- LuaRocks uses this directory as part of it's runtime configuration.
-</div>
+<img src=".images/info.png" style="width: 1.25rem; height: 1.25rem;" alt="info"> _Note_: Chocolatey installs a windows compatible version of lua (v5.1), and `luarocks`. A `luarocks` folder will be created within the `ProgramData` directory in your `C:\` drive. `LuaRocks` uses this directory as part of it's runtime configuration.
 
 2. Create a file called `config.lua` file within that `luarocks` directory.
 3. Type the following snippet into that `config.lua` file:
@@ -404,10 +348,7 @@ _**Steps to configure:**_
 <img src=".images/luarocks_config.png" alt="luarocks configuration" width="850" height="260">
 </p>
 
-<div style="padding:1rem 1rem; border:1px solid #88C9DB;  border-radius:1rem; margin:1rem 0;">
-<strong style="color: #88C9DB">&#9432; Note:</strong><br>  
- This path should be later added to the 'runtimepath' ('rtp') for both your Neovim and 'WezTerm' application instances, so both can look into this directory to be able to 'require' modules installed via luarocks.
-</div>
+<img src=".images/info.png" style="width: 1.25rem; height: 1.25rem;" alt="info"> _Note_: This path should be later added to the `runtimepath` (`rtp`) for both your Neovim and `WezTerm` application instances, so both can look into this directory to be able to `require` modules installed via `luarocks`.
 
 4. Point the `luarocks` package manager to it's intended configuration file, by setting the `$env:LUAROCKS_CONFIG` environment variable within your `powershell` profile.
 
@@ -417,38 +358,35 @@ _**Steps to configure:**_
 
 That's it, you should now be able to require modules both within a Neovim or `WezTerm` application runtime context.
 
-<div style="padding:1rem 1rem; border:1px solid #88C9DB;  border-radius:1rem; margin:1rem 0;">
-<strong style="color: #88C9DB">&#9432; Note:</strong><br>  
-When using the 'luarocks install' command, you MUST use the '--tree' parameter to specify the name of the root you wish to access, in order to install the plugin there. 'system' is the default, and is considered 'system-wide', and is handled by 'chocolatey'.
-</div>
+<img src=".images/info.png" style="width: 1.25rem; height: 1.25rem;" alt="info"> _Note_: When using the `luarocks install` command, you **MUST** use the `--tree` parameter to specify the name of the root you wish to access, in order to install the plugin there. `system` is the default, and is considered `system-wide`, and is handled by `chocolatey`.
 
-### **Executables to add to "_$PATH_":**
+### **Executables to add to `$PATH`:**
 
 Considering the scope of this '_configuration_' project, there is a lot of programs that need to be
 exposed to the OS. Either via a powershell profile, or the global environment variables table (_accessible via your system settings_).
 Plugins will then be able to access and utilise these programs within neovim, allowing them to function as intended. Why do I suggest exposing them via
 a profile instead of global table? To keep your global environment variables table tidy, as it should only be used for programs that are required system wide.
 
-| Executable                       | Description                                                                                                                   | Why?                                                                                                                                                                                                                                                                                                     |
-| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `nvim.exe`                       | Neovim                                                                                                                        | _This project is based around this lightweight text editor._                                                                                                                                                                                                                                             |
-| `oh-my-posh.exe`                 | Oh My Posh                                                                                                                    | Make your terminal look nice.                                                                                                                                                                                                                                                                            |
-| eg: `clangd.cmd`, `codelldb.cmd` | Neovim's Mason Plugin Manager, plugins.                                                                                       | Required to be 'findable' by other plugins mentioned within this config.                                                                                                                                                                                                                                 |
-| `py.exe`                         | `python` Launcher.                                                                                                            | Program that uses the latest version of `python` installed on your system.                                                                                                                                                                                                                               |
-| eg: `pip.exe`                    | 'Scripts' directory of every `python` version you have installed on your system.                                              | These directories contain the corresponding modules required by that specific version of `python`. _And that version of `python` could be a dependency of another part of the system._                                                                                                                   |
-| `lua5.1.exe & luarocks.exe`      | Lua V5.1 interpreter, and it's package manager.                                                                               | Most compatible version of the lua interpreter for neovim plugin build processes, along with it's package manager, luarocks.                                                                                                                                                                             |
-| `java.exe`                       | Java JDK installation (`$JAVA_HOME`).                                                                                         | Java Develpment Kit (JDK) containing the The `Java` compiler for compiling `Java` code to an intermediaery language (IL) / byte code, and then the Java Virtual Machine (**JVM**) for running that byte code (your `java` program).                                                                      |
-| `gradle.exe`                     | `Gradle` build tool.                                                                                                          | Gradle Build System for automating the creation, compilation, and packaging of Java projects using a **_compatible_** version of the **JDK**.                                                                                                                                                            |
-| `node.exe`                       | `Node.js` runtime                                                                                                             | The `Node.js` Runtime allows for the execution of JavaScript code outside of a browser. It utilises Google Chrome's V8 engine for this. It's required for `JavaScript` & `TypeScript` based NeoVim plugin support.                                                                                       |
-| `npm.exe`                        | `Node.js`' package manager                                                                                                    | Handles package management for JavaScript/TypeScript dependencies. Required for building and installing _some_ Neovim plugins.                                                                                                                                                                           |
-| eg: `tsc.cmd`, `npx.cmd`         | Global 'node_modules' directory.                                                                                              | Required for accessing global node modules, such as 'tsc', a transpiler for converting TypeScript to JavaScript code. Or, 'npx' the node package runner which can execute `Node.js` packages without globally installing them (used by certain Neovim plugins that rely on temporary package execution). |
-| `dotnet.exe`                     | `.NET` SDK CLI tool.                                                                                                          | Allows for creating, building, testing and publishing .NET applications. Required for `C#` language support.                                                                                                                                                                                             |
-| `OmniSharp.exe`                  | `.NET` LSP.                                                                                                                   | Required for `C#` support.                                                                                                                                                                                                                                                                               |
-| `g++.exe`                        | GNU `C++` compiler.                                                                                                           | Required for compiling `C++` code.                                                                                                                                                                                                                                                                       |
-| `cargo.exe & rustc.exe`          | Rust's Build System / Package Manager & the Rust Compiler.                                                                    | Required for rust language support and for building rust based plugins and compiling treesitter language grammars.                                                                                                                                                                                       |
-| `lldb.exe`                       | `C++` Debugger.                                                                                                               | Required by `nvim-dap` plugin within neovim for debugging `C++` code.                                                                                                                                                                                                                                    |
-| `cmake.exe`                      | `CMake` cross platform 'Meta' build system generator. It makes build ('instruction') files for other build systems to follow. | Required for managing the build process in a compiler-independent manner, when building complex `C` & `C++` projects.                                                                                                                                                                                    |
-| `ninja.exe`                      | `Ninja` build system for `C++` projects.                                                                                      | Required by `CMake` for building `C++` projects, and for supporting the when using the `clangd` LSP by providing `compile_commands.json` files.                                                                                                                                                          |
-| `go.exe & delve.exe`             | Golang & `Go` `Delve` Debug Adapter.                                                                                          | Required for `go` support and debugging golang code using `nvim-dap`.                                                                                                                                                                                                                                    |
+| Executable                       | Description                                                                                                                   | Why?                                                                                                                                                                                                                                                                                                         |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `nvim.exe`                       | Neovim                                                                                                                        | _This project is based around this lightweight text editor._                                                                                                                                                                                                                                                 |
+| `oh-my-posh.exe`                 | Oh My Posh                                                                                                                    | Make your terminal look nice.                                                                                                                                                                                                                                                                                |
+| eg: `clangd.cmd`, `codelldb.cmd` | Neovim's Mason Plugin Manager, plugins.                                                                                       | Required to be 'findable' by other plugins mentioned within this config.                                                                                                                                                                                                                                     |
+| `py.exe`                         | `python` Launcher.                                                                                                            | Program that uses the latest version of `python` installed on your system.                                                                                                                                                                                                                                   |
+| eg: `pip.exe`                    | 'Scripts' directory of every `python` version you have installed on your system.                                              | These directories contain the corresponding modules required by that specific version of `python`. _And that version of `python` could be a dependency of another part of the system._                                                                                                                       |
+| `lua5.1.exe & luarocks.exe`      | Lua V5.1 interpreter, and it's package manager.                                                                               | Most compatible version of the lua interpreter for neovim plugin build processes, along with it's package manager, luarocks.                                                                                                                                                                                 |
+| `java.exe`                       | Java JDK installation (`$JAVA_HOME`).                                                                                         | Java Develpment Kit (JDK) containing the The `Java` compiler for compiling `Java` code to an intermediaery language (IL) / byte code, and then the Java Virtual Machine (**JVM**) for running that byte code (your `java` program).                                                                          |
+| `gradle.exe`                     | `Gradle` build tool.                                                                                                          | `Gradle` Build System for automating the creation, compilation, and packaging of Java projects using a **_compatible_** version of the **JDK**.                                                                                                                                                              |
+| `node.exe`                       | `Node.js` runtime                                                                                                             | The `Node.js` Runtime allows for the execution of JavaScript code outside of a browser. It utilises Google Chrome's V8 engine for this. It's required for `JavaScript` & `TypeScript` based NeoVim plugin support.                                                                                           |
+| `npm.exe`                        | `Node.js`' package manager                                                                                                    | Handles package management for JavaScript/TypeScript dependencies. Required for building and installing _some_ Neovim plugins.                                                                                                                                                                               |
+| eg: `tsc.cmd`, `npx.cmd`         | Global 'node_modules' directory.                                                                                              | Required for accessing global node modules, such as 'tsc', a transpiler for converting TypeScript to JavaScript code. Or, `npx` ( `node package runner` ) which can execute `Node.js` packages without globally installing them (_used by certain Neovim plugins that rely on temporary package execution_). |
+| `dotnet.exe`                     | `.NET` SDK CLI tool.                                                                                                          | Allows for creating, building, testing and publishing .NET applications. Required for `C#` language support.                                                                                                                                                                                                 |
+| `OmniSharp.exe`                  | `.NET` LSP.                                                                                                                   | Required for `C#` support.                                                                                                                                                                                                                                                                                   |
+| `g++.exe`                        | GNU `C++` compiler.                                                                                                           | Required for compiling `C++` code.                                                                                                                                                                                                                                                                           |
+| `cargo.exe & rustc.exe`          | Rust's Build System / Package Manager & the Rust Compiler.                                                                    | Required for rust language support and for building rust based plugins and compiling treesitter language grammars.                                                                                                                                                                                           |
+| `lldb.exe`                       | `C++` Debugger.                                                                                                               | Required by `nvim-dap` plugin within neovim for debugging `C++` code.                                                                                                                                                                                                                                        |
+| `cmake.exe`                      | `CMake` cross platform 'Meta' build system generator. It makes build ('instruction') files for other build systems to follow. | Required for managing the build process in a compiler-independent manner, when building complex `C` & `C++` projects.                                                                                                                                                                                        |
+| `ninja.exe`                      | `Ninja` build system for `C++` projects.                                                                                      | Required by `CMake` for building `C++` projects, and for supporting the when using the `clangd` LSP by providing `compile_commands.json` files.                                                                                                                                                              |
+| `go.exe & delve.exe`             | Golang & `Go` `Delve` Debug Adapter.                                                                                          | Required for `go` support and debugging golang code using `nvim-dap`.                                                                                                                                                                                                                                        |
 
 </details>
