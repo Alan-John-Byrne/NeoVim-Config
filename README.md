@@ -235,7 +235,7 @@ _Steps to configure:_
 
 That's it, you should now be able to require modules both within a Neovim or `WezTerm` application runtime context.
 
-<img src=".images/alert.png" style="width: 1.25rem; height: 1rem;" alt="warning"> _Warning_: When using the 'luarocks install' command, you MUST use the '--tree' parameter to specify the name of the root you wish to access, in order to install the plugin there. 'system' is the default and is considered system wide, and is handled by homebrew.
+<img src=".images/alert.png" style="width: 1.25rem; height: 1rem;" alt="warning"> _Warning_: When using the `luarocks install` command, you **MUST** use the `--tree` parameter to specify the name of the root you wish to access, in order to install the plugin there. `system` is the default and is considered system wide, and is handled by homebrew.
 
 ### **Binaries to add to _`$PATH`_:**
 
