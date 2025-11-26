@@ -1,3 +1,5 @@
+-- WARN: Any nvim configuration modules (lua modules that you've written within / are stored in your nvim config directory hierarchy that's included above)
+-- containing any 'vim' related module calls, will result in errors. As stated, WezTerm & NeoVim don't share the same runtime.
 local json = require("lunajson")
 local M = {}
 
@@ -15,7 +17,6 @@ end
 function M.load_wezterm_config_props()
   local file = nil
   if M.find_os() == "Darwin" then
-    print("hello")
     -- OOO: Mac:
     file = io.open(os.getenv("HOME") .. "/.config/nvim/lua/config/wezterm_config/mac_props.json", 'r')
   else

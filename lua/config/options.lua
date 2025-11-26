@@ -38,7 +38,7 @@ opt.shellcmdflag = "-c" -- currently required as just '-c' for 'venv-selector.nv
 opt.shellquote = ""
 
 -- IMPORTANT: Must set the correct cli tool depending on the OS being used:
-local cross_os = require("config.custom_libraries.cross_os")
+local cross_os = require("config.custom_nvim_lua_libraries.cross_os")
 if cross_os.detect_os() == "Darwin" then
   -- OOO: MAC
   -- INFO: 'opt.shell' points to the bash executable.

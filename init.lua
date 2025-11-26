@@ -43,7 +43,7 @@ elseif io.open(os.getenv("USERPROFILE") .. "/AppData/Local/nvim/lua/config/wezte
   -- OOO: Windows:
   local user_profile = os.getenv("USERPROFILE")
   local luarocks_modules = user_profile .. "/AppData/Local/nvim/lua/luarock-modules"
-  -- STES: 1: Adding luarocks 'Lua' modules.
+  -- STEP: 1: Adding luarocks 'Lua' modules.
   package.path = package.path ..
       ";" ..
       luarocks_modules .. "/share/lua/5.1/?.lua" .. ";" .. luarocks_modules .. "/share/lua/5.1/?/?.lua"
@@ -64,8 +64,8 @@ end
 -- enhancing the workflow for productivity with various plugins.
 
 -- ERROR: Avoid this:
--- require("config.custom_libraries.cross_os")
--- require("config.custom_libraries.vim_utility")
+-- require("config.custom_nvim_lua_libraries.cross_os")
+-- require("config.custom_nvim_lua_libraries.vim_utility")
 -- Because, each lua file has it's own environment. So, including custom libraries here within the base init.lua
 -- file, doesn't mean your modules will be made available to modules required after.
 -- EXAMPLE: e.g.: require("config.options") comes after these imports, it *DOES NOT* mean that options.lua
