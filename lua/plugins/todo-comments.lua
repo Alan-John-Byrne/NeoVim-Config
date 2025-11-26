@@ -21,7 +21,7 @@ return {
       SECTION = { icon = "✨", color = "question", alt = { "QUESTION", "HEADING", "BLOCK", "CONFIGURATION" } },
       PLUGIN = { icon = "💫", color = "plugin", alt = { "ANSWER", "EXTENSION" } },
       WARNING = { icon = "⚠", color = "warning", alt = { "DEFINITION", "DEF", "WARN" } },
-      EXAMPLE = { icon = "✍", color = "example", alt = { "EXAMPLES", "PART" } },
+      EXAMPLE = { icon = "✍", color = "example", alt = { "EXAMPLES", "PART", "STEP" } },
       OOO = { icon = "❗", color = "check", alt = { "CHECK", "ADAPTER", "CONSUMER" } },
     },
     colors = {

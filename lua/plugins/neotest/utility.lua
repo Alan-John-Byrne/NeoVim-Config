@@ -86,7 +86,7 @@ end
 
 --- Allow the user to selects browsers to run tests for, then refresh summary tree.
 ---@return nil
-function M.select_browsers()
+function M.select_playwright_browsers()
   -- Prompt the user to confirm their project selection. (Refreshing data)
   vim.ui.input({ prompt = "Press 'Enter' AGAIN to confirm project selection." }, function()
     M.close_and_reopen_test_buffer()

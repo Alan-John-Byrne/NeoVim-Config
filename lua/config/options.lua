@@ -36,12 +36,24 @@ local opt = vim.opt
 opt.shell = "/bin/bash" -- currently required as just '/bin/bash' for 'venv-selector.nvim' to function properly.
 opt.shellcmdflag = "-c" -- currently required as just '-c' for 'venv-selector.nvim' to function properly.
 opt.shellquote = ""
---WINDOWS
--- INFO: 'opt.shell' points to the PowerShell7 executable,
--- available through your set environment variables, in your ".ps1" profile.
-opt.shell = "pwsh" -- Adding the PowerShell profile terminal configuration:
-opt.shellcmdflag = "-nologo -noprofile -ExecutionPolicy RemoteSigned -command"
-opt.shellxquote = ""
+
+-- IMPORTANT: Must set the correct cli tool depending on the OS being used:
+local cross_os = require("config.custom_libraries.cross_os")
+if cross_os.detect_os() == "Darwin" then
+  -- OOO: MAC
+  -- INFO: 'opt.shell' points to the bash executable.
+  opt.shell = "/bin/bash" -- currently required as just '/bin/bash' for 'venv-selector.nvim' to function properly.
+  opt.shellcmdflag = "-c" -- currently required as just '-c' for 'venv-selector.nvim' to function properly.
+  opt.shellquote = ""
+else
+  -- OOO: WINDOWS
+  -- INFO: 'opt.shell' points to the PowerShell7 executable,
+  -- available through your set environment variables, in your ".ps1" profile.
+  opt.shell = "pwsh" -- Adding the PowerShell profile terminal configuration:
+  opt.shellcmdflag = "-nologo -noprofile -ExecutionPolicy RemoteSigned -command"
+  opt.shellxquote = ""
+end
+
 opt.autowrite = true -- Enable auto write
 -- only set clipboard if not in ssh, to make sure the OSC 52
 -- integration works automatically. Requires Neovim >= 0.10.0

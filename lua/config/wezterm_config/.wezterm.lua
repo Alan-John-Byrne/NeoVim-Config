@@ -7,35 +7,35 @@
 -- instead of WezTerms own configuration. It's like Neovim sharing lua packages it uses, with WezTerm. This is where WezTerm will
 -- load external libraries from. Therefore, both programs read from the same place for external custom lua packages, during
 -- their own runtimes.
-if io.open(os.getenv("HOME") .. "/.config/nvim/lua/config/wezterm/utility.lua", "r") then
+if io.open(os.getenv("HOME") .. "/.config/nvim/lua/config/wezterm_config/wezterm_utility.lua", "r") then
   -- OOO: macOS:
   local home = os.getenv("HOME")
-  local wezterm_dir = home .. "/.config/nvim/lua/config/wezterm"
+  local wezterm_dir = home .. "/.config/nvim/lua/config/wezterm_config"
   local luarocks_modules = home .. "/.config/nvim/lua/luarock-modules"
   local nvim_dir = home .. "/.config/nvim/lua"
-  -- PART: 1: Adding utility module(s) to prevent clutter. (Stored within the Neovim config files)
+  -- STEP: 1: Adding utility module(s) to prevent clutter. (Stored within the Neovim config files)
   package.path = package.path .. ";" .. wezterm_dir .. "/?.lua" .. ";" .. wezterm_dir .. "/?/init.lua"
-  -- PART: 2: Adding luarocks 'Lua' modules.
+  -- STEP: 2: Adding luarocks 'Lua' modules.
   package.path = package.path ..
       ";" ..
       luarocks_modules .. "/share/lua/5.4/?.lua" .. ";" .. luarocks_modules .. "/share/lua/5.4/?/init.lua"
-  -- PART: 3: Adding luarocks 'C' modules.
+  -- STEP: 3: Adding luarocks 'C' modules.
   package.cpath = package.cpath .. ";" .. luarocks_modules .. "/lib/lua/5.4/?.so"
-  -- PART: 4: Adding nvim configuration modules.
+  -- STEP: 4: Adding nvim configuration modules.
   package.path = package.path .. ";" .. nvim_dir .. "/?.lua" .. ";" .. nvim_dir .. "/?/init.lua"
-elseif io.open(os.getenv("USERPROFILE") .. "/AppData/Local/nvim/lua/config/wezterm/utility.lua", "r") then
+elseif io.open(os.getenv("USERPROFILE") .. "/AppData/Local/nvim/lua/config/wezterm_config/wezterm_utility.lua", "r") then
   -- OOO: Windows:
   local user_profile = os.getenv("USERPROFILE")
-  local wezterm_dir = user_profile .. "/AppData/Local/nvim/lua/config/wezterm"
+  local wezterm_dir = user_profile .. "/AppData/Local/nvim/lua/config/wezterm_config"
   local luarocks_modules = user_profile .. "/AppData/Local/nvim/lua/luarock-modules"
   local nvim_dir = user_profile .. "/AppData/Local/nvim/lua"
-  -- PART: 1: Adding utility module to prevent clutter. (Stored within the Neovim config files)
+  -- STEP: 1: Adding utility module to prevent clutter. (Stored within the Neovim config files)
   package.path = package.path .. ";" .. wezterm_dir .. "/?.lua" .. ";" .. wezterm_dir .. "/?/init.lua"
-  -- PART: 2: Adding luarocks 'Lua' modules.
+  -- STEP: 2: Adding luarocks 'Lua' modules.
   package.path = package.path ..
       ";" ..
       luarocks_modules .. "/share/lua/5.1/?.lua" .. ";" .. luarocks_modules .. "/share/lua/5.1/?/?.lua"
-  -- PART: 3: Adding nvim configuration modules.
+  -- STEP: 3: Adding nvim configuration modules.
   package.path = package.path .. ";" .. nvim_dir .. "/?.lua" .. ";" .. nvim_dir .. "/?/init.lua"
 end
 -- IMPORTANT: The above steps *MUST* lines must be evaluated *BEFORE* any `require` statements for external Lua modules.
@@ -57,12 +57,12 @@ local wezterm = require('wezterm') -- NOTE: Pull in the WezTerm API.
 -- and the Lua Reference (API) here -> https://wezterm.org/config/lua/general.html.
 local config = wezterm.config_builder()
 config.set_environment_variables = {
-  WEZTERM_CONFIG_FILE = "/.config/nvim/lua/config/wezterm/.wezterm.lua"
+  WEZTERM_CONFIG_FILE = "/.config/nvim/lua/config/wezterm_config/.wezterm.lua"
 }
 
 -- SECTION: STEP 2: Apply config preferences - Loading configuration (prop) options:
 -- INFO: (Some taken from 'props.json' file)
-local utility = require("utility")
+local utility = require("wezterm_utility")
 local props = utility.load_wezterm_config_props()
 if props then -- If the options are available use them.
   config.adjust_window_size_when_changing_font_size = props.adjust_window_size_when_changing_font_size

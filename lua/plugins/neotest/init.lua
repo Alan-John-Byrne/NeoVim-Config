@@ -103,10 +103,10 @@ return {
         mode = { "n" },
         icon = { icon = "🛠", color = "yellow" },
         { "<leader>tp",  group = "Playwright Test Options" },
-        { "<leader>tpa", function() require('neotest').playwright.attachment() end,              desc = 'Playwright: Attach to a running test.' },
-        { "<leader>tpP", "<cmd>NeotestPlaywrightPreset<CR>",                                     desc = 'Playwright: Choose Presets.' },
-        { "<leader>tpn", function() require("plugins.neotest.utility").refresh_playwright() end, desc = 'Playwright: Refresh data.' },
-        { "<leader>tpp", function() require("plugins.neotest.utility").select_browsers() end,    desc = 'Playwright: Choose Browsers.' },
+        { "<leader>tpa", function() require('neotest').playwright.attachment() end,                      desc = 'Playwright: Attach to a running test.' },
+        { "<leader>tpP", "<cmd>NeotestPlaywrightPreset<CR>",                                             desc = 'Playwright: Choose Presets.' },
+        { "<leader>tpn", function() require("plugins.neotest.utility").refresh_playwright() end,         desc = 'Playwright: Refresh data.' },
+        { "<leader>tpp", function() require("plugins.neotest.utility").select_playwright_browsers() end, desc = 'Playwright: Choose Browsers.' },
       })
     end
   }

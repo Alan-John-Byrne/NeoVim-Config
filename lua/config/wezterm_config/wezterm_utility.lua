@@ -17,10 +17,10 @@ function M.load_wezterm_config_props()
   if M.find_os() == "Darwin" then
     print("hello")
     -- OOO: Mac:
-    file = io.open(os.getenv("HOME") .. "/.config/nvim/lua/config/wezterm/mac_props.json", 'r')
+    file = io.open(os.getenv("HOME") .. "/.config/nvim/lua/config/wezterm_config/mac_props.json", 'r')
   else
     -- OOO: Windows:
-    file = io.open(os.getenv("USERPROFILE") .. "/AppData/Local/nvim/lua/config/wezterm/win_props.json", 'r')
+    file = io.open(os.getenv("USERPROFILE") .. "/AppData/Local/nvim/lua/config/wezterm_config/win_props.json", 'r')
   end
   if file then
     local json_string = file:read('*all')
@@ -34,10 +34,10 @@ function M.save_wezterm_config_props(updated_config)
   local file = nil
   if M.find_os() == "Darwin" then
     -- OOO: Mac:
-    file = io.open(os.getenv("HOME") .. "/.config/nvim/lua/config/wezterm/props.json", 'r')
+    file = io.open(os.getenv("HOME") .. "/.config/nvim/lua/config/wezterm_config/props.json", 'r')
   else
     -- OOO: Windows:
-    file = io.open(os.getenv("USERPROFILE") .. "/AppData/Local/nvim/lua/config/wezterm/props.json", 'r')
+    file = io.open(os.getenv("USERPROFILE") .. "/AppData/Local/nvim/lua/config/wezterm_config/props.json", 'r')
   end
   if file then
     file:write(json.encode(updated_config))
