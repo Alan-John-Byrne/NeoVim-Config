@@ -78,8 +78,8 @@ return {
     { "<leader>gB",      function() Snacks.gitbrowse() end,                                      desc = "Git Browse",                mode = { "n", "v" }, },
     { "<leader>gg",      function() Snacks.lazygit() end,                                        desc = "Lazygit", },
     { "<leader>un",      function() Snacks.notifier.hide() end,                                  desc = "Dismiss All Notifications", },
-    { "<c-/>",           function() Snacks.terminal() end,                                       desc = "Toggle Terminal", },
-    { "<c-_>",           function() Snacks.terminal() end,                                       desc = "which_key_ignore", },
+    -- { "<c-/>",           function() Snacks.terminal() end,                                       desc = "Toggle Terminal", },
+    -- { "<c-_>",           function() Snacks.terminal() end,                                       desc = "which_key_ignore", },
     { "]]",              function() Snacks.words.jump(vim.v.count1) end,                         desc = "Next Reference",            mode = { "n", "t" }, },
     { "[[",              function() Snacks.words.jump(-vim.v.count1) end,                        desc = "Prev Reference",            mode = { "n", "t" }, },
     {
@@ -89,6 +89,40 @@ return {
         Snacks.win({ file = vim.api.nvim_get_runtime_file("doc/news.txt", false)[1], width = 0.6, height = 0.6, wo = { spell = false, wrap = false, signcolumn = "yes", statuscolumn = " ", conceallevel = 3, },
         })
       end,
+    },
+    -- FIX: (direnv): If a project has a '.envrc' file, we'll need to load that because this
+    -- also takes care of python virtual environment dependencies that may be required.
+    {
+      "<c-/>",
+      function()
+        -- REMEMBER: We have to ensure we're running on a UNIX based OS.
+        local cross = require("config.custom_nvim_lua_libraries.cross_os")
+        if cross.detect_os() == 'Darwin' then
+          -- 1st: Find the nearest root directory.
+          local root = vim.fs.root(0, { ".envrc", ".git" }) or vim.fn.getcwd()
+          -- 2nd: Open the terminal normally (NO cmd [nil] => bottom split behaviour).
+          Snacks.terminal(nil, { cwd = root })
+          -- 3rd: Store the name of the file we're interested in ('.envrc').
+          local envrc = root .. "/.envrc"
+          -- IMPORTANT: Perform Checks to prevent redundant reloads.
+          -- No .envrc => do nothing
+          if not vim.uv.fs_stat(envrc) then return end
+          -- WARN:If we've already reloaded for THIS terminal buffer, do nothing
+          if vim.b._direnv_reloaded then return end
+          -- 4th: Only reload direnv if a .envrc exists in that directory.
+          vim.schedule(function()
+            local job = vim.b.terminal_job_id                -- NOTE: Grabbing the process ID of that running shell.
+            if job then                                      -- INFO: The '\n' in the 'chansend' function.
+              vim.fn.chansend(job, "direnv reload\nclear\n") -- TODO: We are literally typing into that shell programmatically.
+              vim.b._direnv_reloaded = true
+            end
+          end)
+        else
+          -- TODO: Use regular terminal in case of using Windows.
+          Snacks.terminal()
+        end
+      end,
+      desc = "Terminal (reload direnv if .envrc exists)",
     },
   },
   init = function()
@@ -110,9 +144,8 @@ return {
         Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>uL")
         Snacks.toggle.diagnostics():map("<leader>ud")
         Snacks.toggle.line_number():map("<leader>ul")
-        Snacks.toggle
-            .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
-            :map("<leader>uc")
+        Snacks.toggle.option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 }):map(
+          "<leader>uc")
         Snacks.toggle.treesitter():map("<leader>uT")
         Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>ub")
         Snacks.toggle.inlay_hints():map("<leader>uh")
@@ -122,7 +155,7 @@ return {
     })
   end,
   opts = {
-   --MAC 
+    --MAC
     terminal = {
       shell = "/bin/bash -il", -- Works great on macOS
     },
