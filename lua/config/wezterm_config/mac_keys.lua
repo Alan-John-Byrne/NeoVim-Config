@@ -127,6 +127,29 @@ local mac_keys = {                 -- TODO: Custom keybindings: (Self-explanator
     end),
   },
 
+  -- FIX:
+  {
+    key = "LeftArrow",
+    mods = "OPT",
+    action = wezterm.action.SendString("\x1bb"),
+  },
+  {
+    key = "RightArrow",
+    mods = "OPT",
+    action = wezterm.action.SendString("\x1bf"),
+  },
+  -- WARN: Disable 'Option+Up' & 'Option+Down': (Prevent Fat fingering the other keys whilst in the terminal)
+  {
+    key = "UpArrow",
+    mods = "OPT",
+    action = wezterm.action.SendString(""),
+  },
+  {
+    key = "DownArrow",
+    mods = "OPT",
+    action = wezterm.action.SendString(""),
+  },
+
   -- SECTION: macOS remappings for the CMD key. (Required when working on Mac)
   -- OOO: Keybind for saving using 'CMD':
   { key = "s", mods = "CMD",      action = wezterm.action.SendString("@s") },
@@ -148,7 +171,7 @@ local mac_keys = {                 -- TODO: Custom keybindings: (Self-explanator
 
   -- OOO: Terminal Window resizing signals to be sent to NeoVim keymappings.
   -- IMPORTANT: The 'mods' here must be 'CMD|CTRL', because using 'CMD|ALT' would
-  -- clash with the wezterm key bindings to switch between wezterm panes.
+  -- clash with the wezterm key bindings to changing/switching between wezterm panes.
   { key = "k", mods = "CMD|CTRL", action = wezterm.action.SendString("&k") },
   { key = "j", mods = "CMD|CTRL", action = wezterm.action.SendString("&j") },
 }
