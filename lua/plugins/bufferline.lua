@@ -12,7 +12,7 @@ return {
   end,
   version = "*",
   dependencies = "nvim-tree/nvim-web-devicons",
-  keys = {
+  keys = { -- REMEMBER: When dealing with tabs, use the which-key keybindings, so press 'space' followed by the 'tab' key.
     { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>",            desc = "Toggle Pin" },
     { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete Non-Pinned Buffers" },
     { "<leader>br", "<Cmd>BufferLineCloseRight<CR>",           desc = "Delete Buffers to the Right" },
