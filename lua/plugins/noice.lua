@@ -44,9 +44,17 @@ return {
           filter = { event = "msg_show", any = { { find = "%d+L, %d+B" }, { find = "; after #%d+" }, { find = "; before #%d+" }, }, },
           opts = { skip = true },                        -- Don't do anything with it.
         },
-        {                                                -- Removing annoying forward slash error
+        -- FIX: Removing annoying forward slash error.
+        {
           filter = { event = "notify", find = "cmp/entry.lua", },
-          opts = {                                       -- Don't do anything with it.
+          opts = { -- don't do anything with it.
+            skip = true,
+          },
+        },
+        -- FIX: Removing annoying 'port being used warning' from the html/markdown previewer plugin.
+        {
+          filter = { event = "notify", find = "Port.*is being used", },
+          opts = {
             skip = true,
           },
         }

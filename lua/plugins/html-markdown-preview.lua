@@ -22,8 +22,14 @@ return {
       'nvim-telescope/telescope.nvim',
     },
     keys = {
-      { "<leader>ms", "<cmd>LivePreview start<CR>", mode = { "n" }, desc = "Start Browser Previewer" },
-      { "<leader>mS", "<cmd>LivePreview close<CR>", mode = { "n" }, desc = "Stop Browser Previewer" },
+      -- FIX: This below keybinding (<leader>ms) is used to stop the previous previewer, and start
+      -- a new one for the current buffer. Otherwise an error would be thrown.
+      -- INFO: A change had to be within the 'noice.nvim' plugin to ignore the following error, which
+      -- would appear when using this keybinding:
+      -- ERROR: "Port 5500 is being used by another process `nvim` (PID <number>). Run `:lua vim.uv.kill(<number>)`
+      -- to kill it or change the port with `:lua LivePreview.config.port = <new_port>`"
+      { "<leader>ms", "<CMD>LivePreview close<CR><CMD>LivePreview start<CR>", mode = { "n" }, desc = "Start Browser Previewer" },
+      { "<leader>mS", "<CMD>LivePreview close<CR>",                           mode = { "n" }, desc = "Stop Browser Previewer" },
     },
   }
 }
