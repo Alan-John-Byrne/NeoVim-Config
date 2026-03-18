@@ -100,8 +100,33 @@ return {
   {
     'akinsho/git-conflict.nvim',
     version = "*",
-    config = true
-    -- NOTE: This plugin offers default buffer local mappings inside conflicted files.
+    event = "VeryLazy",
+    opts = {
+      default_mappings = true, -- disable buffer local mapping created by this plugin
+      default_commands = true, -- disable commands created by this plugin
+      disable_diagnostics = false, -- This will disable the diagnostics in a buffer whilst it is conflicted
+      list_opener = 'copen', -- command or function to open the conflicts list
+      highlights = { -- They must have background color, otherwise the default color will be used
+        incoming = 'DiffAdd',
+        current = 'DiffText',
+      }
+    },
+    keys = {
+      -- View and list conflict
+      { '<leader>gxl', '<cmd>GitConflictListQf<cr>',       desc = "List Git Conflicts (Quickfix)" },
+      { '<leader>gxr', '<cmd>GitConflictRefresh<cr>',      desc = "Refresh Git Conflict Detection" },
+
+      -- Choose conflict resolution
+      { '<leader>gxo', '<cmd>GitConflictChooseOurs<cr>',   desc = "Choose Ours (Current)" },
+      { '<leader>gxt', '<cmd>GitConflictChooseTheirs<cr>', desc = "Choose Theirs (Incoming)" },
+      { '<leader>gxb', '<cmd>GitConflictChooseBoth<cr>',   desc = "Choose Both" },
+      { '<leader>gxn', '<cmd>GitConflictChooseNone<cr>',   desc = "Choose None" },
+
+      -- Navigate conflicts
+      { '[x',          '<cmd>GitConflictPrevConflict<cr>', desc = "Previous Git Conflict" },
+      { ']x',          '<cmd>GitConflictNextConflict<cr>', desc = "Next Git Conflict" },
+    },
+    -- NOTE: This plugin also offers default buffer local mappings inside conflicted files:
     -- co — choose ours
     -- ct — choose theirs
     -- cb — choose both
