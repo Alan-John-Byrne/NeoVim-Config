@@ -56,3 +56,11 @@ end
 
 -- OOO: Applying custom configuration.
 vim.lsp.config('robotcode', robotcode_configuration())
+
+-- FIX: Robot-Framework files didn't have a valid comment string.
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "robot", "resource" },
+  callback = function()
+    vim.bo.commentstring = "# %s"
+  end,
+})

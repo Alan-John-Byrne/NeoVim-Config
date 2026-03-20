@@ -488,7 +488,7 @@ return {
         -- WARN: The 'selene' linter doesn't know about the neovim runtime
         -- global variables like the 'vim' table, but the 'lua_ls' lsp does.
         -- So, we provide a custom configuration for selene to just ignore it.
-        "--config", vim.fn.stdpath("config") .. "lua/config/selene.toml"
+        "--config", vim.fn.stdpath("config") .. "lua/config/globals/selene.toml"
       }
 
       require("lint").linters.markdownlint.args = {

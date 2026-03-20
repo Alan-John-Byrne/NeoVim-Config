@@ -5,9 +5,10 @@
 -- when adding to the global 'vim' module.
 -- DON'T 'MONKEY PATCH' like this -> vim.method_name = function()!!!!
 -- TODO: Do this instead -> vim.custom_module = M (i.e.: 'M' being the name of your module)
+-- INFO: Custom Vim Utility Module.
 
 -- Custom Utility Module.
----@class M
+---@class VimUtility
 local M = {}
 
 --- Inserts a substring into a specified position of another string.
@@ -34,8 +35,4 @@ function M.split(str, pattern)
   return seperated_strings
 end
 
--- NOTE: Exporting the module,
--- by adding it to the global vim table.
--- REMEMBER: Prevents having to import
--- your own utility functionality using 'require'.
-vim.custom = M
+return M

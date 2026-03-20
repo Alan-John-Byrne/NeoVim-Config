@@ -15,7 +15,14 @@
 -- WARN: The workspace 'meta-data' directory must be in the root directory, above the project it concerns.
 local base_path = vim.fn.expand("~/coding/javadev/")
 local project_root_path = vim.fs.root(0, { 'pom.xml', '.git', '.mvn', 'mvnw', 'gradlew', 'build.gradle' })
-local workspace_dir_name = vim.fn.fnamemodify(project_root_path, ':t') .. "_workspace"
+local workspace_dir_name = nil
+-- FIX: Throw an error if unable to locate root of Java Project.
+if project_root_path ~= nil then
+  workspace_dir_name = vim.fn.fnamemodify(project_root_path, ':t') .. "_workspace"
+else
+  vim.notify("A root path for this project could not be found.", vim.log.levels["ERROR"])
+  return
+end
 local workspace_dir_path = base_path .. "workspaces/" .. workspace_dir_name
 
 -- LSP:
