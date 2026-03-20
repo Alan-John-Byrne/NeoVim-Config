@@ -174,7 +174,7 @@ Then, we populate it with the following:
          <string>launchctl</string>
          <string>setenv</string>
          <string>WEZTERM_CONFIG_FILE</string>
-         <string>/Users/*your-username*/.config/nvim/lua/config/wezterm/.wezterm.lua</string>
+         <string>/Users/*your-username*/.config/nvim/lua/config/wezterm_config/.wezterm.lua</string>
         </array>
     <!-- Telling the 'launchd' daemon (system service manager) to run the 'ProgramArguments' immediately when the agent is loaded (i.e.:, on login) -->
         <key>RunAtLoad</key>
@@ -202,7 +202,7 @@ Only then will you see the configuration file be picked up by the `WezTerm` Term
 A simpler approach would be to add the following _`launchctl setenv`_ command, to either the your _`.bashrc`_ file, or _`.bash_profile`_ file:
 
 ```xml
-    launchctl setenv WEZTERM_CONFIG_FILE "/Users/<your-username>/.config/nvim/lua/config/wezterm/.wezterm.lua"
+    launchctl setenv WEZTERM_CONFIG_FILE "/Users/<your-username>/.config/nvim/lua/config/wezterm_config/.wezterm.lua"
 ```
 
 This command tells _`launchd`_ (_macOS's system service manager_) what environment variable values to pass onto

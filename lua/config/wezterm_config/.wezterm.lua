@@ -3,7 +3,7 @@
 -- TODO: Extend WezTerm's Lua runtime path (rtp = `package.path` [ and also `package.cpath` in the case of using macOS ]) to include
 -- the LuaRocks-managed `luarock-modules` directory used by Neovim (this directory I've decided to store within NeoVims own directory
 -- hierarchy / rtp). This directory is now the default location (tree root) that plugins will be installed to (configured via
--- `~/.config/luarocks/config.lua`) via the 'luarocks' package manager. Lua packages are installed here using the `--tree`. So,
+-- `~/.config/luarocks-modules/config.lua`) via the 'luarocks' package manager. Lua packages are installed here using the `--tree`. So,
 -- instead of WezTerms own configuration. It's like Neovim sharing lua packages it uses, with WezTerm. This is where WezTerm will
 -- load external libraries from. Therefore, both programs read from the same place for external custom lua packages, during
 -- their own runtimes.
@@ -20,7 +20,7 @@ if io.open(os.getenv("HOME") .. "/.config/nvim/lua/config/wezterm_config/wezterm
   local nvim_dir = home .. "/.config/nvim/lua"
   local nvim_config_dir = nvim_dir .. "/config"
   local wezterm_dir = nvim_config_dir .. "/wezterm_config"
-  local custom_nvim_lua_libraries = nvim_config_dir .. "/custom_nvim_lua_libraries"
+  local custom_lua_modules = nvim_config_dir .. "/custom_lua_modules"
   local luarocks_modules = nvim_dir .. "/luarock-modules"
   -- STEP: 1: Adding utility module(s) to prevent clutter. (Stored within the Neovim config files)
   package.path = package.path .. ";" .. wezterm_dir .. "/?.lua" .. ";" .. wezterm_dir .. "/?/init.lua"
@@ -37,7 +37,7 @@ if io.open(os.getenv("HOME") .. "/.config/nvim/lua/config/wezterm_config/wezterm
   -- directory hierarchy that's included above) containing any 'vim' related module calls, will result in errors.
   -- As stated, WezTerm & NeoVim don't share the same runtime.
   package.path = package.path ..
-      ";" .. custom_nvim_lua_libraries .. "/?.lua" .. ";" .. custom_nvim_lua_libraries .. "/?/init.lua"
+      ";" .. custom_lua_modules .. "/?.lua" .. ";" .. custom_lua_modules .. "/?/init.lua"
 elseif io.open(os.getenv("USERPROFILE") .. "/AppData/Local/nvim/lua/config/wezterm_config/wezterm_utility.lua", "r") then
   -- OOO: Windows:
   local user_profile = os.getenv("USERPROFILE")
@@ -45,7 +45,7 @@ elseif io.open(os.getenv("USERPROFILE") .. "/AppData/Local/nvim/lua/config/wezte
   local nvim_config_dir = nvim_dir .. "/config"
   local wezterm_dir = nvim_config_dir .. "/wezterm_config"
   local luarocks_modules = nvim_config_dir .. "/luarock-modules"
-  local custom_nvim_lua_libraries = nvim_config_dir .. "/custom_nvim_lua_libraries"
+  local custom_lua_modules = nvim_config_dir .. "/custom_lua_modules"
   -- STEP: 1: Adding utility module to prevent clutter. (Stored within the Neovim config files)
   package.path = package.path .. ";" .. wezterm_dir .. "/?.lua" .. ";" .. wezterm_dir .. "/?/init.lua"
   -- STEP: 2: Adding luarocks 'Lua' modules.
@@ -58,7 +58,7 @@ elseif io.open(os.getenv("USERPROFILE") .. "/AppData/Local/nvim/lua/config/wezte
   -- WARN: Any nvim configuration modules (lua modules that you've written within / are stored in your nvim config directory hierarchy that's included above)
   -- containing any 'vim' related module calls, will result in errors. As stated, WezTerm & NeoVim don't share the same runtime.
   package.path = package.path ..
-      ";" .. custom_nvim_lua_libraries .. "/?.lua" .. ";" .. custom_nvim_lua_libraries .. "/?/init.lua"
+      ";" .. custom_lua_modules .. "/?.lua" .. ";" .. custom_lua_modules .. "/?/init.lua"
 end
 -- ERROR: Prior to setting the appropriate runtime paths, avoid attempting to import ('require') any 'custom_libraries' that
 -- you may have written outside of the standard embedded lua runtime environment that comes packaged with the WezTerm application.

@@ -49,8 +49,4 @@ function M.buffer_protection(vimcmd)
   end
 end
 
--- NOTE: Exporting the module,
--- by adding it to the global vim table.
--- REMEMBER: Prevents having to import
--- your own utility functionality using 'require'.
 return M

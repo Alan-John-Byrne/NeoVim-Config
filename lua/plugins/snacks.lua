@@ -96,8 +96,7 @@ return {
       "<c-/>",
       function()
         -- REMEMBER: We have to ensure we're running on a UNIX based OS.
-        local cross = require("config.custom_nvim_lua_libraries.cross_os")
-        if cross.detect_os() == 'Darwin' then
+        if vim.cross_os.detect_os() == 'Darwin' then
           -- 1st: Find the nearest root directory.
           local root = vim.fs.root(0, { ".envrc", ".git" }) or vim.fn.getcwd()
           -- 2nd: Open the terminal normally (NO cmd [nil] => bottom split behaviour).
