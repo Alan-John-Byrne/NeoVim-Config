@@ -59,17 +59,28 @@ end
 -- WARN: Any nvim configuration modules (lua modules that you've written within your nvim config)
 -- containing any 'vim' related module calls, will result in errors. As stated, WezTerm & NeoVim don't share the same runtime.
 
--- SECTION: STEP 1: Loading essential NeoVim configuration files.
--- TODO: This section initializes essential configurations for the Neovim setup,
--- enhancing the workflow for productivity with various plugins.
+-- SECTION: STEP 1: Loading in custom lua modules.
+-- TODO: If adding more modules, be sure to set acquire and set them here,
+-- befpre declaring their types globally within "./config/types.lua". This
+-- makes these modules available globally.
+
+vim.config_utility = require("config.custom_lua_modules.vim_config_utility")
+vim.utility = require("config.custom_lua_modules.vim_utility")
+vim.cross_os = require("config.custom_lua_modules.cross_os")
 
 -- ERROR: Avoid this:
--- require("config.custom_nvim_lua_libraries.cross_os")
+-- require("config.custom_nvim_lua_libraries.cross_os"), or
 -- require("config.custom_nvim_lua_libraries.vim_utility")
 -- Because, each lua file has it's own environment. So, including custom libraries here within the base init.lua
 -- file, doesn't mean your modules will be made available to modules required after.
--- EXAMPLE: e.g.: require("config.options") comes after these imports, it *DOES NOT* mean that options.lua
--- suddenly has access to content (i.e.: methods / variables ) of either of these modules.
+-- EXAMPLE: e.g.: require("config.options") comes after these imports, it *DOES NOT* mean,
+-- for example, that options.lua suddenly has access to content (i.e.: methods / variables ) of either of these modules.
+-- However, vim.<module_name> = require(....), does allow for this when paired with a global 'types.lua' file as mentioned.
+
+-- SECTION: STEP 2: Loading essential NeoVim configuration files.
+-- TODO: This section initializes essential configurations for the Neovim setup,
+-- enhancing the workflow for productivity with various plugins.
+
 
 require("config.options")    -- Customizes Neovim settings for a better user experience.
 require("config.autocmds")   -- Sets up automatic commands for improved functionality.
