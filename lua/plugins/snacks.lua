@@ -73,7 +73,6 @@ return {
     { "<leader>.",       function() Snacks.scratch() end,                                        desc = "Toggle Scratch Buffer", },
     { "<leader>S",       function() Snacks.scratch.select() end,                                 desc = "Select Scratch Buffer", },
     { "<leader>n",       function() Snacks.notifier.show_history() end,                          desc = "Notification History", },
-    { "<leader>bd",      function() Snacks.bufdelete() end,                                      desc = "Delete Buffer", },
     { "<leader>cR",      function() Snacks.rename.rename_file() end,                             desc = "Rename File", },
     { "<leader>gB",      function() Snacks.gitbrowse() end,                                      desc = "Git Browse",                mode = { "n", "v" }, },
     { "<leader>gg",      function() Snacks.lazygit() end,                                        desc = "Lazygit", },
@@ -90,6 +89,8 @@ return {
         })
       end,
     },
+    -- FIX: Now using custom keymaps within 'keymaps.lua' to handle closing of the snacks terminal, gracefully.
+    -- { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer", },
     -- FIX: (direnv): If a project has a '.envrc' file, we'll need to load that because this
     -- also takes care of python virtual environment dependencies that may be required.
     {

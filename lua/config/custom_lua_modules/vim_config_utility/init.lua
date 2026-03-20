@@ -11,14 +11,20 @@
 ---@class VimConfigUtility
 local M = {}
 
+-- SECTION: Managing Open Buffers Gracefully.
+
 --- Specific function for preventing the snacks.nvim
 --- terminal from being closed in an incorrect manner.
----@return nil
-function M.protect_snacks_terminal()
-  return function()
-    if vim.bo.buftype == "terminal" then
-      vim.notify("Cannot execute this command in a Snacks-Terminal buffer.", vim.log.levels.WARN)
-      return
+function M.protect_snacks_terminal(vimcmd)
+  if vim.bo.buftype == "terminal" then
+    vim.notify("You cannot close a Snacks-Terminal buffer like this.\nType 'exit' which will stop the process properly",
+      vim.log.levels.WARN)
+  else
+    if vim.fn.bufnr('#') ~= -1 then
+      vim.cmd(vimcmd)
+    else
+      vim.notify("You can't close this buffer, it's the only one left open.\nThere's no alternate buffer to switch to.",
+        vim.log.levels.WARN)
     end
   end
 end
@@ -26,27 +32,28 @@ end
 --- Prevents certain vim buffer commands from being
 --- ran on buffers when switching between then.
 ---@param vimcmd string The vim command to execute
----@return nil
 function M.buffer_protection(vimcmd)
   return function()
     -- PART: For 'e #' command, check if alternate buffer exists.
     if vimcmd == "e #" then
       if vim.fn.bufnr('#') ~= -1 then
         vim.cmd(vimcmd)
-        return
       else
-        vim.notify("No alternate buffer to switch to.", vim.log.levels.INFO)
-        return
+        vim.notify(
+          "You can't close this buffer, it's the only one left open.\nThere's no alternate buffer to switch to.",
+          vim.log.levels.INFO)
       end
       -- PART: For 'bd' command, ensure we're NOT in a 'snacks.nvim' terminal.
     elseif vimcmd == "bd" then
-      M.protect_snacks_terminal()
+      M.protect_snacks_terminal(vimcmd)
     else
       -- PART: For any other commands, just run them.
-      vim.notify("No protection necessary, using 'buffer_protection' method is redundant.", vim.log.levels.INFO)
+      vim.notify("No protection necessary, using 'buffer_protection' method is redundant.", vim.log.levels.WARN)
       vim.cmd(vimcmd)
     end
   end
 end
+
+-- SECTION: ...
 
 return M
