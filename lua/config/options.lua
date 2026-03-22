@@ -31,11 +31,16 @@ vim.g.maplocalleader = "\\"
 -- NOTE: Options are automatically loaded before the 'lazy.nvim' package manager
 -- starts up. Add any additional options here:
 local opt = vim.opt
---MAC
+
 -- INFO: 'opt.shell' points to the bash executable.
 opt.shell = "/bin/bash" -- currently required as just '/bin/bash' for 'venv-selector.nvim' to function properly.
 opt.shellcmdflag = "-c" -- currently required as just '-c' for 'venv-selector.nvim' to function properly.
 opt.shellquote = ""
+-- TODO: Enable 24-bit RGB color support.
+opt.termguicolors = true -- Required for proper color rendering. 24-bit colour is required for:
+-- Accurate colors - without it, colors fall back to 256-colour palette approximations.
+-- Highlight groups - Border colors, icon colors, etc.
+-- Opacity/transparency effects.
 
 -- IMPORTANT: Must set the correct cli tool depending on the OS being used:
 if vim.cross_os.detect_os() == "Darwin" then

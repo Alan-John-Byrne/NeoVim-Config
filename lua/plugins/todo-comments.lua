@@ -7,23 +7,29 @@ return {
   opts = {
     signs = true,
     keywords = {
-      FIX       = {
+      FIX           = {
         icon = "🛠", -- Icon used for the sign, and in search results.
         color = "#DAF536", -- can be a hex color, or a named color (see below)
         alt = { "FIXME", "BUG", "FIXIT", "ISSUE" }, -- a set of other keywords that all map to this FIX keywords
       }, -- 'test' and 'info' are the same colour.
-      IMPORTANT = { icon = "❗", color = "error" },
-      NOTE      = { icon = "✏", color = "note", alt = {} }, -- Empty 'alt' table because of error.
-      TODO      = { icon = "🧠", color = "todo", alt = { "REMEMBER" } },
-      INFO      = { icon = "ℹ️", color = "info" },
-      LSP       = { icon = "🧪", color = "test", alt = { "TEST", "TESTING", "PASSED" } },
-      ERROR     = { icon = "📈", color = "error", alt = { "PERFORMANCE", "FAILED", "OPTIMIZE" } },
-      GOAL      = { icon = "🥅", color = "goal" },
-      SECTION   = { icon = "✨", color = "question", alt = { "QUESTION", "HEADING", "BLOCK", "CONFIGURATION" } },
-      PLUGIN    = { icon = "💫", color = "plugin", alt = { "ANSWER", "EXTENSION" } },
-      WARNING   = { icon = "⚠", color = "warning", alt = { "DEFINITION", "DEF", "WARN" } },
-      EXAMPLE   = { icon = "✍", color = "example", alt = { "EXAMPLES", "PART", "STEP" } },
-      OOO       = { icon = "❗", color = "check", alt = { "CHECK", "ADAPTER", "CONSUMER" } },
+      NOTE          = { icon = "💡", color = "note", alt = {} }, -- Empty 'alt' table because of error.
+      INFO          = { icon = "🔎", color = "info", alt = {} },
+      DEBUG         = { icon = "🔴", color = "info", alt = {} },
+      BUG           = { icon = "🪲", color = "info", alt = {} },
+      LSP           = { icon = "🧠", color = "test", alt = {} },
+      CONFIGURATION = { icon = "🧩", color = "question", alt = {} },
+      GOAL          = { icon = "🎯", color = "goal", alt = {} },
+      IMPORTANT     = { icon = "‼️", color = "error", alt = { "ERROR", "CRITICAL" } },
+      TODO          = { icon = "📌", color = "todo", alt = { "REMEMBER" } },
+      TESTING       = { icon = "🚧", color = "test", alt = { "TEST", "TESTING" } },
+      PERFORMANCE   = { icon = "📈", color = "error", alt = { "OPTIMIZE" } },
+      SECTION       = { icon = "🟢", color = "question", alt = { "QUESTION", "HEADING", "BLOCK" } },
+      PLUGIN        = { icon = "⚙️", color = "plugin", alt = { "EXTENSION", "OPTIONS" } },
+      ANSWER        = { icon = "💫", color = "plugin", alt = { "ANSWER" } },
+      WARNING       = { icon = "⚠️", color = "warning", alt = { "WARN" } },
+      DEFINITION    = { icon = "✏️", color = "warning", alt = { "DEF" } },
+      EXAMPLE       = { icon = "📝", color = "example", alt = { "EXAMPLES", "PART", "STEP" } },
+      OOO           = { icon = "👉", color = "check", alt = { "CHECK", "ADAPTER", "CONSUMER" } },
     },
     colors = {
       note = { "diagnosticHint" },
@@ -38,18 +44,25 @@ return {
       warning = { "#e1aa02" },
       example = { "#01b3bd" },
       -- Examples are below:
+      -- FIX:
       -- NOTE:
-      -- TODO:
       -- INFO:
+      -- DEBUG:
+      -- BUG:
       -- LSP:
-      -- ERROR:
+      -- CONFIGURATION:
       -- GOAL:
-      -- QUESTION:
+      -- IMPORTANT:
+      -- TODO:
+      -- TESTING:
+      -- PERFORMANCE:
+      -- SECTION:
       -- PLUGIN:
-      -- WARN:
+      -- ANSWER:
+      -- WARNING:
+      -- DEFINITION:
       -- EXAMPLE:
       -- OOO:
-      -- FIX:
     },
     highlight = {
       max_line_len = 1000, -- NOTE: ignore lines longer than this
