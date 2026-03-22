@@ -1,13 +1,50 @@
 -- PLUGIN: The 'noice.nvim' plugin provides better notifications within the editor.
 return {
-  -- SECTION: Part 0: Pre-configuring nvim-notofy setup.
+  -- SECTION: Part 0: Pre-configuring nvim-notify setup.
   {
     "rcarriga/nvim-notify",
     enabled = true,
     config = function()
       require("notify").setup({
-        background_colour = "#ffffff",
+
+        -- PART: Animation Style - key setting for fancy animations!
+        -- OPTIONS: For 'stages':
+        -- "fade_in_slide_out",
+        -- "fade",
+        -- "slide",
+        -- "static"
+        stages = "fade_in_slide_out",
+
+        -- PART: Animation timing:
+        timeout = 5000, -- How long (in milliseconds) notifications stay visible before fading out. "5000ms" => 5 seconds.
+        fps = 60,       -- Frames per second for animations. 30 is optimal; higher values may appear too fast.
+
+        -- PART: Visual Settings:
+        background_colour = "#000000", -- Background color for notification windows. "#000000" => black, works well with transparency.
+        render = "default",            -- Rendering style: "default" (full featured), "minimal" (compact), or "simple" (basic).
+        top_down = true,               -- Stack notifications from top to bottom. "false" => bottom to top.
+
+        -- PART: Size constraints:
+        minimum_width = 50, -- Minimum width of notification window in characters
+        max_width = 80,     -- Maximum width of notification window in characters.
+        max_height = 10,    --Maximum height of notification window in lines.
+
+        -- PART: Icons (optional, for better visual feedback):
+        icons = {
+          ERROR = "‼️", -- Icon shown for error-level notifications.
+          WARN = "⚠️", -- Icon shown for warning-level notifications.
+          INFO = "🔎", -- Icon shown for info-level notifications.
+          DEBUG = "🔴", -- Icon shown for debug-level notifications.
+          TRACE = "🚨", -- Icon shown for trace-level notifications.
+        }
+
       })
+
+      -- CONFIGURATION: Set as default notify handler.
+      -- CRITICAL: This overrides Neovim's default vim.notify function to use nvim-notify instead.
+      -- This ensures ALL notifications (from plugins, LSP, etc.) use nvim-notify's animations.
+      -- TODO: Without this line, notifications would use Neovim's basic built-in notification system.
+      vim.notify = require("notify")
     end
   },
   -- SECTION: Part 1: Setting up Noice pre-requisites.
@@ -63,6 +100,14 @@ return {
       -- SECTION: Part 3: Configuring views.
       -- INFO: We choose how a view is displayed / configured.
       views = {
+        -- CRITICAL: This 'notify' view configuration is required to correctly route
+        -- all notifications through nvim-notify's animation system.
+        notify = {             -- The 'notify' view configuration for nvim-notify animations.
+          backend = "notify",  -- Use nvim-notify as the backend.
+          fallback = "mini",   -- Fallback to 'mini' view if nvim-notify is unavailable.
+          replace = false,     -- Don't replace existing notifications (allows animations to complete).
+          merge = false,       -- Don't merge similar messages (each gets its own animation).
+        },
         hover = {              -- The LSP 'hover' view.
           border = {
             style = "rounded", -- or "single", "double", "solid", "shadow"
@@ -98,9 +143,13 @@ return {
           enabled = true,
           view = "hover",
         },
-        progress = {        -- > Show status updates like loading / indexing from an LSP serveer. (e.g.: Loading index.)
+        progress = { -- > Show status updates like loading / indexing from an LSP serveer. (e.g.: Loading index.)
           enabled = true,
-          view = "mini",    -- Using the 'mini' view from the above views table. NOTE: The 'mini' view is non-instrusive.
+          -- OPTIONS: For 'view':
+          -- The 'mini' view is non-instrusive.
+          -- The 'notify' view enables LSP progress messages to have animations configured with the nvim-notify plugin.
+          -- > These views come from the above views table.
+          view = "mini",
         },
         signature = {       -- > Shows signature help as you type.
           enabled = true,
